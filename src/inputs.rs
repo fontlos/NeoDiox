@@ -8,7 +8,8 @@ use dioxus::prelude::*;
 /// 输入框样式
 fn input_style(theme: &ThemeConfig) -> String {
     format!(
-        "background: linear-gradient(145deg, {}, {}); box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
+        "background: linear-gradient(145deg, {}, {}); \
+         box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
         theme.bg_secondary, theme.bg_primary, theme.shadow_dark, theme.shadow_light
     )
 }
@@ -107,46 +108,39 @@ impl InputSize {
 /// ```
 #[component]
 pub fn TextInput(props: TextInputProps) -> Element {
-    let theme = use_theme_config();
     let placeholder = props.placeholder.unwrap_or_default();
     let error_id = format!("{}-error", "input");
     let class = props.class.unwrap_or_default();
     let has_error = props.error.is_some();
 
-    let base_style = input_style(&theme);
+    let base_style = input_style(&use_theme_config());
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
         ""
     };
-    let focus_style = "transition: all 0.2s ease; outline: none;";
 
     let padding = props.size.padding();
     let font_size = props.size.font_size();
+    let clear_padding = if props.clearable { "40px" } else { "16px" };
 
     rsx! {
         div {
             class: "neu-text-input {class}",
-            style: "display: flex; flex-direction: column; gap: 8px;",
 
             // 标签
             if let Some(label_text) = props.label {
                 label {
-                    style: "font-size: 14px; font-weight: 500; color: inherit;",
+                    class: "neu-label",
                     "{label_text}"
                     if props.required {
-                        span {
-                            style: "color: #ef4444; margin-left: 4px;",
-                            "*"
-                        }
+                        span { class: "neu-label-required", "*" }
                     }
                 }
             }
 
             // 输入框容器
-            div {
-                style: "position: relative;",
-
+            div { style: "position: relative;",
                 input {
                     r#type: "{props.input_type}",
                     value: "{props.value}",
@@ -160,12 +154,10 @@ pub fn TextInput(props: TextInputProps) -> Element {
                     "aria-describedby": if has_error { Some(error_id.clone()) } else { None },
                     class: "neu-input",
                     style: format!(
-                        "width: 100%; padding: {padding}; padding-right: {}; \
+                        "padding: {padding}; padding-right: {clear_padding}; \
                          border-radius: 12px; font-size: {font_size}; \
-                         color: inherit; background: transparent; \
-                         border: none; {} {} {}",
-                        if props.clearable { "40px" } else { "16px" },
-                        base_style, disabled_style, focus_style
+                         {} {} {}",
+                        base_style, disabled_style, base_style
                     ),
                     oninput: move |evt| {
                         props.on_input.call(evt.value().clone());
@@ -177,10 +169,6 @@ pub fn TextInput(props: TextInputProps) -> Element {
                     button {
                         r#type: "button",
                         class: "neu-input-clear",
-                        style: "position: absolute; right: 8px; top: 50%; \
-                                transform: translateY(-50%); background: none; \
-                                border: none; cursor: pointer; padding: 4px; \
-                                color: inherit; opacity: 0.6;",
                         onclick: move |_| {
                             props.on_input.call(String::new());
                         },
@@ -194,7 +182,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
                 p {
                     id: "{error_id}",
                     role: "alert",
-                    style: "font-size: 12px; color: #ef4444; margin: 0;",
+                    class: "neu-error",
                     "{error_text}"
                 }
             }
@@ -202,10 +190,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
             // 辅助文本
             if let Some(ref help_text) = props.help_text {
                 if !has_error {
-                    p {
-                        style: "font-size: 12px; color: inherit; opacity: 0.6; margin: 0;",
-                        "{help_text}"
-                    }
+                    p { class: "neu-help", "{help_text}" }
                 }
             }
         }
@@ -290,12 +275,11 @@ impl std::fmt::Display for ResizeMode {
 /// ```
 #[component]
 pub fn TextArea(props: TextAreaProps) -> Element {
-    let theme = use_theme_config();
     let placeholder = props.placeholder.unwrap_or_default();
     let class = props.class.unwrap_or_default();
     let has_error = props.error.is_some();
 
-    let base_style = input_style(&theme);
+    let base_style = input_style(&use_theme_config());
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -306,18 +290,14 @@ pub fn TextArea(props: TextAreaProps) -> Element {
     rsx! {
         div {
             class: "neu-textarea {class}",
-            style: "display: flex; flex-direction: column; gap: 8px;",
 
             // 标签
             if let Some(label_text) = props.label {
                 label {
-                    style: "font-size: 14px; font-weight: 500; color: inherit;",
+                    class: "neu-label",
                     "{label_text}"
                     if props.required {
-                        span {
-                            style: "color: #ef4444; margin-left: 4px;",
-                            "*"
-                        }
+                        span { class: "neu-label-required", "*" }
                     }
                 }
             }
@@ -334,10 +314,8 @@ pub fn TextArea(props: TextAreaProps) -> Element {
                 "aria-invalid": if has_error { "true" } else { "false" },
                 class: "neu-textarea-element",
                 style: format!(
-                    "width: 100%; padding: 12px 16px; border-radius: 12px; \
-                     font-size: 14px; color: inherit; background: transparent; \
-                     border: none; resize: {resize_style}; \
-                     {} {} transition: all 0.2s ease; outline: none;",
+                    "padding: 12px 16px; border-radius: 12px; font-size: 14px; \
+                     resize: {resize_style}; {} {}",
                     base_style, disabled_style
                 ),
                 oninput: move |evt| {
@@ -349,7 +327,7 @@ pub fn TextArea(props: TextAreaProps) -> Element {
             if let Some(ref error_text) = props.error {
                 p {
                     role: "alert",
-                    style: "font-size: 12px; color: #ef4444; margin: 0;",
+                    class: "neu-error",
                     "{error_text}"
                 }
             }
@@ -404,8 +382,7 @@ pub struct SearchInputProps {
 /// ```
 #[component]
 pub fn SearchInput(props: SearchInputProps) -> Element {
-    let theme = use_theme_config();
-    let base_style = input_style(&theme);
+    let base_style = input_style(&use_theme_config());
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -421,14 +398,13 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
 
             if let Some(label_text) = props.label {
                 label {
-                    style: "font-size: 14px; font-weight: 500; color: inherit; margin-bottom: 8px; display: block;",
+                    class: "neu-label",
+                    style: "margin-bottom: 8px; display: block;",
                     "{label_text}"
                 }
             }
 
-            div {
-                style: "position: relative;",
-
+            div { style: "position: relative;",
                 // 搜索图标
                 span {
                     style: "position: absolute; left: 12px; top: 50%; \
@@ -445,9 +421,8 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
                     autofocus: if props.autofocus { "true" } else { "false" },
                     class: "neu-input",
                     style: format!(
-                        "width: 100%; padding: 12px 40px; border-radius: 12px; \
-                         font-size: 14px; color: inherit; background: transparent; \
-                         border: none; {} {} transition: all 0.2s ease; outline: none;",
+                        "padding: 12px 40px; border-radius: 12px; font-size: 14px; \
+                         {} {}",
                         base_style, disabled_style
                     ),
                     oninput: move |evt| {
@@ -460,10 +435,6 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
                     button {
                         r#type: "button",
                         class: "neu-search-clear",
-                        style: "position: absolute; right: 8px; top: 50%; \
-                                transform: translateY(-50%); background: none; \
-                                border: none; cursor: pointer; padding: 4px; \
-                                color: inherit; opacity: 0.6;",
                         onclick: move |_| {
                             props.on_input.call(String::new());
                         },

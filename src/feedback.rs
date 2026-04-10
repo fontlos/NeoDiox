@@ -19,9 +19,6 @@ pub struct ProgressBarProps {
     /// Label text (overrides default percentage)
     #[props(default)]
     pub label: Option<String>,
-    /// Progress bar color gradient (start color, end color)
-    #[props(default)]
-    pub color: Option<(String, String)>,
     /// Whether to show shimmer effect
     #[props(default)]
     pub shimmer: bool,
@@ -50,26 +47,18 @@ pub fn ProgressBar(props: ProgressBarProps) -> Element {
     let theme = use_theme_config();
     let label = props.label.unwrap_or_else(|| format!("{}%", props.value));
     let class = props.class.unwrap_or_default();
-    let (color_start, color_end) = props
-        .color
-        .unwrap_or_else(|| ("#7c3aed".to_string(), "#a855f7".to_string()));
 
     rsx! {
         div {
             class: "neu-progress-bar {class}",
-            style: "display: flex; flex-direction: column; gap: 8px;",
             role: "progressbar",
             "aria-valuenow": props.value,
             "aria-valuemin": 0,
             "aria-valuemax": 100,
 
             if props.show_label {
-                div {
-                    style: "display: flex; justify-content: space-between; align-items: center;",
-                    span {
-                        style: "font-size: 14px; color: inherit;",
-                        {label.clone()}
-                    }
+                div { style: "display: flex; justify-content: space-between; align-items: center;",
+                    span { class: "neu-label", "{label}" }
                 }
             }
 
@@ -84,24 +73,19 @@ pub fn ProgressBar(props: ProgressBarProps) -> Element {
                     theme.shadow_dark, theme.shadow_light
                 ),
 
-                // 进度填充
+                // 进度填充 - 紫色渐变
                 div {
+                    class: "progress-fill",
                     style: format!(
                         "height: 100%; width: {}%; border-radius: 6px; \
-                         background: linear-gradient(90deg, {}, {}); \
-                         transition: width 0.3s ease; position: relative;",
-                        props.value, color_start, color_end
+                         position: relative; overflow: hidden;",
+                        props.value
                     ),
 
-                    // 闪烁效果
+                    // Shimmer 效果
                     if props.shimmer {
                         div {
-                            style: "position: absolute; inset: 0; \
-                                    background: linear-gradient(90deg, \
-                                        transparent, \
-                                        rgba(255, 255, 255, 0.4), \
-                                        transparent); \
-                                    animation: shimmer 1.5s infinite;",
+                            class: "shimmer",
                         }
                     }
                 }
@@ -210,9 +194,10 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
 
     rsx! {
         div {
+            class: "neu-toast-container",
             style: format!(
-                "position: fixed; z-index: 9999; display: flex; flex-direction: column; \
-                 gap: 12px; max-width: 400px; pointer-events: none; {}",
+                "position: fixed; z-index: 9999; max-width: 400px; \
+                 pointer-events: none; {}",
                 props.position.style()
             ),
             for toast in &props.toasts {
@@ -239,11 +224,10 @@ fn ToastItem(props: ToastItemProps) -> Element {
 
     rsx! {
         div {
+            class: "neu-toast",
             role: "alert",
             style: format!(
-                "display: flex; align-items: flex-start; gap: 12px; \
-                 padding: 16px; border-radius: 12px; min-width: 280px; \
-                 background: linear-gradient(145deg, {}, {}); \
+                "background: linear-gradient(145deg, {}, {}); \
                  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2); \
                  pointer-events: auto;",
                 color_start, color_end
@@ -251,13 +235,12 @@ fn ToastItem(props: ToastItemProps) -> Element {
 
             // 图标
             span {
-                style: "color: white; font-size: 20px; margin-top: 2px; flex-shrink: 0;",
+                class: "neu-alert-icon",
                 "{props.toast.toast_type.icon()}"
             }
 
             // 内容
-            div {
-                style: "flex: 1; min-width: 0;",
+            div { style: "flex: 1; min-width: 0;",
                 p {
                     style: "font-size: 14px; font-weight: 500; color: white; margin: 0;",
                     "{props.toast.title}"
@@ -272,8 +255,7 @@ fn ToastItem(props: ToastItemProps) -> Element {
             button {
                 r#type: "button",
                 style: "background: none; border: none; cursor: pointer; \
-                        color: rgba(255, 255, 255, 0.8); padding: 4px; \
-                        font-size: 16px; flex-shrink: 0;",
+                        color: rgba(255, 255, 255, 0.8); padding: 4px; font-size: 16px; flex-shrink: 0;",
                 onclick: move |_| {
                     props.on_dismiss.call(props.toast.id.clone());
                 },
@@ -360,10 +342,7 @@ pub fn Modal(props: ModalProps) -> Element {
     rsx! {
         // 背景遮罩
         div {
-            style: "position: fixed; inset: 0; z-index: 1000; \
-                    background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); \
-                    display: flex; align-items: center; justify-content: center; \
-                    padding: 16px;",
+            class: "neu-modal-backdrop",
             onclick: move |_| {
                 if props.close_on_backdrop {
                     props.on_close.call(());
@@ -374,8 +353,7 @@ pub fn Modal(props: ModalProps) -> Element {
             div {
                 class: "neu-modal {class}",
                 style: format!(
-                    "width: 100%; max-width: {}; max-height: 90vh; overflow: auto; \
-                     border-radius: 16px; position: relative;",
+                    "width: 100%; max-width: {};",
                     props.size.max_width()
                 ),
                 onclick: move |evt| {
@@ -402,16 +380,15 @@ pub fn Modal(props: ModalProps) -> Element {
                         style: "display: flex; align-items: center; justify-content: space-between; \
                                 margin-bottom: 16px;",
                         h2 {
-                            style: "font-size: 18px; font-weight: 600; color: inherit; margin: 0;",
+                            class: "neu-label",
+                            style: "font-size: 18px; font-weight: 600; margin: 0;",
                             "{props.title}"
                         }
 
                         if props.show_close {
                             button {
                                 r#type: "button",
-                                style: "background: none; border: none; cursor: pointer; \
-                                        padding: 8px; border-radius: 8px; color: inherit; \
-                                        transition: background 0.15s ease;",
+                                class: "neu-modal-close",
                                 onclick: move |_| {
                                     props.on_close.call(());
                                 },
@@ -506,27 +483,26 @@ pub fn Alert(props: AlertProps) -> Element {
             role: "alert",
             class: "neu-alert {class}",
             style: format!(
-                "display: flex; align-items: flex-start; gap: 12px; \
-                 padding: 16px; border-radius: 12px; \
-                 background: {bg_color}; \
-                 border-left: 4px solid {border_color};",
+                "background: {bg_color}; border-left: 4px solid {border_color};",
             ),
 
             // 图标
             span {
-                style: format!("font-size: 20px; color: {icon_color}; flex-shrink: 0; margin-top: 2px;"),
+                class: "neu-alert-icon",
+                style: format!("color: {icon_color};"),
                 "{icon}"
             }
 
             // 内容
-            div {
-                style: "flex: 1; min-width: 0;",
+            div { style: "flex: 1; min-width: 0;",
                 p {
-                    style: format!("font-size: 14px; font-weight: 500; color: {text_color}; margin: 0;"),
+                    class: "neu-alert-title",
+                    style: format!("color: {text_color};"),
                     "{props.title}"
                 }
                 p {
-                    style: format!("font-size: 12px; color: {icon_color}; margin: 4px 0 0 0;"),
+                    class: "neu-alert-message",
+                    style: format!("color: {icon_color};"),
                     "{props.message}"
                 }
             }
@@ -535,8 +511,7 @@ pub fn Alert(props: AlertProps) -> Element {
             if props.dismissible {
                 button {
                     r#type: "button",
-                    style: "background: none; border: none; cursor: pointer; \
-                            color: inherit; opacity: 0.6; padding: 4px; font-size: 16px;",
+                    class: "neu-badge-dismiss",
                     onclick: move |_| {
                         if let Some(handler) = props.on_dismiss {
                             handler.call(());
@@ -582,22 +557,14 @@ pub struct SkeletonProps {
 /// ```
 #[component]
 pub fn Skeleton(props: SkeletonProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
     rsx! {
         div {
             class: "neu-skeleton {class}",
             style: format!(
-                "width: {}; height: {}; border-radius: {}px; \
-                 background: linear-gradient(90deg, \
-                     {} 25%, \
-                     {} 50%, \
-                     {} 75%); \
-                 background-size: 200% 100%; \
-                 animation: skeleton-loading 1.5s infinite;",
-                props.width, props.height, props.border_radius,
-                theme.bg_secondary, theme.bg_primary, theme.bg_secondary
+                "width: {}; height: {}; border-radius: {}px;",
+                props.width, props.height, props.border_radius
             ),
         }
     }
@@ -643,12 +610,7 @@ pub fn Spinner(props: SpinnerProps) -> Element {
             class: "neu-spinner {class}",
             "aria-label": "Loading",
             style: format!(
-                "width: {}px; height: {}px; \
-                 border: {}px solid currentColor; \
-                 border-top-color: transparent; \
-                 border-radius: 50%; \
-                 color: {}; \
-                 animation: spin 0.6s linear infinite;",
+                "width: {}px; height: {}px; border-width: {}px; color: {};",
                 props.size, props.size, props.border_width, props.color
             ),
         }

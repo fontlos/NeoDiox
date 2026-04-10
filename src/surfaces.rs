@@ -4,8 +4,6 @@
 
 use dioxus::prelude::*;
 
-use crate::theme::{ThemeConfig, use_theme_config};
-
 /// Skeuomorphic surface type
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum SurfaceType {
@@ -16,25 +14,14 @@ pub enum SurfaceType {
     Flat,
 }
 
-// 生成拟物化表面样式
-fn neu_surface_style(surface_type: SurfaceType, theme: &ThemeConfig) -> String {
-    match surface_type {
-        SurfaceType::Raised => format!(
-            "background: linear-gradient(145deg, {}, {}); box-shadow: 8px 8px 16px {}, -8px -8px 16px {};",
-            theme.bg_primary, theme.bg_secondary, theme.shadow_dark, theme.shadow_light
-        ),
-        SurfaceType::RaisedSm => format!(
-            "box-shadow: 4px 4px 8px {}, -4px -4px 8px {};",
-            theme.shadow_dark, theme.shadow_light
-        ),
-        SurfaceType::Inset => format!(
-            "background: linear-gradient(145deg, {}, {}); box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-            theme.bg_secondary, theme.bg_primary, theme.shadow_dark, theme.shadow_light
-        ),
-        SurfaceType::Flat => format!(
-            "background: linear-gradient(145deg, {}, {});",
-            theme.bg_primary, theme.bg_secondary
-        ),
+impl SurfaceType {
+    fn css_class(&self) -> &'static str {
+        match self {
+            Self::Raised => "neu-surface-raised",
+            Self::RaisedSm => "neu-surface-raised-sm",
+            Self::Inset => "neu-surface-inset",
+            Self::Flat => "neu-surface-flat",
+        }
     }
 }
 
@@ -47,7 +34,7 @@ pub struct NeuSurfaceProps {
     /// Custom class name
     #[props(default)]
     pub class: Option<String>,
-    /// Inline style (will be merged with surface style)
+    /// Additional inline style (for dynamic props only)
     #[props(default)]
     pub style: Option<String>,
     /// Border radius
@@ -77,23 +64,23 @@ pub struct NeuSurfaceProps {
 /// ```
 #[component]
 pub fn NeuSurface(props: NeuSurfaceProps) -> Element {
-    let theme = use_theme_config();
-
-    let base_style = neu_surface_style(props.surface_type, &theme);
-    let additional_style = props.style.unwrap_or_default();
-
-    let combined_style = if additional_style.is_empty() {
-        base_style
-    } else {
-        format!("{} {}", base_style, additional_style)
-    };
-
+    let surface_class = props.surface_type.css_class();
     let class = props.class.unwrap_or_default();
+    let combined_class = format!("neu-surface {surface_class} {class}");
+
+    let style = props.style.unwrap_or_default();
+    let border_radius_style = format!("border-radius: {}px;", props.border_radius);
+
+    let combined_style = if style.is_empty() {
+        border_radius_style
+    } else {
+        format!("{} {}", border_radius_style, style)
+    };
 
     rsx! {
         div {
-            class: "neu-surface {class}",
-            style: "{combined_style} border-radius: {props.border_radius}px;",
+            class: combined_class,
+            style: combined_style,
             {props.children}
         }
     }

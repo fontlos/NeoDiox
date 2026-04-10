@@ -750,7 +750,7 @@ pub fn BarChart(props: BarChartProps) -> Element {
                 role: "img",
                 style: format!(
                     "display: flex; align-items: flex-end; justify-content: space-between; \
-                     height: {}px; gap: 16px; padding: 0 16px;",
+                     height: {}px; width: 100%; gap: 16px; padding: 0 16px;",
                     props.height
                 ),
 

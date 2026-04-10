@@ -29,9 +29,8 @@ pub fn Toggle(props: ToggleProps) -> Element {
     let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
-    // 原始 HTML：选中时轨道是紫色渐变，未选中时是 neu-inset
     let track_style = if props.checked {
-        "background: linear-gradient(145deg, #7c3aed, #6d28d9); box-shadow: 4px 4px 8px rgba(0,0,0,0.2);"
+        "background: linear-gradient(145deg, #7c3aed, #6d28d9); box-shadow: none;"
     } else {
         &format!(
             "background: linear-gradient(145deg, {}, {}); \
@@ -40,16 +39,17 @@ pub fn Toggle(props: ToggleProps) -> Element {
         )
     };
 
-    // 拇指位置动画
+    // 拇指位置
     let thumb_pos = if props.checked {
         "calc(100% - 28px)"
     } else {
         "4px"
     };
 
-    let thumb_bg = format!(
+    // 拇指样式
+    let thumb_style = format!(
         "background: linear-gradient(145deg, {}, {}); \
-         box-shadow: 2px 2px 4px {}, -2px -2px 4px {};",
+         box-shadow: 4px 4px 8px {}, -4px -4px 8px {};",
         theme.bg_primary, theme.bg_secondary, theme.shadow_dark, theme.shadow_light
     );
 
@@ -67,9 +67,7 @@ pub fn Toggle(props: ToggleProps) -> Element {
             disabled: if props.disabled { "true" } else { "false" },
             class: "neu-toggle {class}",
             style: format!(
-                "width: 56px; height: 32px; border-radius: 16px; position: relative; \
-                 transition: all 0.3s ease; border: none; outline: none; \
-                 {} {}",
+                "{} {} transition: all 0.3s ease;",
                 track_style, disabled_style
             ),
             onclick: move |_| {
@@ -78,11 +76,10 @@ pub fn Toggle(props: ToggleProps) -> Element {
                 }
             },
             div {
+                class: "neu-toggle-thumb",
                 style: format!(
-                    "position: absolute; top: 4px; width: 24px; height: 24px; \
-                     border-radius: 12px; transition: left 0.3s ease; \
-                     {} left: {};",
-                    thumb_bg, thumb_pos
+                    "{} left: {}; transition: left 0.3s ease;",
+                    thumb_style, thumb_pos
                 ),
             }
         }
@@ -113,7 +110,7 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
-    // 背景样式
+    // Background style (theme-dependent)
     let bg_style = if props.checked {
         "background: linear-gradient(145deg, #7c3aed, #6d28d9); \
          box-shadow: 4px 4px 8px rgba(0,0,0,0.2);"
@@ -128,10 +125,10 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
-        "cursor: pointer;"
+        ""
     };
 
-    // 对勾透明度动画
+    // Checkmark opacity animation
     let check_opacity = if props.checked { "1" } else { "0" };
 
     rsx! {
@@ -141,24 +138,16 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
             class: "neu-checkbox {class}",
-            style: format!(
-                "width: 24px; height: 24px; border-radius: 8px; display: flex; \
-                 align-items: center; justify-content: center; transition: all 0.2s ease; \
-                 border: none; outline: none; {} {}",
-                bg_style, disabled_style
-            ),
+            style: format!("{} {}", bg_style, disabled_style),
             onclick: move |_| {
                 if !props.disabled {
                     props.on_change.call(!props.checked);
                 }
             },
-            // 对勾图标 - 使用 opacity 过渡动画
+            // Checkmark icon - opacity transition
             span {
-                style: format!(
-                    "color: white; font-size: 12px; font-weight: bold; \
-                     opacity: {}; transition: opacity 0.2s ease;",
-                    check_opacity
-                ),
+                class: "neu-checkbox-icon",
+                style: format!("opacity: {};", check_opacity),
                 "✓"
             }
         }
@@ -194,7 +183,7 @@ pub fn Radio(props: RadioProps) -> Element {
     let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
-    // 始终是凹陷效果
+    // Always inset background (theme-dependent)
     let bg_style = format!(
         "background: linear-gradient(145deg, {}, {}); \
          box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
@@ -204,46 +193,37 @@ pub fn Radio(props: RadioProps) -> Element {
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
-        "cursor: pointer;"
+        ""
     };
 
-    // 小圆点透明度动画
+    // Dot opacity animation
     let dot_opacity = if props.checked { "1" } else { "0" };
 
-    // 如果有标签，渲染 Radio + Label（按钮在文字前）
+    // If has label, render Radio + Label (button before text)
     if let Some(label_text) = props.label {
         return rsx! {
             div {
                 class: "neu-radio-with-label {class}",
-                style: "display: flex; align-items: center; gap: 12px;",
                 button {
                     r#type: "button",
                     role: "radio",
                     "aria-checked": if props.checked { "true" } else { "false" },
                     disabled: if props.disabled { "true" } else { "false" },
-                    style: format!(
-                        "width: 24px; height: 24px; border-radius: 12px; display: flex; \
-                         align-items: center; justify-content: center; transition: all 0.2s ease; \
-                         border: none; outline: none; {} {}",
-                        bg_style, disabled_style
-                    ),
+                    class: "neu-radio",
+                    style: format!("{} {}", bg_style, disabled_style),
                     onclick: move |_| {
                         if !props.disabled {
                             props.on_change.call(props.value.clone());
                         }
                     },
-                    // 小圆点 - 使用 opacity 过渡
+                    // Dot - opacity transition
                     div {
-                        style: format!(
-                            "width: 12px; height: 12px; border-radius: 6px; \
-                             background: linear-gradient(145deg, #7c3aed, #6d28d9); \
-                             opacity: {}; transition: opacity 0.2s ease;",
-                            dot_opacity
-                        ),
+                        class: "neu-radio-dot",
+                        style: format!("opacity: {};", dot_opacity),
                     }
                 }
                 label {
-                    style: "font-size: 14px; color: inherit; cursor: pointer;",
+                    class: "neu-label",
                     "{label_text}"
                 }
             }
@@ -257,24 +237,15 @@ pub fn Radio(props: RadioProps) -> Element {
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
             class: "neu-radio {class}",
-            style: format!(
-                "width: 24px; height: 24px; border-radius: 12px; display: flex; \
-                 align-items: center; justify-content: center; transition: all 0.2s ease; \
-                 border: none; outline: none; {} {}",
-                bg_style, disabled_style
-            ),
+            style: format!("{} {}", bg_style, disabled_style),
             onclick: move |_| {
                 if !props.disabled {
                     props.on_change.call(props.value.clone());
                 }
             },
             div {
-                style: format!(
-                    "width: 12px; height: 12px; border-radius: 6px; \
-                     background: linear-gradient(145deg, #7c3aed, #6d28d9); \
-                     opacity: {}; transition: opacity 0.2s ease;",
-                    dot_opacity
-                ),
+                class: "neu-radio-dot",
+                style: format!("opacity: {};", dot_opacity),
             }
         }
     }
@@ -315,17 +286,16 @@ pub fn RadioGroup(props: RadioGroupProps) -> Element {
     rsx! {
         fieldset {
             class: "neu-radio-group {class}",
-            style: "border: none; margin: 0; padding: 0;",
             if let Some(legend_text) = props.legend {
                 legend {
-                    style: "font-size: 14px; color: inherit; margin-bottom: 12px;",
+                    class: "neu-label",
+                    style: "margin-bottom: 12px;",
                     "{legend_text}"
                 }
             }
             div {
                 role: "radiogroup",
                 class: "neu-radio-options",
-                style: "display: flex; flex-direction: column; gap: 12px;",
                 for option in &props.options {
                     Radio {
                         checked: props.value == option.value,

@@ -80,16 +80,16 @@ pub fn Button(props: ButtonProps) -> Element {
     let class = props.class.unwrap_or_default();
     let is_gradient = props.variant != ButtonVariant::Default;
 
-    // 计算按钮样式 - 根据主题使用正确的颜色
-    let base_style = if is_gradient {
+    // Dynamic styles only (theme-dependent background/shadow)
+    let dynamic_style = if is_gradient {
         let (color1, color2) = props.variant.gradient();
         format!(
-            "background: linear-gradient(145deg, {}, {}); color: white; \
-             box-shadow: 4px 4px 8px {}, -4px -4px 8px {};",
+            "background: linear-gradient(145deg, {}, {}); \
+             box-shadow: 4px 4px 8px {}, -4px -4px 8px {}; \
+             color: #ffffff;",
             color1, color2, theme.shadow_dark, theme.shadow_light
         )
     } else {
-        // Default 变体使用主题色
         let text_color = if theme.variant.is_dark() {
             "#d1d5db"
         } else {
@@ -105,7 +105,7 @@ pub fn Button(props: ButtonProps) -> Element {
     let disabled_style = if props.disabled || props.loading {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
-        "cursor: pointer;"
+        ""
     };
 
     let width_style = props
@@ -114,14 +114,9 @@ pub fn Button(props: ButtonProps) -> Element {
         .map(|w| format!("width: {};", w))
         .unwrap_or_default();
 
-    let combined_style = format!(
-        "{} {} {} transition: transform 150ms, box-shadow 150ms; \
-         padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 500; \
-         border: none; outline: none;",
-        base_style, disabled_style, width_style
-    );
+    let combined_style = format!("{} {} {}", dynamic_style, disabled_style, width_style);
 
-    // 处理点击事件
+    // Handle click event
     let onclick = if props.disabled || props.loading {
         None
     } else {
@@ -133,14 +128,8 @@ pub fn Button(props: ButtonProps) -> Element {
             .loading_text
             .unwrap_or_else(|| "Loading...".to_string());
         rsx! {
-            div {
-                class: "flex items-center justify-center gap-2",
-                div {
-                    class: "spinner",
-                    style: "width: 16px; height: 16px; border: 2px solid currentColor; \
-                            border-top-color: transparent; border-radius: 50%; \
-                            animation: spin 0.6s linear infinite;",
-                }
+            div { class: "flex items-center justify-center gap-2",
+                div { class: "neu-spinner-inline" }
                 span { "{loading_text}" }
             }
         }
@@ -153,7 +142,7 @@ pub fn Button(props: ButtonProps) -> Element {
             r#type: "{props.r#type}",
             class: "neu-btn {class}",
             disabled: if props.disabled || props.loading { "true" } else { "false" },
-            style: "{combined_style}",
+            style: combined_style,
             onclick: move |evt| {
                 if let Some(handler) = onclick {
                     handler.call(evt);

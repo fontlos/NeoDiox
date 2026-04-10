@@ -1,0 +1,100 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:focus-visible {
+    outline-offset: 3px;
+}
+
+html {
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+:where(abbr[title]) {
+    cursor: help;
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+}
+
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Inherit font styling in form elements */
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    border: none;
+    appearance: none;
+}
+
+/* Increase the block-size of textareas */
+textarea:not([rows]) {
+    min-block-size: 6em;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+:where(table) {
+    border-collapse: collapse;
+}
+
+/* Avoid overflow caused by embedded content */
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+    display: block;
+    max-block-size: 100%;
+    max-inline-size: 100%;
+}
+
+/* Normalize search input styles */
+[type="search"] {
+    -webkit-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Increase specificity of [hidden] */
+[hidden]:not([hidden="until-found"]) {
+    display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition: none;
+    }
+}

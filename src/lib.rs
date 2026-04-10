@@ -14,7 +14,7 @@ pub mod theme;
 
 pub mod prelude {
     // 样式
-    pub use crate::styles::STYLE;
+    pub use crate::styles::{NORMALIZE, NORMALIZE_S, STYLE, STYLE_S};
     // 主题
     pub use crate::theme::{ThemeConfig, ThemeVariant, use_theme_config, use_toggle_theme};
     // 容器组件
@@ -32,8 +32,8 @@ pub mod prelude {
     };
     // 反馈组件
     pub use crate::feedback::{
-        AlertType, Alert, Modal, ModalSize, ProgressBar, Skeleton, Spinner, ToastContainer, ToastMessage,
-        ToastPosition, ToastType,
+        Alert, AlertType, Modal, ModalSize, ProgressBar, Skeleton, Spinner, ToastContainer,
+        ToastMessage, ToastPosition, ToastType,
     };
     // 导航组件
     pub use crate::navigation::{
