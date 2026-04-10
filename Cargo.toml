@@ -1,12 +1,12 @@
 [package]
-name = "dioneo_ui"
+name = "neo-diox"
 version = "0.1.0"
 edition = "2024"
-description = "Neuromorphic UI component library for Dioxus"
+description = "Neumorphism UI component library for Dioxus"
 repository = "https://github.com/fontlos/DioNeoUI"
 license = "MIT"
-keywords = ["dioxus", "ui", "components", "neuromorphic"]
-categories = ["gui", "rendering"]
+keywords = ["dioxus", "ui", "components", "neumorphism"]
+categories = ["gui"]
 
 [dependencies]
-dioxus = "0.7.3"
+dioxus = "0.7.5"
