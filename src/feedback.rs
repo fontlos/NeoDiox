@@ -12,15 +12,6 @@ pub struct ProgressBarProps {
     /// Current progress value (0-100)
     #[props(default = 0)]
     pub value: u8,
-    /// Whether to show progress text
-    #[props(default = true)]
-    pub show_label: bool,
-    /// Label text (overrides default percentage)
-    #[props(default)]
-    pub label: Option<String>,
-    /// Whether to show shimmer effect
-    #[props(default)]
-    pub shimmer: bool,
     /// Height of the progress bar in pixels
     #[props(default = 12)]
     pub height: u32,
@@ -37,13 +28,11 @@ pub struct ProgressBarProps {
 /// rsx! {
 ///     ProgressBar {
 ///         value: progress,
-///         show_label: true,
 ///     }
 /// }
 /// ```
 #[component]
 pub fn ProgressBar(props: ProgressBarProps) -> Element {
-    let label = props.label.unwrap_or_else(|| format!("{}%", props.value));
     let class = props.class.unwrap_or_default();
 
     rsx! {
@@ -54,35 +43,24 @@ pub fn ProgressBar(props: ProgressBarProps) -> Element {
             "aria-valuemin": 0,
             "aria-valuemax": 100,
 
-            if props.show_label {
-                div { style: "display: flex; justify-content: space-between; align-items: center;",
-                    span { class: "nd-label", "{label}" }
-                }
-            }
-
             // 进度条轨道
             div {
+                class: "nd-progress-bar-track",
                 style: format!(
-                    "height: {}px; border-radius: 6px; overflow: hidden; \
-                     background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
-                     box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);",
+                    "height: {}px;",
                     props.height
                 ),
 
                 // 进度填充 - 紫色渐变
                 div {
-                    class: "progress-fill",
+                    class: "nd-progress-bar-fill",
                     style: format!(
-                        "height: 100%; width: {}%; border-radius: 6px; \
-                         position: relative; overflow: hidden;",
+                        "width: {}%;",
                         props.value
                     ),
-
-                    // Shimmer 效果
-                    if props.shimmer {
-                        div {
-                            class: "shimmer",
-                        }
+                    // Shimmer 效果, 来自骨架屏
+                    div {
+                        class: "shimmer",
                     }
                 }
             }
@@ -236,13 +214,13 @@ fn ToastItem(props: ToastItemProps) -> Element {
             }
 
             // 内容
-            div { style: "flex: 1; min-width: 0;",
+            div { class: "nd-toast-content",
                 p {
-                    style: "font-size: 14px; font-weight: 500; color: white; margin: 0;",
+                    class: "nd-toast-title",
                     "{props.toast.title}"
                 }
                 p {
-                    style: "font-size: 12px; color: rgba(255, 255, 255, 0.8); margin: 4px 0 0 0;",
+                    class: "nd-toast-message",
                     "{props.toast.message}"
                 }
             }
@@ -250,8 +228,7 @@ fn ToastItem(props: ToastItemProps) -> Element {
             // 关闭按钮
             button {
                 r#type: "button",
-                style: "background: none; border: none; cursor: pointer; \
-                        color: rgba(255, 255, 255, 0.8); padding: 4px; font-size: 16px; flex-shrink: 0;",
+                class: "nd-toast-close",
                 onclick: move |_| {
                     props.on_dismiss.call(props.toast.id.clone());
                 },
@@ -357,24 +334,18 @@ pub fn Modal(props: ModalProps) -> Element {
 
                 // 拟物化背景
                 div {
-                    style: format!(
-                        "position: absolute; inset: 0; border-radius: 16px; z-index: -1; \
-                         background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
-                         box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);",
-                    ),
+                    class: "nd-modal-bg",
                 }
 
                 // 模态框内部
                 div {
-                    style: "padding: 24px;",
+                    class: "nd-modal-content",
 
                     // 标题栏
                     div {
-                        style: "display: flex; align-items: center; justify-content: space-between; \
-                                margin-bottom: 16px;",
+                        class: "nd-modal-header-wrapper",
                         h2 {
-                            class: "nd-label",
-                            style: "font-size: 18px; font-weight: 600; margin: 0;",
+                            class: "nd-modal-title",
                             "{props.title}"
                         }
 
@@ -487,7 +458,7 @@ pub fn Alert(props: AlertProps) -> Element {
             }
 
             // 内容
-            div { style: "flex: 1; min-width: 0;",
+            div { class: "nd-alert-content",
                 p {
                     class: "nd-alert-title",
                     style: format!("color: {text_color};"),

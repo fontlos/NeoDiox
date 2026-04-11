@@ -62,11 +62,7 @@ pub fn Tabs(props: TabsProps) -> Element {
             // 标签页列表
             div {
                 role: "tablist",
-                style: format!(
-                    "display: flex; gap: 8px; padding: 8px; border-radius: 16px; overflow-x: auto; \
-                     background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
-                     box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
-                ),
+                class: "nd-tabs-list",
                 for option in &options {
                     button {
                         r#type: "button",
@@ -76,9 +72,8 @@ pub fn Tabs(props: TabsProps) -> Element {
                         "aria-controls": "panel-{option.id}",
                         "aria-disabled": if option.disabled { "true" } else { "false" },
                         tabindex: if option.id == props.active_tab { 0 } else { -1 },
-                        disabled: if option.disabled { "true" } else { "false" },
+                        disabled: if option.disabled { true } else { false },
                         class: if option.id == props.active_tab { "nd-tab nd-tab-active" } else { "nd-tab" },
-                        style: if option.disabled { "opacity: 0.6; cursor: not-allowed;" } else { "" },
                         onclick: {
                             let option = option.clone();
                             let on_change = on_change.clone();
@@ -89,7 +84,7 @@ pub fn Tabs(props: TabsProps) -> Element {
                             }
                         },
                         if let Some(icon) = &option.icon {
-                            span { style: "font-size: 16px;", "{icon}" }
+                            span { class: "nd-tab-icon", "{icon}" }
                         }
                         span { "{option.label}" }
                     }

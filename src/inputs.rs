@@ -138,7 +138,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
             }
 
             // 输入框容器
-            div { style: "position: relative;",
+            div { class: "nd-text-input-wrapper",
                 input {
                     r#type: "{props.input_type}",
                     value: "{props.value}",
@@ -392,22 +392,18 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
     rsx! {
         div {
             class: "nd-search-input {class}",
-            style: "position: relative;",
 
             if let Some(label_text) = props.label {
                 label {
-                    class: "nd-label",
-                    style: "margin-bottom: 8px; display: block;",
+                    class: "nd-label nd-search-label",
                     "{label_text}"
                 }
             }
 
-            div { style: "position: relative;",
+            div { class: "nd-search-input-wrapper",
                 // 搜索图标
                 span {
-                    style: "position: absolute; left: 12px; top: 50%; \
-                            transform: translateY(-50%); font-size: 16px; \
-                            opacity: 0.6; pointer-events: none;",
+                    class: "nd-search-icon",
                     "{search_icon}"
                 }
 

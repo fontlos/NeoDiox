@@ -126,7 +126,7 @@ pub fn Badge(props: BadgeProps) -> Element {
             // 图标
             if let Some(icon) = &props.icon {
                 span {
-                    style: "font-size: 12px;",
+                    class: "nd-badge-icon",
                     "{icon}"
                 }
             }
@@ -140,9 +140,7 @@ pub fn Badge(props: BadgeProps) -> Element {
             if props.dismissible {
                 button {
                     r#type: "button",
-                    style: "background: none; border: none; cursor: pointer; \
-                            color: inherit; padding: 0; font-size: 12px; \
-                            margin-left: 4px; opacity: 0.8;",
+                    class: "nd-badge-dismiss",
                     onclick: move |_| {
                         if let Some(handler) = props.on_dismiss {
                             handler.call(());
@@ -241,7 +239,6 @@ pub fn Tooltip(props: TooltipProps) -> Element {
     rsx! {
         div {
             class: "nd-tooltip-container {class}",
-            style: "position: relative; display: inline-block;",
 
             // 触发元素
             {props.children}
@@ -326,7 +323,6 @@ pub fn Accordion(props: AccordionProps) -> Element {
     rsx! {
         div {
             class: "nd-accordion {class}",
-            style: "display: flex; flex-direction: column; gap: 12px;",
 
             for item in items {
                 {
@@ -340,7 +336,6 @@ pub fn Accordion(props: AccordionProps) -> Element {
                         NeuFlat {
                             border_radius: 12,
                             class: "nd-accordion-item",
-                            style: "overflow: hidden;",
 
                             div {
                                 button {
@@ -384,9 +379,9 @@ pub fn Accordion(props: AccordionProps) -> Element {
                                     div {
                                         id: "accordion-panel-{item_id}",
                                         role: "region",
-                                        style: "padding: 0 20px 16px 20px;",
+                                        class: "nd-accordion-panel",
                                         p {
-                                            style: "font-size: 14px; color: inherit; opacity: 0.7; margin: 0; line-height: 1.6;",
+                                            class: "nd-accordion-content",
                                             "{item.content}"
                                         }
                                     }
@@ -455,12 +450,12 @@ pub fn Card(props: CardProps) -> Element {
             },
 
             div {
-                style: "padding: 24px;",
+                class: "nd-card-body",
 
                 // 标题
                 if let Some(title) = props.title {
                     h3 {
-                        style: "font-size: 18px; font-weight: 600; color: inherit; margin: 0 0 8px 0;",
+                        class: "nd-card-title",
                         "{title}"
                     }
                 }
@@ -468,7 +463,7 @@ pub fn Card(props: CardProps) -> Element {
                 // 描述
                 if let Some(description) = props.description {
                     p {
-                        style: "font-size: 14px; color: inherit; opacity: 0.7; margin: 0 0 16px 0; line-height: 1.5;",
+                        class: "nd-card-description",
                         "{description}"
                     }
                 }
@@ -480,7 +475,7 @@ pub fn Card(props: CardProps) -> Element {
             // 页脚
             if let Some(footer_content) = props.footer {
                 div {
-                    style: "padding: 16px 24px; border-top: 1px solid rgba(128, 128, 128, 0.2);",
+                    class: "nd-card-footer",
                     {footer_content}
                 }
             }
@@ -575,7 +570,7 @@ pub fn DataTable<T: Clone + PartialEq + 'static>(props: DataTableProps<T>) -> El
                 ),
 
                 table {
-                    style: "width: 100%; border-collapse: collapse; font-size: 14px;",
+                    class: "nd-data-table-table",
 
                     // 表头
                     thead {
@@ -618,7 +613,7 @@ pub fn DataTable<T: Clone + PartialEq + 'static>(props: DataTableProps<T>) -> El
                                         // 排序图标
                                         if column.sortable {
                                             span {
-                                                style: "font-size: 12px; opacity: 0.6;",
+                                                class: "nd-data-table-sort-icon",
                                                 if props.sort_column == Some(col_idx) {
                                                     match props.sort_direction {
                                                         SortDirection::Asc => "↑",
@@ -639,12 +634,11 @@ pub fn DataTable<T: Clone + PartialEq + 'static>(props: DataTableProps<T>) -> El
                     tbody {
                         for row in &data {
                             tr {
-                                style: "border-bottom: 1px solid rgba(128, 128, 128, 0.1); \
-                                        transition: background 0.15s ease;",
+                                class: "nd-data-table-row",
 
                                 for column in &columns {
                                     td {
-                                        style: "padding: 16px; color: inherit;",
+                                        class: "nd-data-table-cell",
                                         "{(column.render)(row)}"
                                     }
                                 }
@@ -655,7 +649,7 @@ pub fn DataTable<T: Clone + PartialEq + 'static>(props: DataTableProps<T>) -> El
                         if data.is_empty() {
                             tr {
                                 td {
-                                    style: "padding: 32px; text-align: center; color: inherit; opacity: 0.6;",
+                                    class: "nd-data-table-empty",
                                     colspan: col_count,
                                     "No data available"
                                 }
@@ -724,7 +718,7 @@ pub fn BarChart(props: BarChartProps) -> Element {
     if max_value == 0.0 {
         return rsx! {
             div {
-                style: "text-align: center; padding: 32px; opacity: 0.6;",
+                class: "nd-bar-chart-empty",
                 "No data available"
             }
         };
@@ -736,7 +730,7 @@ pub fn BarChart(props: BarChartProps) -> Element {
 
             if let Some(title) = props.title {
                 h3 {
-                    style: "font-size: 16px; font-weight: 600; color: inherit; margin: 0 0 16px 0;",
+                    class: "nd-bar-chart-title",
                     "{title}"
                 }
             }
@@ -752,7 +746,7 @@ pub fn BarChart(props: BarChartProps) -> Element {
 
                 for (index, item) in props.data.iter().enumerate() {
                     div {
-                        style: "display: flex; flex-direction: column; align-items: center; flex: 1;",
+                        class: "nd-bar-item",
 
                         // 柱体
                         div {
@@ -780,7 +774,7 @@ pub fn BarChart(props: BarChartProps) -> Element {
 
                         // 标签
                         span {
-                            style: "font-size: 12px; color: inherit; opacity: 0.7; margin-top: 8px;",
+                            class: "nd-bar-label",
                             "{item.label}"
                         }
                     }
@@ -843,7 +837,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
     if total == 0.0 {
         return rsx! {
             div {
-                style: "text-align: center; padding: 32px; opacity: 0.6;",
+                class: "nd-donut-chart-empty",
                 "No data available"
             }
         };
@@ -869,12 +863,11 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
 
     rsx! {
         div {
-            class: "nd-donut-chart {class}",
-            style: "display: flex; flex-direction: column; align-items: center;",
+            class: "nd-donut-chart nd-donut-chart-content {class}",
 
             if let Some(title) = props.title {
                 h3 {
-                    style: "font-size: 16px; font-weight: 600; color: inherit; margin: 0 0 16px 0;",
+                    class: "nd-donut-chart-title",
                     "{title}"
                 }
             }
@@ -888,7 +881,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                     style: "width: 100%; height: 100%; transform: rotate(-90deg);",
                     svg {
                         view_box: "0 0 100 100",
-                        style: "width: 100%; height: 100%;",
+                        class: "nd-donut-chart-svg",
 
                         // 背景圆环
                         circle {
@@ -898,7 +891,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                             fill: "none",
                             stroke: "currentColor",
                             "stroke-width": 12,
-                            style: "opacity: 0.1;",
+                            class: "nd-donut-chart-bg",
                         }
 
                         // 数据扇形
@@ -948,7 +941,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                 div {
                     style: "position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;",
                     span {
-                        style: "font-size: 24px; font-weight: 600; color: inherit;",
+                        class: "nd-donut-chart-center-text",
                         if let Some(center_text) = props.center_text {
                             "{center_text}"
                         } else {
@@ -960,10 +953,10 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
 
             // 图例
             div {
-                style: "display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; justify-content: center;",
+                class: "nd-donut-chart-legend",
                 for (item, _, _, _, percentage) in &segments {
                     div {
-                        style: "display: flex; align-items: center; gap: 8px;",
+                        class: "nd-donut-chart-legend-item",
 
                         // 颜色指示
                         div {
@@ -976,7 +969,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
 
                         // 标签
                         span {
-                            style: "font-size: 12px; color: inherit; opacity: 0.7;",
+                            class: "nd-donut-chart-legend-label",
                             "{item.label} {(percentage * 100.0).round()}%"
                         }
                     }

@@ -39,12 +39,6 @@ pub struct ButtonProps {
     /// Whether the button is disabled
     #[props(default)]
     pub disabled: bool,
-    /// Whether the button is loading
-    #[props(default)]
-    pub loading: bool,
-    /// Text to display while loading
-    #[props(default)]
-    pub loading_text: Option<String>,
     /// Button Type
     #[props(default = "button".to_string())]
     pub r#type: String,
@@ -80,13 +74,11 @@ pub fn Button(props: ButtonProps) -> Element {
     let class = props.class.unwrap_or_default();
     let is_gradient = props.variant != ButtonVariant::Default;
 
-    // Dynamic styles only (theme-dependent background/shadow)
+    // Only dynamic styles
     let dynamic_style = if is_gradient {
         let (color1, color2) = props.variant.gradient();
         format!(
-            "background: linear-gradient(145deg, {}, {}); \
-             box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light); \
-             color: #ffffff;",
+            "background: linear-gradient(145deg, {}, {}); box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light); color: #ffffff;",
             color1, color2
         )
     } else {
@@ -96,13 +88,12 @@ pub fn Button(props: ButtonProps) -> Element {
             "#4b5563"
         };
         format!(
-            "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); color: {}; \
-             box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);",
+            "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light); color: {};",
             text_color
         )
     };
 
-    let disabled_style = if props.disabled || props.loading {
+    let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
         ""
@@ -110,45 +101,30 @@ pub fn Button(props: ButtonProps) -> Element {
 
     let width_style = props
         .width
-        .as_ref()
         .map(|w| format!("width: {};", w))
         .unwrap_or_default();
 
     let combined_style = format!("{} {} {}", dynamic_style, disabled_style, width_style);
 
     // Handle click event
-    let onclick = if props.disabled || props.loading {
+    let onclick = if props.disabled {
         None
     } else {
         props.onclick
-    };
-
-    let content = if props.loading {
-        let loading_text = props
-            .loading_text
-            .unwrap_or_else(|| "Loading...".to_string());
-        rsx! {
-            div { class: "flex items-center justify-center gap-2",
-                div { class: "nd-spinner-inline" }
-                span { "{loading_text}" }
-            }
-        }
-    } else {
-        rsx! { {props.children} }
     };
 
     rsx! {
         button {
             r#type: "{props.r#type}",
             class: "nd-btn {class}",
-            disabled: if props.disabled || props.loading { "true" } else { "false" },
+            disabled: if props.disabled { "true" } else { "false" },
             style: combined_style,
             onclick: move |evt| {
                 if let Some(handler) = onclick {
                     handler.call(evt);
                 }
             },
-            {content}
+            {props.children}
         }
     }
 }

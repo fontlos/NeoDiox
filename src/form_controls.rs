@@ -81,15 +81,6 @@ pub struct CheckboxProps {
 pub fn Checkbox(props: CheckboxProps) -> Element {
     let class = props.class.unwrap_or_default();
 
-    // // Background style (theme-dependent)
-    // let bg_style = if props.checked {
-    //     "background: linear-gradient(145deg, #7c3aed, #6d28d9); \
-    //      box-shadow: 4px 4px 8px rgba(0,0,0,0.2);"
-    // } else {
-    //     "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
-    //     box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);"
-    // };
-
     let active = if props.checked {
         "nd-checkbox-active"
     } else {
@@ -156,12 +147,6 @@ pub struct RadioProps {
 pub fn Radio(props: RadioProps) -> Element {
     let class = props.class.unwrap_or_default();
 
-    // Always inset background (theme-dependent)
-    let bg_style = format!(
-        "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
-         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
-    );
-
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -181,8 +166,8 @@ pub fn Radio(props: RadioProps) -> Element {
                     role: "radio",
                     "aria-checked": if props.checked { "true" } else { "false" },
                     disabled: if props.disabled { "true" } else { "false" },
-                    class: "nd-radio",
-                    style: format!("{} {}", bg_style, disabled_style),
+                    class: "nd-radio nd-radio-bg",
+                    style: disabled_style,
                     onclick: move |_| {
                         if !props.disabled {
                             props.on_change.call(props.value.clone());
@@ -208,8 +193,8 @@ pub fn Radio(props: RadioProps) -> Element {
             role: "radio",
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
-            class: "nd-radio {class}",
-            style: format!("{} {}", bg_style, disabled_style),
+            class: "nd-radio nd-radio-bg {class}",
+            style: disabled_style,
             onclick: move |_| {
                 if !props.disabled {
                     props.on_change.call(props.value.clone());

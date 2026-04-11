@@ -83,7 +83,7 @@ pub fn ContextMenu(props: ContextMenuProps) -> Element {
     rsx! {
         // 背景遮罩, 用于关闭
         div {
-            style: "position: fixed; inset: 0; z-index: 999;",
+            class: "nd-context-menu-backdrop",
             onclick: {
                 let on_close = on_close.clone();
                 move |_| {
@@ -104,7 +104,7 @@ pub fn ContextMenu(props: ContextMenuProps) -> Element {
             for item in items {
                 if item.is_separator {
                     div {
-                        style: "height: 1px; margin: 4px 0; background: rgba(128, 128, 128, 0.2);",
+                        class: "nd-context-menu-separator",
                         role: "separator",
                     }
                 } else {
@@ -138,7 +138,7 @@ pub fn ContextMenu(props: ContextMenuProps) -> Element {
 
                         if let Some(icon) = &item.icon {
                             span {
-                                style: "font-size: 14px; opacity: 0.7;",
+                                class: "nd-context-menu-item-icon",
                                 "{icon}"
                             }
                         }
@@ -223,7 +223,6 @@ pub fn TreeView(props: TreeViewProps) -> Element {
             class: "nd-tree-view {class}",
             "aria-label": "Tree navigation",
             role: "tree",
-            style: "display: flex; flex-direction: column; gap: 4px;",
 
             for node in &props.nodes {
                 TreeNodeItem {
@@ -258,21 +257,19 @@ fn TreeNodeItem(
                 style: format!("padding-left: {padding_left}px;"),
 
                 div {
-                    style: "display: flex; align-items: center; gap: 8px; padding: 8px 12px; \
-                            border-radius: 8px; cursor: pointer; font-size: 14px; color: inherit; \
-                            transition: background 0.15s ease;",
+                    class: "nd-tree-leaf-content",
                     onclick: move |_| {
                         on_select.call(node.id.clone());
                     },
 
                     // 占位符 (对齐展开/收起箭头)
                     span {
-                        style: "width: 14px; flex-shrink: 0;",
+                        class: "nd-tree-leaf-placeholder",
                     }
 
                     if let Some(icon) = &node.icon {
                         span {
-                            style: "font-size: 16px;",
+                            class: "nd-tree-leaf-icon",
                             "{icon}"
                         }
                     }
@@ -293,37 +290,31 @@ fn TreeNodeItem(
             // 展开/收起按钮
             button {
                 r#type: "button",
-                style: "display: flex; align-items: center; gap: 8px; padding: 8px 12px; \
-                        border-radius: 8px; cursor: pointer; font-size: 14px; color: inherit; \
-                        background: none; border: none; width: 100%; text-align: left; \
-                        transition: background 0.15s ease;",
+                class: "nd-tree-item-button",
                 onclick: move |_| {
                     on_toggle.call(node.id.clone());
                 },
 
                 // 展开箭头
                 span {
-                    style: format!(
-                        "width: 14px; flex-shrink: 0; font-size: 12px; transition: transform 0.2s ease; \
-                         transform: {};",
-                        if is_expanded { "rotate(90deg)" } else { "rotate(0deg)" }
-                    ),
+                    class: "nd-tree-toggle-icon",
+                    style: format!("transform: {};", if is_expanded { "rotate(90deg)" } else { "rotate(0deg)" }),
                     "▶"
                 }
 
                 if let Some(icon) = &node.icon {
                     span {
-                        style: "font-size: 16px;",
+                        class: "nd-tree-leaf-icon",
                         "{icon}"
                     }
                 } else if is_expanded {
                     span {
-                        style: "font-size: 16px;",
+                        class: "nd-tree-leaf-icon",
                         "📂"
                     }
                 } else {
                     span {
-                        style: "font-size: 16px;",
+                        class: "nd-tree-leaf-icon",
                         "📁"
                     }
                 }
@@ -336,7 +327,7 @@ fn TreeNodeItem(
                 if let Some(children) = &node.children {
                     div {
                         role: "group",
-                        style: "margin-top: 4px;",
+                        class: "nd-tree-children",
                         for child in children {
                             TreeNodeItem {
                                 node: child.clone(),
@@ -411,44 +402,32 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
     rsx! {
         div {
             class: "nd-file-upload {class}",
-            style: "display: flex; flex-direction: column; gap: 16px;",
 
             // 拖拽区域
             div {
-                style: format!(
-                    "border: 2px dashed rgba(128, 128, 128, 0.3); border-radius: 16px; \
-                     padding: 32px; text-align: center; cursor: pointer; \
-                     transition: all 0.3s ease; \
-                     background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));"
-                ),
+                class: "nd-file-drop-zone",
                 onclick: move |_| {
                     // 在实际应用中，这里应该触发文件选择对话框
                 },
 
                 div {
-                    style: "display: flex; flex-direction: column; align-items: center; gap: 16px;",
+                    class: "nd-file-drop-content",
 
                     // 上传图标
                     div {
-                        style: format!(
-                            "width: 64px; height: 64px; border-radius: 16px; \
-                             display: flex; align-items: center; justify-content: center; \
-                             background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
-                             box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);"
-                        ),
+                        class: "nd-file-upload-icon",
                         span {
-                            style: "font-size: 32px; color: #7c3aed;",
                             "📤"
                         }
                     }
 
                     p {
-                        style: "font-size: 14px; font-weight: 500; color: inherit; margin: 0;",
+                        class: "nd-file-upload-title",
                         "{props.drop_text}"
                     }
 
                     p {
-                        style: "font-size: 12px; color: inherit; opacity: 0.6; margin: 0;",
+                        class: "nd-file-upload-help",
                         "PNG, JPG, PDF up to 10MB"
                     }
                 }
@@ -457,32 +436,26 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
             // 文件列表
             if !props.files.is_empty() {
                 div {
-                    style: "display: flex; flex-direction: column; gap: 8px;",
+                    class: "nd-file-list",
                     for (index, file) in props.files.iter().enumerate() {
                         div {
-                            style: format!(
-                                "display: flex; align-items: center; gap: 12px; \
-                                 padding: 12px; border-radius: 12px; \
-                                 background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
-                                 box-shadow: 3px 3px 6px var(--nd-shadow-dark), -3px -3px 6px var(--nd-shadow-light);"
-                            ),
+                            class: "nd-file-item",
 
                             // 文件图标
                             span {
-                                style: "font-size: 20px; flex-shrink: 0;",
+                                class: "nd-file-item-icon",
                                 "📄"
                             }
 
                             // 文件信息
                             div {
-                                style: "flex: 1; min-width: 0;",
+                                class: "nd-file-item-content",
                                 p {
-                                    style: "font-size: 14px; font-weight: 500; color: inherit; \
-                                            margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;",
+                                    class: "nd-file-item-name",
                                     "{file.name}"
                                 }
                                 p {
-                                    style: "font-size: 12px; color: inherit; opacity: 0.6; margin: 2px 0 0 0;",
+                                    class: "nd-file-item-size",
                                     "{format_file_size(file.size)}"
                                 }
                             }
@@ -490,10 +463,7 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
                             // 移除按钮
                             button {
                                 r#type: "button",
-                                style: "background: none; border: none; cursor: pointer; \
-                                        color: inherit; opacity: 0.6; padding: 8px; \
-                                        font-size: 16px; border-radius: 8px; \
-                                        transition: all 0.15s ease;",
+                                class: "nd-file-item-remove",
                                 onclick: move |_| {
                                     props.on_remove.call(index);
                                 },
@@ -564,9 +534,9 @@ pub fn FeatureCard(props: FeatureCardProps) -> Element {
             border_radius: 16,
             class: "nd-feature-card {class}",
             style: if props.hoverable {
-                "padding: 16px; text-align: center; transition: all 0.3s ease;"
+                "transition: all 0.3s ease;"
             } else {
-                "padding: 16px; text-align: center;"
+                ""
             },
 
             // 图标容器
@@ -578,15 +548,15 @@ pub fn FeatureCard(props: FeatureCardProps) -> Element {
                      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);",
                     props.icon_gradient.0, props.icon_gradient.1
                 ),
+                class: "nd-feature-icon-container",
                 span {
-                    style: "font-size: 24px; color: white;",
                     "{props.icon}"
                 }
             }
 
             // 标题
             p {
-                style: "font-size: 14px; font-weight: 500; color: inherit; margin: 0;",
+                class: "nd-feature-title",
                 "{props.title}"
             }
 
