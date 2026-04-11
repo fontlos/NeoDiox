@@ -65,7 +65,7 @@ pub fn Toggle(props: ToggleProps) -> Element {
             role: "switch",
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
-            class: "neu-toggle {class}",
+            class: "nd-toggle {class}",
             style: format!(
                 "{} {} transition: all 0.3s ease;",
                 track_style, disabled_style
@@ -76,7 +76,7 @@ pub fn Toggle(props: ToggleProps) -> Element {
                 }
             },
             div {
-                class: "neu-toggle-thumb",
+                class: "nd-toggle-thumb",
                 style: format!(
                     "{} left: {}; transition: left 0.3s ease;",
                     thumb_style, thumb_pos
@@ -137,7 +137,7 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             role: "checkbox",
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
-            class: "neu-checkbox {class}",
+            class: "nd-checkbox {class}",
             style: format!("{} {}", bg_style, disabled_style),
             onclick: move |_| {
                 if !props.disabled {
@@ -146,7 +146,7 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             },
             // Checkmark icon - opacity transition
             span {
-                class: "neu-checkbox-icon",
+                class: "nd-checkbox-icon",
                 style: format!("opacity: {};", check_opacity),
                 "✓"
             }
@@ -203,13 +203,13 @@ pub fn Radio(props: RadioProps) -> Element {
     if let Some(label_text) = props.label {
         return rsx! {
             div {
-                class: "neu-radio-with-label {class}",
+                class: "nd-radio-with-label {class}",
                 button {
                     r#type: "button",
                     role: "radio",
                     "aria-checked": if props.checked { "true" } else { "false" },
                     disabled: if props.disabled { "true" } else { "false" },
-                    class: "neu-radio",
+                    class: "nd-radio",
                     style: format!("{} {}", bg_style, disabled_style),
                     onclick: move |_| {
                         if !props.disabled {
@@ -218,12 +218,12 @@ pub fn Radio(props: RadioProps) -> Element {
                     },
                     // Dot - opacity transition
                     div {
-                        class: "neu-radio-dot",
+                        class: "nd-radio-dot",
                         style: format!("opacity: {};", dot_opacity),
                     }
                 }
                 label {
-                    class: "neu-label",
+                    class: "nd-label",
                     "{label_text}"
                 }
             }
@@ -236,7 +236,7 @@ pub fn Radio(props: RadioProps) -> Element {
             role: "radio",
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
-            class: "neu-radio {class}",
+            class: "nd-radio {class}",
             style: format!("{} {}", bg_style, disabled_style),
             onclick: move |_| {
                 if !props.disabled {
@@ -244,7 +244,7 @@ pub fn Radio(props: RadioProps) -> Element {
                 }
             },
             div {
-                class: "neu-radio-dot",
+                class: "nd-radio-dot",
                 style: format!("opacity: {};", dot_opacity),
             }
         }
@@ -285,17 +285,17 @@ pub fn RadioGroup(props: RadioGroupProps) -> Element {
 
     rsx! {
         fieldset {
-            class: "neu-radio-group {class}",
+            class: "nd-radio-group {class}",
             if let Some(legend_text) = props.legend {
                 legend {
-                    class: "neu-label",
+                    class: "nd-label",
                     style: "margin-bottom: 12px;",
                     "{legend_text}"
                 }
             }
             div {
                 role: "radiogroup",
-                class: "neu-radio-options",
+                class: "nd-radio-options",
                 for option in &props.options {
                     Radio {
                         checked: props.value == option.value,

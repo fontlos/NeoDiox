@@ -96,7 +96,7 @@ pub fn ContextMenu(props: ContextMenuProps) -> Element {
         // 菜单
         NeuRaised {
             border_radius: 12,
-            class: "neu-context-menu",
+            class: "nd-context-menu",
             style: format!(
                 "position: fixed; left: {adjusted_x}px; top: {adjusted_y}px; \
                  z-index: 1000; min-width: 160px; padding: 8px 0;",
@@ -221,7 +221,7 @@ pub fn TreeView(props: TreeViewProps) -> Element {
 
     rsx! {
         nav {
-            class: "neu-tree-view {class}",
+            class: "nd-tree-view {class}",
             "aria-label": "Tree navigation",
             role: "tree",
             style: "display: flex; flex-direction: column; gap: 4px;",
@@ -255,7 +255,7 @@ fn TreeNodeItem(
         return rsx! {
             div {
                 role: "treeitem",
-                class: "neu-tree-leaf",
+                class: "nd-tree-leaf",
                 style: format!("padding-left: {padding_left}px;"),
 
                 div {
@@ -287,7 +287,7 @@ fn TreeNodeItem(
     rsx! {
         div {
             role: "treeitem",
-            class: "neu-tree-item",
+            class: "nd-tree-item",
             "aria-expanded": if is_expanded { "true" } else { "false" },
             style: format!("padding-left: {padding_left}px;"),
 
@@ -412,7 +412,7 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-file-upload {class}",
+            class: "nd-file-upload {class}",
             style: "display: flex; flex-direction: column; gap: 16px;",
 
             // 拖拽区域
@@ -569,7 +569,7 @@ pub fn FeatureCard(props: FeatureCardProps) -> Element {
     rsx! {
         NeuFlat {
             border_radius: 16,
-            class: "neu-feature-card {class}",
+            class: "nd-feature-card {class}",
             style: if props.hoverable {
                 "padding: 16px; text-align: center; transition: all 0.3s ease;"
             } else {

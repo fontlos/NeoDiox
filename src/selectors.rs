@@ -99,7 +99,7 @@ pub fn Dropdown(props: DropdownProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-dropdown {class}",
+            class: "nd-dropdown {class}",
             style: "position: relative;",
 
             if let Some(label_text) = props.label {
@@ -112,7 +112,7 @@ pub fn Dropdown(props: DropdownProps) -> Element {
             // 触发器
             button {
                 r#type: "button",
-                class: "neu-dropdown-trigger",
+                class: "nd-dropdown-trigger",
                 disabled: if props.disabled { "true" } else { "false" },
                 style: format!(
                     "width: 100%; padding: 12px 40px 12px 16px; border-radius: 12px; \
@@ -159,7 +159,7 @@ pub fn Dropdown(props: DropdownProps) -> Element {
             if *is_open.read() {
                 NeuRaised {
                     border_radius: 12,
-                    class: "neu-dropdown-menu",
+                    class: "nd-dropdown-menu",
                     style: "position: absolute; top: 100%; left: 0; right: 0; \
                             margin-top: 8px; z-index: 50; max-height: 200px; \
                             overflow-y: auto;",
@@ -191,7 +191,7 @@ pub fn Dropdown(props: DropdownProps) -> Element {
                         for option in filtered_options {
                             button {
                                 r#type: "button",
-                                class: "neu-dropdown-item",
+                                class: "nd-dropdown-item",
                                 style: format!(
                                     "width: 100%; padding: 12px 16px; text-align: left; \
                                      background: none; border: none; cursor: pointer; \
@@ -316,7 +316,7 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-multiselect {class}",
+            class: "nd-multiselect {class}",
             style: "position: relative;",
 
             if let Some(label_text) = props.label {
@@ -329,7 +329,7 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
             // 触发器/容器
             button {
                 r#type: "button",
-                class: "neu-multiselect-trigger",
+                class: "nd-multiselect-trigger",
                 disabled: if props.disabled { "true" } else { "false" },
                 style: format!(
                     "width: 100%; min-height: 48px; padding: 8px 40px 8px 12px; \
@@ -406,7 +406,7 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
             if *is_open.read() {
                 NeuRaised {
                     border_radius: 12,
-                    class: "neu-multiselect-menu",
+                    class: "nd-multiselect-menu",
                     style: "position: absolute; top: 100%; left: 0; right: 0; \
                             margin-top: 8px; z-index: 50; max-height: 200px; \
                             overflow-y: auto;",
@@ -415,7 +415,7 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                         for option in &options {
                             button {
                                 r#type: "button",
-                                class: "neu-multiselect-item",
+                                class: "nd-multiselect-item",
                                 style: {
                                     let inset_style = format!(
                                         "background: linear-gradient(145deg, {}, {}); \
@@ -554,7 +554,7 @@ pub fn RangeSlider(props: RangeSliderProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-range-slider {class}",
+            class: "nd-range-slider {class}",
             style: "display: flex; flex-direction: column; gap: 12px;",
 
             // 标签和值
@@ -696,7 +696,7 @@ pub fn StarRating(props: StarRatingProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-star-rating {class}",
+            class: "nd-star-rating {class}",
             style: "display: flex; flex-direction: column; gap: 8px;",
 
             if let Some(label_text) = props.label {
@@ -803,7 +803,7 @@ pub fn DatePicker(props: DatePickerProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-date-picker {class}",
+            class: "nd-date-picker {class}",
             style: "display: flex; flex-direction: column; gap: 8px;",
 
             if let Some(label_text) = props.label {
@@ -903,7 +903,7 @@ pub fn TimePicker(props: TimePickerProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-time-picker {class}",
+            class: "nd-time-picker {class}",
             style: "display: flex; flex-direction: column; gap: 8px;",
 
             if let Some(label_text) = props.label {

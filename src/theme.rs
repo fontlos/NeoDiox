@@ -1,6 +1,6 @@
 //! Theme Context
 //!
-//! Provides global theme state management
+//! Provides theme state management
 
 use dioxus::prelude::*;
 

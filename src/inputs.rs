@@ -126,15 +126,15 @@ pub fn TextInput(props: TextInputProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-text-input {class}",
+            class: "nd-text-input {class}",
 
             // 标签
             if let Some(label_text) = props.label {
                 label {
-                    class: "neu-label",
+                    class: "nd-label",
                     "{label_text}"
                     if props.required {
-                        span { class: "neu-label-required", "*" }
+                        span { class: "nd-label-required", "*" }
                     }
                 }
             }
@@ -152,7 +152,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
                     autocomplete: props.autocomplete.unwrap_or_default(),
                     "aria-invalid": if has_error { "true" } else { "false" },
                     "aria-describedby": if has_error { Some(error_id.clone()) } else { None },
-                    class: "neu-input",
+                    class: "nd-input",
                     style: format!(
                         "padding: {padding}; padding-right: {clear_padding}; \
                          border-radius: 12px; font-size: {font_size}; \
@@ -168,7 +168,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
                 if props.clearable && !props.value.is_empty() && !props.disabled {
                     button {
                         r#type: "button",
-                        class: "neu-input-clear",
+                        class: "nd-input-clear",
                         onclick: move |_| {
                             props.on_input.call(String::new());
                         },
@@ -182,7 +182,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
                 p {
                     id: "{error_id}",
                     role: "alert",
-                    class: "neu-error",
+                    class: "nd-error",
                     "{error_text}"
                 }
             }
@@ -190,7 +190,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
             // 辅助文本
             if let Some(ref help_text) = props.help_text {
                 if !has_error {
-                    p { class: "neu-help", "{help_text}" }
+                    p { class: "nd-help", "{help_text}" }
                 }
             }
         }
@@ -289,15 +289,15 @@ pub fn TextArea(props: TextAreaProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-textarea {class}",
+            class: "nd-textarea {class}",
 
             // 标签
             if let Some(label_text) = props.label {
                 label {
-                    class: "neu-label",
+                    class: "nd-label",
                     "{label_text}"
                     if props.required {
-                        span { class: "neu-label-required", "*" }
+                        span { class: "nd-label-required", "*" }
                     }
                 }
             }
@@ -312,7 +312,7 @@ pub fn TextArea(props: TextAreaProps) -> Element {
                 required: if props.required { "true" } else { "false" },
                 maxlength: props.max_length,
                 "aria-invalid": if has_error { "true" } else { "false" },
-                class: "neu-textarea-element",
+                class: "nd-textarea-element",
                 style: format!(
                     "padding: 12px 16px; border-radius: 12px; font-size: 14px; \
                      resize: {resize_style}; {} {}",
@@ -327,7 +327,7 @@ pub fn TextArea(props: TextAreaProps) -> Element {
             if let Some(ref error_text) = props.error {
                 p {
                     role: "alert",
-                    class: "neu-error",
+                    class: "nd-error",
                     "{error_text}"
                 }
             }
@@ -393,12 +393,12 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-search-input {class}",
+            class: "nd-search-input {class}",
             style: "position: relative;",
 
             if let Some(label_text) = props.label {
                 label {
-                    class: "neu-label",
+                    class: "nd-label",
                     style: "margin-bottom: 8px; display: block;",
                     "{label_text}"
                 }
@@ -419,7 +419,7 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
                     placeholder: props.placeholder,
                     disabled: if props.disabled { "true" } else { "false" },
                     autofocus: if props.autofocus { "true" } else { "false" },
-                    class: "neu-input",
+                    class: "nd-input",
                     style: format!(
                         "padding: 12px 40px; border-radius: 12px; font-size: 14px; \
                          {} {}",
@@ -434,7 +434,7 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
                 if props.clearable && !props.value.is_empty() && !props.disabled {
                     button {
                         r#type: "button",
-                        class: "neu-search-clear",
+                        class: "nd-search-clear",
                         onclick: move |_| {
                             props.on_input.call(String::new());
                         },

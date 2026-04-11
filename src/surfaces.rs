@@ -17,10 +17,10 @@ pub enum SurfaceType {
 impl SurfaceType {
     fn css_class(&self) -> &'static str {
         match self {
-            Self::Raised => "neu-surface-raised",
-            Self::RaisedSm => "neu-surface-raised-sm",
-            Self::Inset => "neu-surface-inset",
-            Self::Flat => "neu-surface-flat",
+            Self::Raised => "nd-surface-raised",
+            Self::RaisedSm => "nd-surface-raised-sm",
+            Self::Inset => "nd-surface-inset",
+            Self::Flat => "nd-surface-flat",
         }
     }
 }
@@ -66,7 +66,7 @@ pub struct NeuSurfaceProps {
 pub fn NeuSurface(props: NeuSurfaceProps) -> Element {
     let surface_class = props.surface_type.css_class();
     let class = props.class.unwrap_or_default();
-    let combined_class = format!("neu-surface {surface_class} {class}");
+    let combined_class = format!("nd-surface {surface_class} {class}");
 
     let style = props.style.unwrap_or_default();
     let border_radius_style = format!("border-radius: {}px;", props.border_radius);

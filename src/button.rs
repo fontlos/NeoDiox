@@ -129,7 +129,7 @@ pub fn Button(props: ButtonProps) -> Element {
             .unwrap_or_else(|| "Loading...".to_string());
         rsx! {
             div { class: "flex items-center justify-center gap-2",
-                div { class: "neu-spinner-inline" }
+                div { class: "nd-spinner-inline" }
                 span { "{loading_text}" }
             }
         }
@@ -140,7 +140,7 @@ pub fn Button(props: ButtonProps) -> Element {
     rsx! {
         button {
             r#type: "{props.r#type}",
-            class: "neu-btn {class}",
+            class: "nd-btn {class}",
             disabled: if props.disabled || props.loading { "true" } else { "false" },
             style: combined_style,
             onclick: move |evt| {

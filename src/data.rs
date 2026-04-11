@@ -104,7 +104,7 @@ pub fn Badge(props: BadgeProps) -> Element {
 
     rsx! {
         span {
-            class: "neu-badge {class}",
+            class: "nd-badge {class}",
             style: format!(
                 "display: inline-flex; align-items: center; gap: 6px; \
                  padding: 6px 12px; border-radius: 9999px; \
@@ -241,7 +241,7 @@ pub fn Tooltip(props: TooltipProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-tooltip-container {class}",
+            class: "nd-tooltip-container {class}",
             style: "position: relative; display: inline-block;",
 
             // 触发元素
@@ -326,7 +326,7 @@ pub fn Accordion(props: AccordionProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-accordion {class}",
+            class: "nd-accordion {class}",
             style: "display: flex; flex-direction: column; gap: 12px;",
 
             for item in items {
@@ -340,13 +340,13 @@ pub fn Accordion(props: AccordionProps) -> Element {
                     rsx! {
                         NeuFlat {
                             border_radius: 12,
-                            class: "neu-accordion-item",
+                            class: "nd-accordion-item",
                             style: "overflow: hidden;",
 
                             div {
                                 button {
                                     r#type: "button",
-                                    class: "neu-accordion-trigger",
+                                    class: "nd-accordion-trigger",
                                     disabled: if disabled { "true" } else { "false" },
                                     "aria-expanded": if is_expanded { "true" } else { "false" },
                                     "aria-controls": "accordion-panel-{item_id_clone}",
@@ -448,7 +448,7 @@ pub fn Card(props: CardProps) -> Element {
     rsx! {
         NeuRaised {
             border_radius: 24,
-            class: "neu-card {class}",
+            class: "nd-card {class}",
             style: if props.hoverable {
                 "transition: transform 0.3s ease, box-shadow 0.3s ease;"
             } else {
@@ -566,7 +566,7 @@ pub fn DataTable<T: Clone + PartialEq + 'static>(props: DataTableProps<T>) -> El
 
     rsx! {
         div {
-            class: "neu-data-table {class}",
+            class: "nd-data-table {class}",
 
             // 表格容器
             div {
@@ -736,7 +736,7 @@ pub fn BarChart(props: BarChartProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-bar-chart {class}",
+            class: "nd-bar-chart {class}",
 
             if let Some(title) = props.title {
                 h3 {
@@ -873,7 +873,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-donut-chart {class}",
+            class: "nd-donut-chart {class}",
             style: "display: flex; flex-direction: column; align-items: center;",
 
             if let Some(title) = props.title {

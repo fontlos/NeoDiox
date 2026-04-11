@@ -58,7 +58,7 @@ pub fn Tabs(props: TabsProps) -> Element {
 
     rsx! {
         nav {
-            class: "neu-tabs {class}",
+            class: "nd-tabs {class}",
             "aria-label": "Tabs",
 
             // 标签页列表
@@ -81,7 +81,7 @@ pub fn Tabs(props: TabsProps) -> Element {
                         "aria-disabled": if option.disabled { "true" } else { "false" },
                         tabindex: if option.id == props.active_tab { 0 } else { -1 },
                         disabled: if option.disabled { "true" } else { "false" },
-                        class: if option.id == props.active_tab { "neu-tab neu-tab-active" } else { "neu-tab" },
+                        class: if option.id == props.active_tab { "nd-tab nd-tab-active" } else { "nd-tab" },
                         style: if option.disabled { "opacity: 0.6; cursor: not-allowed;" } else { "" },
                         onclick: {
                             let option = option.clone();
@@ -101,7 +101,7 @@ pub fn Tabs(props: TabsProps) -> Element {
             }
 
             // 内容面板
-            div { class: "neu-tab-panel", {props.children} }
+            div { class: "nd-tab-panel", {props.children} }
         }
     }
 }
@@ -150,23 +150,23 @@ pub fn Breadcrumbs(props: BreadcrumbsProps) -> Element {
 
     rsx! {
         nav {
-            class: "neu-breadcrumbs {class}",
+            class: "nd-breadcrumbs {class}",
             "aria-label": "Breadcrumbs",
             for (index, item) in props.items.iter().enumerate() {
-                div { class: "neu-breadcrumb-item",
+                div { class: "nd-breadcrumb-item",
                     if item.is_current {
-                        span { class: "neu-breadcrumb-current", "{item.label}" }
+                        span { class: "nd-breadcrumb-current", "{item.label}" }
                     } else if let Some(href) = &item.href {
                         a {
-                            class: "neu-breadcrumb-link",
+                            class: "nd-breadcrumb-link",
                             href: "{href}",
                             "{item.label}"
                         }
-                        span { class: "neu-breadcrumb-separator", "{props.separator}" }
+                        span { class: "nd-breadcrumb-separator", "{props.separator}" }
                     } else {
                         span { "{item.label}" }
                         if index < props.items.len() - 1 || !props.items.iter().skip(index + 1).any(|i| i.is_current) {
-                            span { class: "neu-breadcrumb-separator", "{props.separator}" }
+                            span { class: "nd-breadcrumb-separator", "{props.separator}" }
                         }
                     }
                 }
@@ -235,8 +235,8 @@ pub enum StepperDirection {
 impl StepperDirection {
     fn css_class(&self) -> &'static str {
         match self {
-            Self::Horizontal => "neu-stepper",
-            Self::Vertical => "neu-stepper neu-stepper-vertical",
+            Self::Horizontal => "nd-stepper",
+            Self::Vertical => "nd-stepper nd-stepper-vertical",
         }
     }
 }
@@ -271,14 +271,14 @@ pub fn Stepper(props: StepperProps) -> Element {
             for (index, step) in props.steps.iter().enumerate() {
                 div {
                     class: if props.direction == StepperDirection::Vertical {
-                        "neu-step neu-step-vertical"
+                        "nd-step nd-step-vertical"
                     } else {
-                        "neu-step"
+                        "nd-step"
                     },
 
                     // 步骤指示器
                     div {
-                        class: "neu-step-indicator",
+                        class: "nd-step-indicator",
                         style: step.status.style(&theme),
                         if let Some(icon) = step.icon.as_ref() {
                             "{icon}"
@@ -290,8 +290,8 @@ pub fn Stepper(props: StepperProps) -> Element {
                     }
 
                     // 步骤内容
-                    div { class: "neu-step-content",
-                        p { class: "neu-step-title", "{step.label}" }
+                    div { class: "nd-step-content",
+                        p { class: "nd-step-title", "{step.label}" }
                     }
                 }
             }

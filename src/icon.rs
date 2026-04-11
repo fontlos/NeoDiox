@@ -73,7 +73,7 @@ pub fn Icon(props: IconProps) -> Element {
 
     rsx! {
         span {
-            class: "neu-icon {class}",
+            class: "nd-icon {class}",
             style,
             ..props.attrs,
             if let Some(element) = props.children {

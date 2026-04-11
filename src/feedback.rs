@@ -50,7 +50,7 @@ pub fn ProgressBar(props: ProgressBarProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-progress-bar {class}",
+            class: "nd-progress-bar {class}",
             role: "progressbar",
             "aria-valuenow": props.value,
             "aria-valuemin": 0,
@@ -58,7 +58,7 @@ pub fn ProgressBar(props: ProgressBarProps) -> Element {
 
             if props.show_label {
                 div { style: "display: flex; justify-content: space-between; align-items: center;",
-                    span { class: "neu-label", "{label}" }
+                    span { class: "nd-label", "{label}" }
                 }
             }
 
@@ -194,7 +194,7 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-toast-container",
+            class: "nd-toast-container",
             style: format!(
                 "position: fixed; z-index: 9999; max-width: 400px; \
                  pointer-events: none; {}",
@@ -224,7 +224,7 @@ fn ToastItem(props: ToastItemProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-toast",
+            class: "nd-toast",
             role: "alert",
             style: format!(
                 "background: linear-gradient(145deg, {}, {}); \
@@ -235,7 +235,7 @@ fn ToastItem(props: ToastItemProps) -> Element {
 
             // 图标
             span {
-                class: "neu-alert-icon",
+                class: "nd-alert-icon",
                 "{props.toast.toast_type.icon()}"
             }
 
@@ -342,7 +342,7 @@ pub fn Modal(props: ModalProps) -> Element {
     rsx! {
         // 背景遮罩
         div {
-            class: "neu-modal-backdrop",
+            class: "nd-modal-backdrop",
             onclick: move |_| {
                 if props.close_on_backdrop {
                     props.on_close.call(());
@@ -351,7 +351,7 @@ pub fn Modal(props: ModalProps) -> Element {
 
             // 模态框内容
             div {
-                class: "neu-modal {class}",
+                class: "nd-modal {class}",
                 style: format!(
                     "width: 100%; max-width: {};",
                     props.size.max_width()
@@ -380,7 +380,7 @@ pub fn Modal(props: ModalProps) -> Element {
                         style: "display: flex; align-items: center; justify-content: space-between; \
                                 margin-bottom: 16px;",
                         h2 {
-                            class: "neu-label",
+                            class: "nd-label",
                             style: "font-size: 18px; font-weight: 600; margin: 0;",
                             "{props.title}"
                         }
@@ -388,7 +388,7 @@ pub fn Modal(props: ModalProps) -> Element {
                         if props.show_close {
                             button {
                                 r#type: "button",
-                                class: "neu-modal-close",
+                                class: "nd-modal-close",
                                 onclick: move |_| {
                                     props.on_close.call(());
                                 },
@@ -481,14 +481,14 @@ pub fn Alert(props: AlertProps) -> Element {
     rsx! {
         div {
             role: "alert",
-            class: "neu-alert {class}",
+            class: "nd-alert {class}",
             style: format!(
                 "background: {bg_color}; border-left: 4px solid {border_color};",
             ),
 
             // 图标
             span {
-                class: "neu-alert-icon",
+                class: "nd-alert-icon",
                 style: format!("color: {icon_color};"),
                 "{icon}"
             }
@@ -496,12 +496,12 @@ pub fn Alert(props: AlertProps) -> Element {
             // 内容
             div { style: "flex: 1; min-width: 0;",
                 p {
-                    class: "neu-alert-title",
+                    class: "nd-alert-title",
                     style: format!("color: {text_color};"),
                     "{props.title}"
                 }
                 p {
-                    class: "neu-alert-message",
+                    class: "nd-alert-message",
                     style: format!("color: {icon_color};"),
                     "{props.message}"
                 }
@@ -511,7 +511,7 @@ pub fn Alert(props: AlertProps) -> Element {
             if props.dismissible {
                 button {
                     r#type: "button",
-                    class: "neu-badge-dismiss",
+                    class: "nd-badge-dismiss",
                     onclick: move |_| {
                         if let Some(handler) = props.on_dismiss {
                             handler.call(());
@@ -561,7 +561,7 @@ pub fn Skeleton(props: SkeletonProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-skeleton {class}",
+            class: "nd-skeleton {class}",
             style: format!(
                 "width: {}; height: {}; border-radius: {}px;",
                 props.width, props.height, props.border_radius
@@ -607,7 +607,7 @@ pub fn Spinner(props: SpinnerProps) -> Element {
 
     rsx! {
         div {
-            class: "neu-spinner {class}",
+            class: "nd-spinner {class}",
             "aria-label": "Loading",
             style: format!(
                 "width: {}px; height: {}px; border-width: {}px; color: {};",
