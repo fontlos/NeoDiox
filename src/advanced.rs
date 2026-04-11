@@ -3,7 +3,6 @@
 //! ContextMenu、TreeView、FileUpload、FeatureCard
 
 use crate::surfaces::{NeuFlat, NeuRaised};
-use crate::theme::use_theme_config;
 use dioxus::prelude::*;
 
 // ==================== ContextMenu 右键菜单 ====================
@@ -407,7 +406,6 @@ pub struct FileUploadProps {
 /// ```
 #[component]
 pub fn FileUpload(props: FileUploadProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
     rsx! {
@@ -421,8 +419,7 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
                     "border: 2px dashed rgba(128, 128, 128, 0.3); border-radius: 16px; \
                      padding: 32px; text-align: center; cursor: pointer; \
                      transition: all 0.3s ease; \
-                     background: linear-gradient(145deg, {}, {});",
-                    theme.bg_primary, theme.bg_secondary
+                     background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));"
                 ),
                 onclick: move |_| {
                     // 在实际应用中，这里应该触发文件选择对话框
@@ -436,10 +433,8 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
                         style: format!(
                             "width: 64px; height: 64px; border-radius: 16px; \
                              display: flex; align-items: center; justify-content: center; \
-                             background: linear-gradient(145deg, {}, {}); \
-                             box-shadow: 4px 4px 8px {}, -4px -4px 8px {};",
-                            theme.bg_primary, theme.bg_secondary,
-                            theme.shadow_dark, theme.shadow_light
+                             background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
+                             box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);"
                         ),
                         span {
                             style: "font-size: 32px; color: #7c3aed;",
@@ -468,10 +463,8 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
                             style: format!(
                                 "display: flex; align-items: center; gap: 12px; \
                                  padding: 12px; border-radius: 12px; \
-                                 background: linear-gradient(145deg, {}, {}); \
-                                 box-shadow: 3px 3px 6px {}, -3px -3px 6px {};",
-                                theme.bg_primary, theme.bg_secondary,
-                                theme.shadow_dark, theme.shadow_light
+                                 background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
+                                 box-shadow: 3px 3px 6px var(--nd-shadow-dark), -3px -3px 6px var(--nd-shadow-light);"
                             ),
 
                             // 文件图标

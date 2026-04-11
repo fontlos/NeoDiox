@@ -2,7 +2,6 @@
 //!
 //! Provides Tabs, Breadcrumbs, Stepper
 
-use crate::theme::use_theme_config;
 use dioxus::prelude::*;
 
 // ==================== Tabs 标签页 ====================
@@ -51,7 +50,6 @@ pub struct TabsProps {
 /// ```
 #[component]
 pub fn Tabs(props: TabsProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
     let options = props.options.clone();
     let on_change = props.on_change.clone();
@@ -66,10 +64,8 @@ pub fn Tabs(props: TabsProps) -> Element {
                 role: "tablist",
                 style: format!(
                     "display: flex; gap: 8px; padding: 8px; border-radius: 16px; overflow-x: auto; \
-                     background: linear-gradient(145deg, {}, {}); \
-                     box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-                    theme.bg_secondary, theme.bg_primary,
-                    theme.shadow_dark, theme.shadow_light
+                     background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                     box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
                 ),
                 for option in &options {
                     button {
@@ -188,22 +184,19 @@ pub enum StepStatus {
 }
 
 impl StepStatus {
-    fn style(&self, theme: &crate::theme::ThemeConfig) -> String {
+    fn style(&self) -> String {
         match self {
             Self::Completed | Self::Current => format!(
                 "background: linear-gradient(145deg, #7c3aed, #6d28d9); \
-                 color: white; box-shadow: 4px 4px 8px {}, -4px -4px 8px {};",
-                theme.shadow_dark, theme.shadow_light
+                 color: white; box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);",
             ),
             Self::Active => format!(
-                "background: linear-gradient(145deg, {}, {}); \
-                 box-shadow: inset 3px 3px 6px {}, inset -3px -3px 6px {};",
-                theme.bg_primary, theme.bg_secondary, theme.shadow_dark, theme.shadow_light
+                "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
+                 box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);",
             ),
             Self::Pending => format!(
-                "background: linear-gradient(145deg, {}, {}); \
-                 box-shadow: inset 3px 3px 6px {}, inset -3px -3px 6px {};",
-                theme.bg_secondary, theme.bg_primary, theme.shadow_dark, theme.shadow_light
+                "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                 box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);",
             ),
         }
     }
@@ -260,7 +253,6 @@ pub struct StepperProps {
 /// Stepper Component
 #[component]
 pub fn Stepper(props: StepperProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
     let stepper_class = props.direction.css_class();
 
@@ -279,7 +271,7 @@ pub fn Stepper(props: StepperProps) -> Element {
                     // 步骤指示器
                     div {
                         class: "nd-step-indicator",
-                        style: step.status.style(&theme),
+                        style: step.status.style(),
                         if let Some(icon) = step.icon.as_ref() {
                             "{icon}"
                         } else if let Some(icon) = step.status.icon() {

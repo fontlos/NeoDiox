@@ -67,7 +67,10 @@ pub fn Icon(props: IconProps) -> Element {
         "width:{}px;height:{}px;{}{}",
         props.size,
         props.size,
-        props.color.map(|c| format!("color: {c};")).unwrap_or_default(),
+        props
+            .color
+            .map(|c| format!("color: {c};"))
+            .unwrap_or_default(),
         props.style.unwrap_or_default()
     );
 

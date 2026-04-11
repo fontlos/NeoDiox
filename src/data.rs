@@ -3,7 +3,7 @@
 //! 提供 Badge、Tooltip、Accordion、Card、DataTable、BarChart、DonutChart
 
 use crate::surfaces::{NeuFlat, NeuRaised};
-use crate::theme::use_theme_config;
+use crate::theme::use_theme;
 use dioxus::prelude::*;
 
 // ==================== Badge 徽章 ====================
@@ -63,7 +63,7 @@ pub struct BadgeProps {
 /// ```
 #[component]
 pub fn Badge(props: BadgeProps) -> Element {
-    let theme = use_theme_config();
+    let theme = use_theme();
     let class = props.class.unwrap_or_default();
 
     // 判断是否使用渐变背景
@@ -87,16 +87,15 @@ pub fn Badge(props: BadgeProps) -> Element {
         )
     } else {
         // Default 变体使用主题色
-        let tc = if theme.variant.is_dark() {
+        let tc = if theme.is_dark() {
             "#d1d5db"
         } else {
             "#4b5563"
         };
         (
             format!(
-                "background: linear-gradient(145deg, {}, {}); \
-                 box-shadow: 4px 4px 8px {}, -4px -4px 8px {};",
-                theme.bg_primary, theme.bg_secondary, theme.shadow_dark, theme.shadow_light
+                "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
+                 box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);",
             ),
             tc,
         )
@@ -558,7 +557,6 @@ pub enum SortDirection {
 /// ```
 #[component]
 pub fn DataTable<T: Clone + PartialEq + 'static>(props: DataTableProps<T>) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
     let columns = props.columns.clone();
     let data = props.data.clone();
@@ -572,10 +570,8 @@ pub fn DataTable<T: Clone + PartialEq + 'static>(props: DataTableProps<T>) -> El
             div {
                 style: format!(
                     "overflow-x: auto; border-radius: 12px; \
-                     background: linear-gradient(145deg, {}, {}); \
-                     box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-                    theme.bg_secondary, theme.bg_primary,
-                    theme.shadow_dark, theme.shadow_light
+                     background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
+                     box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);"
                 ),
 
                 table {

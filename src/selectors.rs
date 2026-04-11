@@ -3,7 +3,6 @@
 //! Provides Dropdown, MultiSelect, RangeSlider, StarRating, DatePicker, TimePicker
 
 use crate::surfaces::NeuRaised;
-use crate::theme::use_theme_config;
 use dioxus::prelude::*;
 
 // ==================== Dropdown 下拉选择 ====================
@@ -64,7 +63,6 @@ pub struct DropdownProps {
 pub fn Dropdown(props: DropdownProps) -> Element {
     let is_open = use_signal(|| false);
     let mut search_query = use_signal(String::new);
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
     let placeholder = props.placeholder.unwrap_or_else(|| "Select...".to_string());
@@ -135,10 +133,8 @@ pub fn Dropdown(props: DropdownProps) -> Element {
                 div {
                     style: format!(
                         "position: absolute; inset: 0; border-radius: 12px; z-index: -1; \
-                         background: linear-gradient(145deg, {}, {}); \
-                         box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-                        theme.bg_secondary, theme.bg_primary,
-                        theme.shadow_dark, theme.shadow_light
+                         background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);"
                     ),
                 }
 
@@ -298,7 +294,6 @@ pub struct MultiSelectProps {
 #[component]
 pub fn MultiSelect(props: MultiSelectProps) -> Element {
     let mut is_open = use_signal(|| false);
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
     let values = props.values.clone();
     let options = props.options.clone();
@@ -351,10 +346,8 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                 div {
                     style: format!(
                         "position: absolute; inset: 0; border-radius: 12px; z-index: -1; \
-                         background: linear-gradient(145deg, {}, {}); \
-                         box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-                        theme.bg_secondary, theme.bg_primary,
-                        theme.shadow_dark, theme.shadow_light
+                         background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
                     ),
                 }
 
@@ -418,10 +411,8 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                                 class: "nd-multiselect-item",
                                 style: {
                                     let inset_style = format!(
-                                        "background: linear-gradient(145deg, {}, {}); \
-                                         box-shadow: inset 2px 2px 4px {}, inset -2px -2px 4px {};",
-                                        theme.bg_secondary, theme.bg_primary,
-                                        theme.shadow_dark, theme.shadow_light
+                                        "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                                         box-shadow: inset 2px 2px 4px var(--nd-shadow-dark), inset -2px -2px 4px var(--nd-shadow-light);"
                                     );
                                     format!(
                                         "width: 100%; padding: 12px 16px; text-align: left; \
@@ -451,10 +442,8 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                                 div {
                                     style: {
                                         let inset = format!(
-                                            "background: linear-gradient(145deg, {}, {}); \
-                                             box-shadow: inset 2px 2px 4px {}, inset -2px -2px 4px {};",
-                                            theme.bg_secondary, theme.bg_primary,
-                                            theme.shadow_dark, theme.shadow_light
+                                            "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                                             box-shadow: inset 2px 2px 4px var(--nd-shadow-dark), inset -2px -2px 4px var(--nd-shadow-light);"
                                         );
                                         format!(
                                             "width: 16px; height: 16px; border-radius: 4px; \
@@ -542,7 +531,6 @@ pub struct RangeSliderProps {
 /// ```
 #[component]
 pub fn RangeSlider(props: RangeSliderProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
     // 计算百分比
@@ -582,23 +570,13 @@ pub fn RangeSlider(props: RangeSliderProps) -> Element {
 
                 // 轨道背景
                 div {
-                    style: format!(
-                        "position: absolute; inset: 0; border-radius: 6px; \
-                         background: linear-gradient(145deg, {}, {}); \
-                         box-shadow: inset 3px 3px 6px {}, inset -3px -3px 6px {};",
-                        theme.bg_secondary, theme.bg_primary,
-                        theme.shadow_dark, theme.shadow_light
-                    ),
+                    class: "nd-range-slider-track",
                 }
 
                 // 进度条
                 div {
-                    style: format!(
-                        "position: absolute; left: 0; top: 0; bottom: 0; \
-                         width: {percentage}%; border-radius: 6px; \
-                         background: linear-gradient(90deg, #7c3aed, #a855f7); \
-                         transition: width 0.15s ease;"
-                    ),
+                    class: "nd-range-slider-progress",
+                    style: "width: {percentage}%;",
                 }
 
                 // 实际输入（隐藏但可交互）
@@ -613,7 +591,7 @@ pub fn RangeSlider(props: RangeSliderProps) -> Element {
                     "aria-valuemax": props.max,
                     "aria-valuenow": props.value,
                     style: "position: absolute; inset: 0; width: 100%; \
-                            height: 100%; opacity: 0; cursor: pointer;",
+                            height: 100%; opacity: 0; cursor: pointer; z-index: 4;",
                     oninput: move |evt| {
                         if let Ok(val) = evt.value().parse::<i32>() {
                             props.on_change.call(val);
@@ -621,18 +599,10 @@ pub fn RangeSlider(props: RangeSliderProps) -> Element {
                     },
                 }
 
-                // 自定义滑块thumb
+                // 自定义滑块thumb - 添加 z-index: 3 确保在最上方
                 div {
-                    style: format!(
-                        "position: absolute; top: 50%; left: {percentage}%; \
-                         transform: translate(-50%, -50%); \
-                         width: 24px; height: 24px; border-radius: 12px; \
-                         background: linear-gradient(145deg, {}, {}); \
-                         box-shadow: 3px 3px 6px {}, -3px -3px 6px {}; \
-                         pointer-events: none; transition: transform 0.15s ease;",
-                        theme.bg_primary, theme.bg_secondary,
-                        theme.shadow_dark, theme.shadow_light
-                    ),
+                    class: "nd-range-slider-thumb",
+                    style: "left: {percentage}%;",
                 }
             }
         }
@@ -797,7 +767,6 @@ pub struct DatePickerProps {
 /// ```
 #[component]
 pub fn DatePicker(props: DatePickerProps) -> Element {
-    let theme = use_theme_config();
     let value = props.value.unwrap_or_default();
     let class = props.class.unwrap_or_default();
 
@@ -820,10 +789,8 @@ pub fn DatePicker(props: DatePickerProps) -> Element {
                 div {
                     style: format!(
                         "position: absolute; inset: 0; border-radius: 12px; z-index: -1; \
-                         background: linear-gradient(145deg, {}, {}); \
-                         box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-                        theme.bg_secondary, theme.bg_primary,
-                        theme.shadow_dark, theme.shadow_light
+                         background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);"
                     ),
                 }
 
@@ -897,7 +864,6 @@ pub struct TimePickerProps {
 /// ```
 #[component]
 pub fn TimePicker(props: TimePickerProps) -> Element {
-    let theme = use_theme_config();
     let value = props.value.unwrap_or_default();
     let class = props.class.unwrap_or_default();
 
@@ -920,10 +886,8 @@ pub fn TimePicker(props: TimePickerProps) -> Element {
                 div {
                     style: format!(
                         "position: absolute; inset: 0; border-radius: 12px; z-index: -1; \
-                         background: linear-gradient(145deg, {}, {}); \
-                         box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-                        theme.bg_secondary, theme.bg_primary,
-                        theme.shadow_dark, theme.shadow_light
+                         background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+                         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
                     ),
                 }
 

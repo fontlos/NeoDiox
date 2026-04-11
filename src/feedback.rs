@@ -2,7 +2,6 @@
 //!
 //! Provides ProgressBar, Toast, Modal, Alert, Skeleton, Spinner
 
-use crate::theme::use_theme_config;
 use dioxus::prelude::*;
 
 // ==================== ProgressBar 进度条 ====================
@@ -44,7 +43,6 @@ pub struct ProgressBarProps {
 /// ```
 #[component]
 pub fn ProgressBar(props: ProgressBarProps) -> Element {
-    let theme = use_theme_config();
     let label = props.label.unwrap_or_else(|| format!("{}%", props.value));
     let class = props.class.unwrap_or_default();
 
@@ -66,11 +64,9 @@ pub fn ProgressBar(props: ProgressBarProps) -> Element {
             div {
                 style: format!(
                     "height: {}px; border-radius: 6px; overflow: hidden; \
-                     background: linear-gradient(145deg, {}, {}); \
-                     box-shadow: inset 3px 3px 6px {}, inset -3px -3px 6px {};",
-                    props.height,
-                    theme.bg_secondary, theme.bg_primary,
-                    theme.shadow_dark, theme.shadow_light
+                     background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
+                     box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);",
+                    props.height
                 ),
 
                 // 进度填充 - 紫色渐变
@@ -332,7 +328,6 @@ impl ModalSize {
 /// ```
 #[component]
 pub fn Modal(props: ModalProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
     if !props.is_open {
@@ -364,10 +359,8 @@ pub fn Modal(props: ModalProps) -> Element {
                 div {
                     style: format!(
                         "position: absolute; inset: 0; border-radius: 16px; z-index: -1; \
-                         background: linear-gradient(145deg, {}, {}); \
-                         box-shadow: 8px 8px 16px {}, -8px -8px 16px {};",
-                        theme.bg_primary, theme.bg_secondary,
-                        theme.shadow_dark, theme.shadow_light
+                         background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
+                         box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);",
                     ),
                 }
 

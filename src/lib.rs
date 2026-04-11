@@ -17,7 +17,7 @@ pub mod prelude {
     // 样式
     pub use crate::styles::{NORMALIZE, NORMALIZE_S, STYLE, STYLE_S};
     // 主题
-    pub use crate::theme::{ThemeConfig, ThemeVariant, use_theme_config, use_toggle_theme};
+    pub use crate::theme::{ThemeVariant, ThemeVars, use_theme, use_toggle_theme};
     // 容器组件
     pub use crate::surfaces::{NeuFlat, NeuInset, NeuRaised, NeuRaisedSm, NeuSurface, SurfaceType};
     // 按钮组件

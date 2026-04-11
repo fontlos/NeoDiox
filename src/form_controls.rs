@@ -1,8 +1,6 @@
 //! Form Control Components
 //!
 //! Provides Toggle (switch), Checkbox, Radio (radio button)
-
-use crate::theme::use_theme_config;
 use dioxus::prelude::*;
 
 // ==================== Toggle 切换开关 ====================
@@ -26,32 +24,13 @@ pub struct ToggleProps {
 /// Toggle component
 #[component]
 pub fn Toggle(props: ToggleProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
-    let track_style = if props.checked {
-        "background: linear-gradient(145deg, #7c3aed, #6d28d9); box-shadow: none;"
+    let active = if props.checked {
+        "nd-toggle-active"
     } else {
-        &format!(
-            "background: linear-gradient(145deg, {}, {}); \
-             box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-            theme.bg_secondary, theme.bg_primary, theme.shadow_dark, theme.shadow_light
-        )
+        ""
     };
-
-    // 拇指位置
-    let thumb_pos = if props.checked {
-        "calc(100% - 28px)"
-    } else {
-        "4px"
-    };
-
-    // 拇指样式
-    let thumb_style = format!(
-        "background: linear-gradient(145deg, {}, {}); \
-         box-shadow: 4px 4px 8px {}, -4px -4px 8px {};",
-        theme.bg_primary, theme.bg_secondary, theme.shadow_dark, theme.shadow_light
-    );
 
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
@@ -65,11 +44,8 @@ pub fn Toggle(props: ToggleProps) -> Element {
             role: "switch",
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
-            class: "nd-toggle {class}",
-            style: format!(
-                "{} {} transition: all 0.3s ease;",
-                track_style, disabled_style
-            ),
+            class: "nd-toggle {active} {class}",
+            style: disabled_style,
             onclick: move |_| {
                 if !props.disabled {
                     props.on_change.call(!props.checked);
@@ -77,10 +53,6 @@ pub fn Toggle(props: ToggleProps) -> Element {
             },
             div {
                 class: "nd-toggle-thumb",
-                style: format!(
-                    "{} left: {}; transition: left 0.3s ease;",
-                    thumb_style, thumb_pos
-                ),
             }
         }
     }
@@ -107,19 +79,21 @@ pub struct CheckboxProps {
 /// Checkbox component
 #[component]
 pub fn Checkbox(props: CheckboxProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
-    // Background style (theme-dependent)
-    let bg_style = if props.checked {
-        "background: linear-gradient(145deg, #7c3aed, #6d28d9); \
-         box-shadow: 4px 4px 8px rgba(0,0,0,0.2);"
+    // // Background style (theme-dependent)
+    // let bg_style = if props.checked {
+    //     "background: linear-gradient(145deg, #7c3aed, #6d28d9); \
+    //      box-shadow: 4px 4px 8px rgba(0,0,0,0.2);"
+    // } else {
+    //     "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+    //     box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);"
+    // };
+
+    let active = if props.checked {
+        "nd-checkbox-active"
     } else {
-        &format!(
-            "background: linear-gradient(145deg, {}, {}); \
-             box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-            theme.bg_secondary, theme.bg_primary, theme.shadow_dark, theme.shadow_light
-        )
+        ""
     };
 
     let disabled_style = if props.disabled {
@@ -137,8 +111,8 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             role: "checkbox",
             "aria-checked": if props.checked { "true" } else { "false" },
             disabled: if props.disabled { "true" } else { "false" },
-            class: "nd-checkbox {class}",
-            style: format!("{} {}", bg_style, disabled_style),
+            class: "nd-checkbox {active} {class}",
+            style: disabled_style,
             onclick: move |_| {
                 if !props.disabled {
                     props.on_change.call(!props.checked);
@@ -180,14 +154,12 @@ pub struct RadioProps {
 /// Radio component
 #[component]
 pub fn Radio(props: RadioProps) -> Element {
-    let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
     // Always inset background (theme-dependent)
     let bg_style = format!(
-        "background: linear-gradient(145deg, {}, {}); \
-         box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-        theme.bg_secondary, theme.bg_primary, theme.shadow_dark, theme.shadow_light
+        "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
     );
 
     let disabled_style = if props.disabled {

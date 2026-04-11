@@ -2,7 +2,7 @@
 //!
 //! Provides skeuomorphic buttons in various variants and states
 
-use crate::theme::use_theme_config;
+use crate::theme::use_theme;
 use dioxus::prelude::*;
 
 /// Button Variants
@@ -76,7 +76,7 @@ pub struct ButtonProps {
 /// ```
 #[component]
 pub fn Button(props: ButtonProps) -> Element {
-    let theme = use_theme_config();
+    let theme = use_theme();
     let class = props.class.unwrap_or_default();
     let is_gradient = props.variant != ButtonVariant::Default;
 
@@ -85,20 +85,20 @@ pub fn Button(props: ButtonProps) -> Element {
         let (color1, color2) = props.variant.gradient();
         format!(
             "background: linear-gradient(145deg, {}, {}); \
-             box-shadow: 4px 4px 8px {}, -4px -4px 8px {}; \
+             box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light); \
              color: #ffffff;",
-            color1, color2, theme.shadow_dark, theme.shadow_light
+            color1, color2
         )
     } else {
-        let text_color = if theme.variant.is_dark() {
+        let text_color = if theme.is_dark() {
             "#d1d5db"
         } else {
             "#4b5563"
         };
         format!(
-            "background: linear-gradient(145deg, {}, {}); color: {}; \
-             box-shadow: 8px 8px 16px {}, -8px -8px 16px {};",
-            theme.bg_primary, theme.bg_secondary, text_color, theme.shadow_dark, theme.shadow_light
+            "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); color: {}; \
+             box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);",
+            text_color
         )
     };
 

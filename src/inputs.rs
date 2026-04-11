@@ -2,15 +2,13 @@
 //!
 //! Provides input controls such as TextInput, TextArea, SearchInput
 
-use crate::theme::{ThemeConfig, use_theme_config};
 use dioxus::prelude::*;
 
 /// 输入框样式
-fn input_style(theme: &ThemeConfig) -> String {
+fn input_style() -> String {
     format!(
-        "background: linear-gradient(145deg, {}, {}); \
-         box-shadow: inset 4px 4px 8px {}, inset -4px -4px 8px {};",
-        theme.bg_secondary, theme.bg_primary, theme.shadow_dark, theme.shadow_light
+        "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
+         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
     )
 }
 
@@ -113,7 +111,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
     let class = props.class.unwrap_or_default();
     let has_error = props.error.is_some();
 
-    let base_style = input_style(&use_theme_config());
+    let base_style = input_style();
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -279,7 +277,7 @@ pub fn TextArea(props: TextAreaProps) -> Element {
     let class = props.class.unwrap_or_default();
     let has_error = props.error.is_some();
 
-    let base_style = input_style(&use_theme_config());
+    let base_style = input_style();
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -382,7 +380,7 @@ pub struct SearchInputProps {
 /// ```
 #[component]
 pub fn SearchInput(props: SearchInputProps) -> Element {
-    let base_style = input_style(&use_theme_config());
+    let base_style = input_style();
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
