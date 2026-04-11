@@ -5,6 +5,7 @@ pub mod button;
 pub mod data;
 pub mod feedback;
 pub mod form_controls;
+pub mod icon;
 pub mod inputs;
 pub mod navigation;
 pub mod selectors;
@@ -49,4 +50,6 @@ pub mod prelude {
     pub use crate::advanced::{
         ContextMenu, FeatureCard, FileInfo, FileUpload, MenuItem, TreeNode, TreeView,
     };
+    // 图标组件
+    pub use crate::icon::Icon;
 }
