@@ -9,9 +9,6 @@ use dioxus::prelude::*;
 /// Icon
 #[derive(Props, PartialEq, Clone)]
 pub struct IconProps {
-    /// Custom Element variant (SVG, img, etc.)
-    #[props(default)]
-    pub children: Option<Element>,
     /// Custom class. Can be used for icon library (e.g., "iconify", "fa fa-home")
     #[props(default)]
     pub class: Option<String>,
@@ -24,9 +21,14 @@ pub struct IconProps {
     /// Icon color (CSS color value)
     #[props(default)]
     pub color: Option<String>,
+
     /// Additional attributes. Can be used for icon library (e.g., "data-icon", "data-width")
     #[props(extends = GlobalAttributes)]
     pub attrs: Vec<Attribute>,
+
+    /// Custom Element variant (SVG, img, etc.)
+    #[props(default)]
+    pub children: Element,
 }
 
 /// Icon Component
@@ -79,9 +81,7 @@ pub fn Icon(props: IconProps) -> Element {
             class: "nd-icon {class}",
             style,
             ..props.attrs,
-            if let Some(element) = props.children {
-                {element}
-            }
+            {props.children}
         }
     }
 }
