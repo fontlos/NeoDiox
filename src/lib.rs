@@ -7,6 +7,7 @@ pub mod feedback;
 pub mod form_controls;
 pub mod icon;
 pub mod inputs;
+pub mod label;
 pub mod navigation;
 pub mod selectors;
 pub mod styles;
@@ -26,6 +27,7 @@ pub mod prelude {
     pub use crate::form_controls::{Checkbox, Radio, RadioGroup, RadioOption, Toggle};
     // 输入组件
     pub use crate::inputs::{InputSize, ResizeMode, SearchInput, TextArea, TextInput};
+    pub use crate::label::{Badge, Tooltip, TooltipPosition};
     // 选择器
     pub use crate::selectors::{
         DatePicker, Dropdown, DropdownOption, MultiSelect, MultiSelectOption, RangeSlider,
@@ -43,8 +45,8 @@ pub mod prelude {
     };
     // 数据展示
     pub use crate::data::{
-        Accordion, AccordionItem, Badge, BadgeVariant, BarChart, BarData, Card, Column, DataTable,
-        DonutChart, DonutData, SortDirection, Tooltip, TooltipPosition,
+        Accordion, AccordionItem, BarChart, BarData, Card, Column, DataTable,
+        DonutChart, DonutData, SortDirection
     };
     // 高级组件
     pub use crate::advanced::{
