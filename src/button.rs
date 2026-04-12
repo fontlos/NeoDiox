@@ -42,6 +42,9 @@ pub struct ButtonProps {
     /// Button Height (CSS Value)
     #[props(default)]
     pub height: Option<String>,
+    /// Button Padding (CSS Value)
+    #[props(default = "12px 24px".to_string())]
+    pub padding: String,
     /// Border Radius (CSS Value)
     #[props(default = "12px".to_string())]
     pub border_radius: String,
@@ -97,7 +100,7 @@ pub fn Button(props: ButtonProps) -> Element {
         ),
     };
     let style = format!(
-        "{color}{}{}border-radius: {};{}",
+        "{color}{}{}padding: {};border-radius: {};{}",
         props
             .width
             .map(|w| format!("width: {};", w))
@@ -106,6 +109,7 @@ pub fn Button(props: ButtonProps) -> Element {
             .height
             .map(|h| format!("height: {};", h))
             .unwrap_or_default(),
+        props.padding,
         props.border_radius,
         props.style.unwrap_or_default()
     );
