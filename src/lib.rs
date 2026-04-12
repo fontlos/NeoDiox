@@ -29,7 +29,7 @@ pub mod prelude {
     // 选择控件
     pub use crate::selector::{
         Checkbox, DatePicker, Dropdown, DropdownOption, MultiSelect, MultiSelectOption, Radio,
-        RadioGroup, RadioOption, RangeSlider, StarRating, TimePicker, Toggle,
+        RadioGroup, RadioOption, Slider, StarRating, TimePicker, Toggle,
     };
     // 反馈组件
     pub use crate::feedback::{
@@ -37,15 +37,13 @@ pub mod prelude {
         ToastMessage, ToastPosition, ToastType,
     };
     // 导航组件
+    pub use crate::container::Accordion;
     pub use crate::navigation::{
         BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, StepperDirection, TabOption,
         Tabs,
     };
-    pub use crate::container::{Accordion};
     // 数据组件
-    pub use crate::data::{
-        BarChart, BarData, Column, Table, DonutChart, DonutData, SortDirection,
-    };
+    pub use crate::data::{BarChart, BarData, Column, DonutChart, DonutData, SortDirection, Table};
     // 高级组件
     pub use crate::advanced::{
         ContextMenu, FeatureCard, FileInfo, FileUpload, MenuItem, TreeNode, TreeView,

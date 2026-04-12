@@ -8,4 +8,4 @@ mod table;
 
 pub use bar::{BarChart, BarData};
 pub use donut::{DonutChart, DonutData};
-pub use table::{Column, Table, SortDirection};
+pub use table::{Column, SortDirection, Table};
