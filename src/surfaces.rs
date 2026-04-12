@@ -4,6 +4,25 @@
 
 use dioxus::prelude::*;
 
+/// Skeuomorphic Surface
+#[derive(Props, PartialEq, Clone)]
+pub struct NeuSurfaceProps {
+    /// Surface Type
+    #[props(default)]
+    pub surface_type: SurfaceType,
+    /// Custom class name
+    #[props(default)]
+    pub class: Option<String>,
+    /// Additional inline style
+    #[props(default)]
+    pub style: Option<String>,
+    /// Border radius
+    #[props(default = 16)]
+    pub border_radius: u32,
+    /// Children
+    pub children: Element,
+}
+
 /// Skeuomorphic surface type
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum SurfaceType {
@@ -14,42 +33,12 @@ pub enum SurfaceType {
     Flat,
 }
 
-impl SurfaceType {
-    fn css_class(&self) -> &'static str {
-        match self {
-            Self::Raised => "nd-surface-raised",
-            Self::RaisedSm => "nd-surface-raised-sm",
-            Self::Inset => "nd-surface-inset",
-            Self::Flat => "nd-surface-flat",
-        }
-    }
-}
-
-/// Skeuomorphic Surface
-#[derive(Props, PartialEq, Clone)]
-pub struct NeuSurfaceProps {
-    /// Surface Type
-    #[props(default)]
-    pub surface_type: SurfaceType,
-    /// Custom class name
-    #[props(default)]
-    pub class: Option<String>,
-    /// Additional inline style (for dynamic props only)
-    #[props(default)]
-    pub style: Option<String>,
-    /// Border radius
-    #[props(default = 16)]
-    pub border_radius: u32,
-    /// Children
-    pub children: Element,
-}
-
 /// Skeuomorphic Surface Component
 ///
 /// Provide three skeuomorphic surface effects:
 /// - `Raised`: Raised effect, used for cards and containers
 /// - `RaisedSm`: Small raised effect, used for badges and small elements
-/// - `Inset`: Inset effect, used for input fields and pressed states
+/// - `Inset`: Inset effect, used for input fields
 /// - `Flat`: Flat effect, used for accordion panels and other elements
 ///
 /// # Example
@@ -58,29 +47,27 @@ pub struct NeuSurfaceProps {
 /// rsx! {
 ///     NeuSurface {
 ///         surface_type: SurfaceType::Raised,
-///         "Raised Card Content"
+///         "Raised Skeuomorphic Surface Content"
 ///     }
 /// }
 /// ```
 #[component]
 pub fn NeuSurface(props: NeuSurfaceProps) -> Element {
-    let surface_class = props.surface_type.css_class();
+    let surface_class = match props.surface_type {
+        SurfaceType::Raised => "nd-surface-raised",
+        SurfaceType::RaisedSm => "nd-surface-raised-sm",
+        SurfaceType::Inset => "nd-surface-inset",
+        SurfaceType::Flat => "nd-surface-flat",
+    };
     let class = props.class.unwrap_or_default();
-    let combined_class = format!("nd-surface {surface_class} {class}");
 
     let style = props.style.unwrap_or_default();
-    let border_radius_style = format!("border-radius: {}px;", props.border_radius);
-
-    let combined_style = if style.is_empty() {
-        border_radius_style
-    } else {
-        format!("{} {}", border_radius_style, style)
-    };
+    let border_radius = props.border_radius;
 
     rsx! {
         div {
-            class: combined_class,
-            style: combined_style,
+            class: "nd-surface {surface_class} {class}",
+            style: "border-radius:{border_radius}px;{style}",
             {props.children}
         }
     }

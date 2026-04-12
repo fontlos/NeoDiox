@@ -4,14 +4,6 @@
 
 use dioxus::prelude::*;
 
-/// 输入框样式
-fn input_style() -> String {
-    format!(
-        "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
-         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);",
-    )
-}
-
 // ==================== TextInput 文本输入 ====================
 
 /// TextInput
@@ -111,7 +103,6 @@ pub fn TextInput(props: TextInputProps) -> Element {
     let class = props.class.unwrap_or_default();
     let has_error = props.error.is_some();
 
-    let base_style = input_style();
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -150,12 +141,12 @@ pub fn TextInput(props: TextInputProps) -> Element {
                     autocomplete: props.autocomplete.unwrap_or_default(),
                     "aria-invalid": if has_error { "true" } else { "false" },
                     "aria-describedby": if has_error { Some(error_id.clone()) } else { None },
-                    class: "nd-input",
+                    class: "nd-input nd-input-bg",
                     style: format!(
                         "padding: {padding}; padding-right: {clear_padding}; \
                          border-radius: 12px; font-size: {font_size}; \
-                         {} {} {}",
-                        base_style, disabled_style, base_style
+                         {}",
+                        disabled_style,
                     ),
                     oninput: move |evt| {
                         props.on_input.call(evt.value().clone());
@@ -277,7 +268,6 @@ pub fn TextArea(props: TextAreaProps) -> Element {
     let class = props.class.unwrap_or_default();
     let has_error = props.error.is_some();
 
-    let base_style = input_style();
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -310,11 +300,11 @@ pub fn TextArea(props: TextAreaProps) -> Element {
                 required: if props.required { "true" } else { "false" },
                 maxlength: props.max_length,
                 "aria-invalid": if has_error { "true" } else { "false" },
-                class: "nd-textarea-element",
+                class: "nd-textarea-element nd-input-bg",
                 style: format!(
                     "padding: 12px 16px; border-radius: 12px; font-size: 14px; \
-                     resize: {resize_style}; {} {}",
-                    base_style, disabled_style
+                     resize: {resize_style}; {}",
+                    disabled_style
                 ),
                 oninput: move |evt| {
                     props.on_input.call(evt.value().clone());
@@ -380,7 +370,6 @@ pub struct SearchInputProps {
 /// ```
 #[component]
 pub fn SearchInput(props: SearchInputProps) -> Element {
-    let base_style = input_style();
     let disabled_style = if props.disabled {
         "opacity: 0.6; cursor: not-allowed;"
     } else {
@@ -413,11 +402,11 @@ pub fn SearchInput(props: SearchInputProps) -> Element {
                     placeholder: props.placeholder,
                     disabled: if props.disabled { "true" } else { "false" },
                     autofocus: if props.autofocus { "true" } else { "false" },
-                    class: "nd-input",
+                    class: "nd-input nd-input-bg",
                     style: format!(
                         "padding: 12px 40px; border-radius: 12px; font-size: 14px; \
-                         {} {}",
-                        base_style, disabled_style
+                         {}",
+                        disabled_style
                     ),
                     oninput: move |evt| {
                         props.on_input.call(evt.value().clone());
