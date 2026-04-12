@@ -8,123 +8,89 @@ use dioxus::prelude::*;
 
 // ==================== Accordion 手风琴 ====================
 
-/// Accordion Item
-#[derive(Clone, Debug, PartialEq)]
-pub struct AccordionItem {
-    pub id: String,
-    pub title: String,
-    pub content: String,
-    pub disabled: bool,
-}
-
-/// Accordion
+/// Accordion - 单个可展开项
 #[derive(Props, PartialEq, Clone)]
 pub struct AccordionProps {
-    /// Accordion Items
-    pub items: Vec<AccordionItem>,
-    /// Expanded Item IDs
-    pub expanded_items: Vec<String>,
-    /// Toggle Event
-    pub on_toggle: EventHandler<String>,
-    /// Whether to allow multiple items to be expanded
+    /// 标题
+    pub title: String,
+    /// 内容
+    pub content: String,
+    /// 是否展开
     #[props(default)]
-    pub multiple: bool,
-    /// Custom Class Name
+    pub expanded: bool,
+    /// 切换事件
+    pub on_toggle: EventHandler<()>,
+    /// 是否禁用
+    #[props(default)]
+    pub disabled: bool,
+    /// 自定义类名
     #[props(default)]
     pub class: Option<String>,
 }
 
-/// Accordion Component
+/// Accordion Component - 单个独立的可展开项
 ///
 /// # Example
 ///
 /// ```rust,ignore
 /// rsx! {
 ///     Accordion {
-///         items: vec![
-///             AccordionItem { id: "item1".to_string(), title: "Item 1".to_string(), content: "Content 1".to_string(), disabled: false },
-///             AccordionItem { id: "item2".to_string(), title: "Item 2".to_string(), content: "Content 2".to_string(), disabled: false },
-///         ],
-///         expanded_items: expanded_items,
-///         on_toggle: move |id| toggle_expanded(id),
+///         title: "What is neuromorphic design?",
+///         content: "Soft shadows and gradients...",
+///         expanded: is_expanded,
+///         on_toggle: move |_| toggle(),
 ///     }
 /// }
 /// ```
 #[component]
 pub fn Accordion(props: AccordionProps) -> Element {
     let class = props.class.unwrap_or_default();
-    let items = props.items.clone();
-    let expanded_items = props.expanded_items.clone();
-    let on_toggle = props.on_toggle.clone();
 
     rsx! {
         div {
             class: "nd-accordion {class}",
 
-            for item in items {
-                {
-                    let item_id = item.id.clone();
-                    let is_expanded = expanded_items.contains(&item_id);
-                    let on_toggle = on_toggle.clone();
-                    let disabled = item.disabled;
-                    let item_id_clone = item_id.clone();
-                    let item_id_clone2 = item_id.clone();
-                    rsx! {
-                        NeuFlat {
-                            border_radius: 12,
-                            class: "nd-accordion-item",
+            NeuFlat {
+                border_radius: 12,
+                style: "overflow: hidden;",
 
-                            div {
-                                button {
-                                    r#type: "button",
-                                    class: "nd-accordion-trigger",
-                                    disabled: if disabled { "true" } else { "false" },
-                                    "aria-expanded": if is_expanded { "true" } else { "false" },
-                                    "aria-controls": "accordion-panel-{item_id_clone}",
-                                    style: format!(
-                                        "width: 100%; padding: 16px 20px; display: flex; \
-                                         align-items: center; justify-content: space-between; \
-                                         background: none; border: none; cursor: {}; \
-                                         font-size: 14px; font-weight: 500; color: inherit; \
-                                         text-align: left;",
-                                        if disabled { "default" } else { "pointer" }
-                                    ),
-                                    onclick: {
-                                        let item_id = item_id_clone2.clone();
-                                        move |_| {
-                                            if !disabled {
-                                                on_toggle.call(item_id.clone());
-                                            }
-                                        }
-                                    },
-
-                                    span {
-                                        "{item.title}"
-                                    }
-
-                                    span {
-                                        style: format!(
-                                            "transition: transform 0.3s ease; font-size: 18px; \
-                                             transform: {};",
-                                            if is_expanded { "rotate(180deg)" } else { "rotate(0deg)" }
-                                        ),
-                                        "▼"
-                                    }
-                                }
-
-                                if is_expanded {
-                                    div {
-                                        id: "accordion-panel-{item_id}",
-                                        role: "region",
-                                        class: "nd-accordion-panel",
-                                        p {
-                                            class: "nd-accordion-content",
-                                            "{item.content}"
-                                        }
-                                    }
-                                }
-                            }
+                button {
+                    r#type: "button",
+                    class: "nd-accordion-trigger",
+                    disabled: if props.disabled { "true" } else { "false" },
+                    "aria-expanded": if props.expanded { "true" } else { "false" },
+                    onclick: move |_| {
+                        if !props.disabled {
+                            props.on_toggle.call(());
                         }
+                    },
+
+                    span {
+                        class: "nd-accordion-title",
+                        "{props.title}"
+                    }
+
+                    span {
+                        class: "nd-accordion-icon",
+                        class: if props.expanded { "nd-accordion-icon-expanded" } else { "" },
+                        "▼"
+                    }
+                }
+
+                // 面板 - 始终渲染，用 max-height 控制动画
+                div {
+                    role: "region",
+                    class: "nd-accordion-panel",
+                    class: if props.expanded { "nd-accordion-panel-expanded" } else { "" },
+                    style: if props.expanded {
+                        "max-height: 500px;"
+                    } else {
+                        "max-height: 0;"
+                    },
+
+                    div {
+                        class: "nd-accordion-content",
+                        "{props.content}"
                     }
                 }
             }

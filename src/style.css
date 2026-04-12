@@ -1073,14 +1073,7 @@
     ============================================ */
 
 .nd-accordion {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.nd-accordion-item {
-    border-radius: 12px;
-    overflow: hidden;
+    width: 100%;
 }
 
 .nd-accordion-trigger {

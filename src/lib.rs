@@ -45,7 +45,7 @@ pub mod prelude {
     };
     // 数据展示
     pub use crate::data::{
-        Accordion, AccordionItem, BarChart, BarData, Card, Column, DataTable,
+        Accordion, BarChart, BarData, Card, Column, DataTable,
         DonutChart, DonutData, SortDirection
     };
     // 高级组件
