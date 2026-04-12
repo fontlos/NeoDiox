@@ -6,7 +6,7 @@ pub mod container;
 pub mod data;
 pub mod feedback;
 pub mod icon;
-pub mod inputs;
+pub mod input;
 pub mod label;
 pub mod navigation;
 pub mod selector;
@@ -24,7 +24,7 @@ pub mod prelude {
     // 按钮组件
     pub use crate::button::{Button, ButtonVariant};
     // 输入组件
-    pub use crate::inputs::{InputSize, ResizeMode, SearchInput, TextArea, TextInput};
+    pub use crate::input::{InputSize, ResizeMode, SearchInput, TextArea, TextInput};
     pub use crate::label::{Badge, Tooltip, TooltipPosition};
     // 选择控件
     pub use crate::selector::{

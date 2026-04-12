@@ -1,6 +1,6 @@
 //! Advanced Components
 //!
-//! Menu、TreeView、FileUpload、FeatureCard
+//! Menu, TreeView, FileUpload
 
 mod file;
 mod menu;
