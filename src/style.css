@@ -1010,13 +1010,72 @@
 }
 
 /* ============================================
+    Tooltip 提示框
+    ============================================ */
+
+.nd-tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.nd-tooltip {
+    position: absolute;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    background: #1f2937;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+    z-index: 100;
+}
+
+.nd-tooltip-container:hover .nd-tooltip,
+.nd-tooltip-container:focus-within .nd-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nd-tooltip-top {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+}
+
+.nd-tooltip-bottom {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+}
+
+.nd-tooltip-left {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 8px;
+}
+
+.nd-tooltip-right {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 8px;
+}
+
+/* ============================================
     Accordion 手风琴
     ============================================ */
 
 .nd-accordion {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
 .nd-accordion-item {
@@ -1037,15 +1096,20 @@
     font-weight: 500;
     color: inherit;
     text-align: left;
-    transition: background var(--transition-fast);
 }
 
-.nd-accordion-trigger:hover {
-    background: rgba(124, 58, 237, 0.05);
+.nd-accordion-trigger:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.nd-accordion-title {
+    flex: 1;
 }
 
 .nd-accordion-icon {
-    transition: transform var(--transition-normal);
+    font-size: 18px;
+    transition: transform 0.3s ease;
 }
 
 .nd-accordion-icon-expanded {
@@ -1055,18 +1119,18 @@
 .nd-accordion-panel {
     overflow: hidden;
     transition: max-height 0.3s ease-out;
+    max-height: 0;
 }
 
-.nd-accordion-panel {
-    padding: 0 20px 16px 20px;
+.nd-accordion-panel-expanded {
+    max-height: 500px !important;
 }
 
 .nd-accordion-content {
+    padding: 0 20px 16px 20px;
     font-size: 14px;
     color: inherit;
     opacity: 0.7;
-    margin: 0;
-    line-height: 1.6;
 }
 
 /* ============================================

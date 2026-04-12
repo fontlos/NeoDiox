@@ -146,14 +146,12 @@ pub struct TooltipProps {
     /// Tooltip Position
     #[props(default)]
     pub position: TooltipPosition,
-    /// Whether to show the tooltip
-    pub is_visible: bool,
     /// Custom Class Name
     #[props(default)]
     pub class: Option<String>,
 }
 
-/// Tooltip Component
+/// Tooltip Component - 使用 CSS hover 显示
 ///
 /// # Example
 ///
@@ -161,7 +159,7 @@ pub struct TooltipProps {
 /// rsx! {
 ///     Tooltip {
 ///         content: "Home".to_string(),
-///         is_visible: show_tooltip,
+///         position: TooltipPosition::Top,
 ///         Button {
 ///             onclick: move |_| {},
 ///             "🏠"
@@ -171,40 +169,13 @@ pub struct TooltipProps {
 /// ```
 #[component]
 pub fn Tooltip(props: TooltipProps) -> Element {
-    let position_style = match props.position {
-        TooltipPosition::Top => {
-            "bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 8px;"
-        }
-        TooltipPosition::Bottom => {
-            "top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px;"
-        }
-        TooltipPosition::Left => {
-            "right: 100%; top: 50%; transform: translateY(-50%); margin-right: 8px;"
-        }
-        TooltipPosition::Right => {
-            "left: 100%; top: 50%; transform: translateY(-50%); margin-left: 8px;"
-        }
+    let position_class = match props.position {
+        TooltipPosition::Top => "nd-tooltip-top",
+        TooltipPosition::Bottom => "nd-tooltip-bottom",
+        TooltipPosition::Left => "nd-tooltip-left",
+        TooltipPosition::Right => "nd-tooltip-right",
     };
 
-    // 箭头样式
-    let arrow_style = match props.position {
-        TooltipPosition::Top => {
-            "top: 100%; left: 50%; transform: translateX(-50%); \
-            border: 6px solid transparent; border-top-color: #1f2937;"
-        }
-        TooltipPosition::Bottom => {
-            "bottom: 100%; left: 50%; transform: translateX(-50%); \
-            border: 6px solid transparent; border-bottom-color: #1f2937;"
-        }
-        TooltipPosition::Left => {
-            "left: 100%; top: 50%; transform: translateY(-50%); \
-            border: 6px solid transparent; border-left-color: #1f2937;"
-        }
-        TooltipPosition::Right => {
-            "right: 100%; top: 50%; transform: translateY(-50%); \
-            border: 6px solid transparent; border-right-color: #1f2937;"
-        }
-    };
     let class = props.class.unwrap_or_default();
 
     rsx! {
@@ -214,27 +185,11 @@ pub fn Tooltip(props: TooltipProps) -> Element {
             // 触发元素
             {props.children}
 
-            // 提示内容
-            if props.is_visible {
-                div {
-                    role: "tooltip",
-                    style: format!(
-                        "position: absolute; {position_style} \
-                         padding: 8px 12px; border-radius: 8px; \
-                         font-size: 12px; font-weight: 500; \
-                         color: white; background: #1f2937; \
-                         white-space: nowrap; z-index: 100; \
-                         pointer-events: none;",
-                    ),
-                    "{props.content}"
-
-                    // 箭头
-                    div {
-                        style: format!(
-                            "position: absolute; {arrow_style}"
-                        ),
-                    }
-                }
+            // 提示内容 - CSS hover 控制显示
+            div {
+                role: "tooltip",
+                class: "nd-tooltip {position_class}",
+                "{props.content}"
             }
         }
     }
