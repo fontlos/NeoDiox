@@ -556,19 +556,19 @@
     RangeSlider 范围滑块
     ============================================ */
 
-.nd-range-slider {
+.nd-slider {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.nd-range-slider-header {
+.nd-slider-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.nd-range-slider-track {
+.nd-slider-track {
     position: absolute;
     height: 12px;
     inset: 0;
@@ -578,7 +578,7 @@
     box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);
 }
 
-.nd-range-slider-progress {
+.nd-slider-progress {
     position: absolute;
     z-index: 2;
     left: 0;
@@ -589,7 +589,7 @@
     transition: width 0.15s ease;
 }
 
-.nd-range-slider-thumb {
+.nd-slider-thumb {
     position: absolute;
     top: 50%;
     /* 确保在上层 */

@@ -1,8 +1,8 @@
 use dioxus::prelude::*;
 
-/// RangeSlider
+/// Slider
 #[derive(Props, PartialEq, Clone)]
-pub struct RangeSliderProps {
+pub struct SliderProps {
     /// Value
     pub value: i32,
     /// Change event
@@ -30,13 +30,13 @@ pub struct RangeSliderProps {
     pub class: Option<String>,
 }
 
-/// RangeSlider Component
+/// Slider Component
 ///
 /// # Example
 ///
 /// ```rust,ignore
 /// rsx! {
-///     RangeSlider {
+///     Slider {
 ///         value: volume,
 ///         on_change: move |val| set_volume(val),
 ///         label: Some("Volume".to_string()),
@@ -46,7 +46,7 @@ pub struct RangeSliderProps {
 /// }
 /// ```
 #[component]
-pub fn RangeSlider(props: RangeSliderProps) -> Element {
+pub fn Slider(props: SliderProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     // 计算百分比
@@ -58,7 +58,7 @@ pub fn RangeSlider(props: RangeSliderProps) -> Element {
 
     rsx! {
         div {
-            class: "nd-range-slider {class}",
+            class: "nd-slider {class}",
             style: "display: flex; flex-direction: column; gap: 12px;",
 
             // 标签和值
@@ -86,12 +86,12 @@ pub fn RangeSlider(props: RangeSliderProps) -> Element {
 
                 // 轨道背景
                 div {
-                    class: "nd-range-slider-track",
+                    class: "nd-slider-track",
                 }
 
                 // 进度条
                 div {
-                    class: "nd-range-slider-progress",
+                    class: "nd-slider-progress",
                     style: "width: {percentage}%;",
                 }
 
@@ -117,7 +117,7 @@ pub fn RangeSlider(props: RangeSliderProps) -> Element {
 
                 // 自定义滑块thumb - 添加 z-index: 3 确保在最上方
                 div {
-                    class: "nd-range-slider-thumb",
+                    class: "nd-slider-thumb",
                     style: "left: {percentage}%;",
                 }
             }
