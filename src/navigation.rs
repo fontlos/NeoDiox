@@ -4,6 +4,8 @@
 
 use dioxus::prelude::*;
 
+use crate::theme::use_theme;
+
 // ==================== Tabs 标签页 ====================
 
 /// Tab Option
@@ -24,8 +26,6 @@ pub struct TabsProps {
     pub active_tab: String,
     /// Change event
     pub on_change: EventHandler<String>,
-    /// Tab content
-    pub children: Element,
     /// Custom class name
     #[props(default)]
     pub class: Option<String>,
@@ -33,66 +33,85 @@ pub struct TabsProps {
 
 /// Tabs Component
 ///
-/// # Example
+/// # Example: With Router
 ///
 /// ```rust,ignore
+/// let navigator = use_navigator();
+/// let route = use_route::<Route>();
+///
 /// rsx! {
 ///     Tabs {
 ///         options: vec![
-///             TabOption { id: "tab1".to_string(), label: "Tab 1".to_string(), disabled: false, icon: None },
-///             TabOption { id: "tab2".to_string(), label: "Tab 2".to_string(), disabled: false, icon: None },
+///             TabOption { id: "/".to_string(), label: "Home".to_string(), disabled: false, icon: None },
+///             TabOption { id: "/settings".to_string(), label: "Settings".to_string(), disabled: false, icon: None },
 ///         ],
-///         active_tab: active_tab,
-///         on_change: move |id| set_active_tab(id),
-///         rsx! { "Content" }
+///         active_tab: route.to_string(),
+///         on_change: move |id| navigator.push(id),
+///     }
+///     Outlet::<Route> {}
+/// }
+/// ```
+///
+/// # Example: Manual
+///
+/// ```rust,ignore
+/// let mut active_tab = use_signal(|| "home".to_string());
+///
+/// rsx! {
+///     Tabs {
+///         options: my_options,
+///         active_tab: active_tab(),
+///         on_change: move |id| active_tab.set(id),
+///     }
+///     match active_tab() {
+///         "home" => rsx! { HomeContent {} },
+///         "settings" => rsx! { SettingsContent {} },
 ///     }
 /// }
 /// ```
 #[component]
 pub fn Tabs(props: TabsProps) -> Element {
+    let theme = use_theme();
+    let text_color = if theme.is_dark() {
+        "#d1d5db"
+    } else {
+        "#4b5563"
+    };
     let class = props.class.unwrap_or_default();
-    let options = props.options.clone();
-    let on_change = props.on_change.clone();
 
     rsx! {
         nav {
             class: "nd-tabs {class}",
+            role: "tablist",
             "aria-label": "Tabs",
 
-            // 标签页列表
-            div {
-                role: "tablist",
-                class: "nd-tabs-list",
-                for option in &options {
-                    button {
-                        r#type: "button",
-                        role: "tab",
-                        id: "tab-{option.id}",
-                        "aria-selected": if option.id == props.active_tab { "true" } else { "false" },
-                        "aria-controls": "panel-{option.id}",
-                        "aria-disabled": if option.disabled { "true" } else { "false" },
-                        tabindex: if option.id == props.active_tab { 0 } else { -1 },
-                        disabled: if option.disabled { true } else { false },
-                        class: if option.id == props.active_tab { "nd-tab nd-tab-active" } else { "nd-tab" },
-                        onclick: {
-                            let option = option.clone();
-                            let on_change = on_change.clone();
-                            move |_| {
-                                if !option.disabled {
-                                    on_change.call(option.id.clone());
-                                }
+            for option in &props.options {
+                button {
+                    r#type: "button",
+                    role: "tab",
+                    "aria-selected": if option.id == props.active_tab { "true" } else { "false" },
+                    "aria-disabled": if option.disabled { "true" } else { "false" },
+                    tabindex: if option.id == props.active_tab { 0 } else { -1 },
+                    disabled: if option.disabled { true } else { false },
+                    class: "nd-tab",
+                    class: if option.id == props.active_tab { "nd-tab-active" } else { "" },
+                    style: "color: {text_color};",
+                    onclick: {
+                        let option = option.clone();
+                        let on_change = props.on_change.clone();
+                        move |_| {
+                            if !option.disabled {
+                                on_change.call(option.id.clone());
                             }
-                        },
-                        if let Some(icon) = &option.icon {
-                            span { class: "nd-tab-icon", "{icon}" }
                         }
-                        span { "{option.label}" }
+                    },
+
+                    if let Some(icon) = &option.icon {
+                        span { class: "nd-tab-icon", "{icon}" }
                     }
+                    span { class: "nd-tab-label", "{option.label}" }
                 }
             }
-
-            // 内容面板
-            div { class: "nd-tab-panel", {props.children} }
         }
     }
 }
