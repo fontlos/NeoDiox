@@ -4,12 +4,11 @@ pub mod advanced;
 pub mod button;
 pub mod data;
 pub mod feedback;
-pub mod form_controls;
 pub mod icon;
 pub mod inputs;
 pub mod label;
 pub mod navigation;
-pub mod selectors;
+pub mod selector;
 pub mod styles;
 pub mod surfaces;
 pub mod theme;
@@ -23,15 +22,13 @@ pub mod prelude {
     pub use crate::surfaces::{NeuFlat, NeuInset, NeuRaised, NeuRaisedSm, NeuSurface, SurfaceType};
     // 按钮组件
     pub use crate::button::{Button, ButtonVariant};
-    // 表单控件
-    pub use crate::form_controls::{Checkbox, Radio, RadioGroup, RadioOption, Toggle};
     // 输入组件
     pub use crate::inputs::{InputSize, ResizeMode, SearchInput, TextArea, TextInput};
     pub use crate::label::{Badge, Tooltip, TooltipPosition};
-    // 选择器
-    pub use crate::selectors::{
-        DatePicker, Dropdown, DropdownOption, MultiSelect, MultiSelectOption, RangeSlider,
-        StarRating, TimePicker,
+    // 选择控件
+    pub use crate::selector::{
+        Checkbox, DatePicker, Dropdown, DropdownOption, MultiSelect, MultiSelectOption, Radio,
+        RadioGroup, RadioOption, RangeSlider, StarRating, TimePicker, Toggle,
     };
     // 反馈组件
     pub use crate::feedback::{
@@ -45,8 +42,7 @@ pub mod prelude {
     };
     // 数据展示
     pub use crate::data::{
-        Accordion, BarChart, BarData, Card, Column, DataTable,
-        DonutChart, DonutData, SortDirection
+        Accordion, BarChart, BarData, Card, Column, DataTable, DonutChart, DonutData, SortDirection,
     };
     // 高级组件
     pub use crate::advanced::{
