@@ -2,6 +2,7 @@
 
 pub mod advanced;
 pub mod button;
+pub mod container;
 pub mod data;
 pub mod feedback;
 pub mod icon;
@@ -40,9 +41,10 @@ pub mod prelude {
         BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, StepperDirection, TabOption,
         Tabs,
     };
-    // 数据展示
+    pub use crate::container::{Accordion};
+    // 数据组件
     pub use crate::data::{
-        Accordion, BarChart, BarData, Card, Column, DataTable, DonutChart, DonutData, SortDirection,
+        BarChart, BarData, Column, Table, DonutChart, DonutData, SortDirection,
     };
     // 高级组件
     pub use crate::advanced::{
