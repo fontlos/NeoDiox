@@ -36,8 +36,9 @@ pub mod prelude {
         Alert, AlertType, Modal, ModalSize, ProgressBar, Skeleton, Spinner, ToastContainer,
         ToastMessage, ToastPosition, ToastType,
     };
+    // 容器组件
+    pub use crate::container::{Accordion, Card};
     // 导航组件
-    pub use crate::container::Accordion;
     pub use crate::navigation::{
         BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, StepperDirection, TabOption,
         Tabs,
@@ -45,9 +46,7 @@ pub mod prelude {
     // 数据组件
     pub use crate::data::{BarChart, BarData, Column, DonutChart, DonutData, SortDirection, Table};
     // 高级组件
-    pub use crate::advanced::{
-        ContextMenu, FeatureCard, FileInfo, FileUpload, MenuItem, TreeNode, TreeView,
-    };
+    pub use crate::advanced::{FileInfo, FileUpload, Menu, MenuItem, TreeNode, TreeView};
     // 图标组件
     pub use crate::icon::Icon;
 }
