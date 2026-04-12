@@ -1,7 +1,3 @@
-//! Label Components
-//!
-//! Provides Badge, Tooltip
-
 use dioxus::prelude::*;
 
 use crate::button::ButtonVariant;
@@ -119,77 +115,6 @@ pub fn Badge(props: BadgeProps) -> Element {
                     },
                     "✕"
                 }
-            }
-        }
-    }
-}
-
-// ==================== Tooltip 提示 ====================
-
-/// Tooltip Position
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub enum TooltipPosition {
-    #[default]
-    Top,
-    Bottom,
-    Left,
-    Right,
-}
-
-/// Tooltip
-#[derive(Props, PartialEq, Clone)]
-pub struct TooltipProps {
-    /// Tooltip Content
-    pub content: String,
-    /// Trigger Element
-    pub children: Element,
-    /// Tooltip Position
-    #[props(default)]
-    pub position: TooltipPosition,
-    /// Custom Class Name
-    #[props(default)]
-    pub class: Option<String>,
-}
-
-/// Tooltip Component - 使用 CSS hover 显示
-///
-/// # Example
-///
-/// ```rust,ignore
-/// rsx! {
-///     Tooltip {
-///         content: "Home".to_string(),
-///         position: TooltipPosition::Top,
-///         Button {
-///             onclick: move |_| {},
-///             "🏠"
-///         }
-///     }
-/// }
-/// ```
-#[component]
-pub fn Tooltip(props: TooltipProps) -> Element {
-    let position_class = match props.position {
-        TooltipPosition::Top => "nd-tooltip-top",
-        TooltipPosition::Bottom => "nd-tooltip-bottom",
-        TooltipPosition::Left => "nd-tooltip-left",
-        TooltipPosition::Right => "nd-tooltip-right",
-    };
-
-    let class = props.class.unwrap_or_default();
-
-    rsx! {
-        div {
-            class: "nd-tooltip-container {class}",
-
-            // 触发元素
-            {props.children}
-
-            // 提示内容 - CSS hover 控制显示
-            div {
-                role: "tooltip",
-                class: "nd-tooltip {position_class}",
-                "{props.content}"
             }
         }
     }

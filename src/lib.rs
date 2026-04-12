@@ -7,7 +7,6 @@ pub mod data;
 pub mod feedback;
 pub mod icon;
 pub mod input;
-pub mod label;
 pub mod navigation;
 pub mod selector;
 pub mod styles;
@@ -25,7 +24,6 @@ pub mod prelude {
     pub use crate::button::{Button, ButtonVariant};
     // 输入组件
     pub use crate::input::{InputSize, ResizeMode, SearchInput, TextArea, TextInput};
-    pub use crate::label::{Badge, Tooltip, TooltipPosition};
     // 选择控件
     pub use crate::selector::{
         Checkbox, DatePicker, Dropdown, DropdownOption, MultiSelect, MultiSelectOption, Radio,
@@ -33,11 +31,11 @@ pub mod prelude {
     };
     // 反馈组件
     pub use crate::feedback::{
-        Alert, AlertType, Modal, ModalSize, ProgressBar, Skeleton, Spinner, ToastContainer,
-        ToastMessage, ToastPosition, ToastType,
+        Alert, AlertType, Modal, ModalSize, ProgressBar, Skeleton, Spinner, Tip, TipPosition,
+        ToastContainer, ToastMessage, ToastPosition, ToastType,
     };
     // 容器组件
-    pub use crate::container::{Accordion, Card};
+    pub use crate::container::{Accordion, Badge, Card};
     // 导航组件
     pub use crate::navigation::{
         BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, StepperDirection, TabOption,
