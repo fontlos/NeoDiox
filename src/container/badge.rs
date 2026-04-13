@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 use crate::button::ButtonVariant;
 
-// ==================== Badge 徽章 ====================
+// 这里复用了 Button 的变体和 class 类
 
 /// Badge
 #[derive(Props, PartialEq, Clone)]
@@ -31,17 +31,20 @@ pub struct BadgeProps {
 /// ```
 #[component]
 pub fn Badge(props: BadgeProps) -> Element {
-    let class = props.class.unwrap_or_default();
-
-    let color = match props.variant {
+    // 复用自 button
+    let (mut class, color) = match props.variant {
         ButtonVariant::Neuromorphic => {
-            "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light); color: var(--nd-color-secondary);".to_string()
+            ("nd-btn-neuromorphic ".to_string(), "".to_string())
         }
-        ButtonVariant::Gradient(color1, color2, font_color) => format!(
-            "background: linear-gradient(145deg, {}, {}); box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light); color: {};",
-            color1, color2, font_color
+        ButtonVariant::Gradient(c1, c2, f) => (
+            "nd-btn-gradient ".to_string(),
+            format!("background: linear-gradient(145deg, {c1}, {c2}); color: {f};")
         ),
     };
+
+    if let Some(c) = props.class {
+        class.push_str(&c);
+    }
 
     rsx! {
         span {
