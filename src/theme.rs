@@ -27,6 +27,10 @@ impl ThemeVariant {
 
 /// Use to OVERWRITE the default theme variables
 pub struct ThemeVars {
+    /// Font primary color
+    pub text_primary: &'static str,
+    /// Font secondary color
+    pub text_secondary: &'static str,
     /// Background primary color
     pub bg_primary: &'static str,
     /// Background secondary color
@@ -35,6 +39,10 @@ pub struct ThemeVars {
     pub shadow_dark: &'static str,
     /// Shadow light color
     pub shadow_light: &'static str,
+    /// Dark Text primary color
+    pub dark_text_primary: &'static str,
+    /// Dark Text secondary color
+    pub dark_text_secondary: &'static str,
     /// Dark background primary color
     pub dark_bg_primary: &'static str,
     /// Dark background secondary color
@@ -52,10 +60,14 @@ pub struct ThemeVars {
 impl Default for ThemeVars {
     fn default() -> Self {
         Self {
+            text_primary: "#000000",
+            text_secondary: "#4b5563",
             bg_primary: "#e6e9ef",
             bg_secondary: "#d1d5db",
             shadow_dark: "#b8bcc2",
             shadow_light: "#ffffff",
+            dark_text_primary: "#ffffff",
+            dark_text_secondary: "#d1d5db",
             dark_bg_primary: "#374151",
             dark_bg_secondary: "#1f2937",
             dark_shadow_dark: "#111827",
@@ -69,14 +81,34 @@ impl Default for ThemeVars {
 impl ThemeVars {
     pub fn to_css(&self) -> String {
         format!(
-":root{{--nd-bg-primary:{};--nd-bg-secondary:{};--nd-shadow-dark:{};--nd-shadow-light:{};--nd-primary:{};--nd-primary-dark:{}}}
-.nd-dark{{--nd-bg-primary:{};--nd-bg-secondary:{};--nd-shadow-dark:{};--nd-shadow-light:{}}}",
+":root{{
+    --nd-text-primary:{};
+    --nd-text-secondary:{};
+    --nd-bg-primary:{};
+    --nd-bg-secondary:{};
+    --nd-shadow-dark:{};
+    --nd-shadow-light:{};
+    --nd-primary:{};
+    --nd-primary-dark:{}
+}}
+.nd-dark{{
+    --nd-text-primary:{};
+    --nd-text-secondary:{};
+    --nd-bg-primary:{};
+    --nd-bg-secondary:{};
+    --nd-shadow-dark:{};
+    --nd-shadow-light:{}
+}}",
+            self.text_primary,
+            self.text_secondary,
             self.bg_primary,
             self.bg_secondary,
             self.shadow_dark,
             self.shadow_light,
             self.primary,
             self.primary_dark,
+            self.dark_text_primary,
+            self.dark_text_secondary,
             self.dark_bg_primary,
             self.dark_bg_secondary,
             self.dark_shadow_dark,

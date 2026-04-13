@@ -1,4 +1,6 @@
 :root {
+    --nd-text-primary: #000000;
+    --nd-text-secondary: #4b5563;
     --nd-bg-primary: #e6e9ef;
     --nd-bg-secondary: #d1d5db;
     --nd-shadow-dark: #b8bcc2;
@@ -10,6 +12,8 @@
 }
 
 .nd-dark {
+    --nd-text-primary: #ffffff;
+    --nd-text-secondary: #d1d5db;
     --nd-bg-primary: #374151;
     --nd-bg-secondary: #1f2937;
     --nd-shadow-dark: #111827;
@@ -132,7 +136,17 @@
     }
 }
 
+/* =====================
+    响应主题的文本颜色
+===================== */
 
+.nd-text-primary {
+    color: var(--nd-text-primary);
+}
+
+.nd-text-secondary {
+    color: var(--nd-text-secondary);
+}
 
 /* =====================
     Icon 图标组件

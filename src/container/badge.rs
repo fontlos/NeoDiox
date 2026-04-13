@@ -1,7 +1,6 @@
 use dioxus::prelude::*;
 
 use crate::button::ButtonVariant;
-use crate::theme::use_theme;
 
 // ==================== Badge 徽章 ====================
 
@@ -32,20 +31,11 @@ pub struct BadgeProps {
 /// ```
 #[component]
 pub fn Badge(props: BadgeProps) -> Element {
-    let theme = use_theme();
     let class = props.class.unwrap_or_default();
 
     let color = match props.variant {
         ButtonVariant::Neuromorphic => {
-            let text_color = if theme.is_dark() {
-                "#d1d5db"
-            } else {
-                "#4b5563"
-            };
-            format!(
-                "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light); color: {};",
-                text_color
-            )
+            "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light); color: var(--nd-color-secondary);".to_string()
         }
         ButtonVariant::Gradient(color1, color2, font_color) => format!(
             "background: linear-gradient(145deg, {}, {}); box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light); color: {};",

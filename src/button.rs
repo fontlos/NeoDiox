@@ -2,7 +2,6 @@
 //!
 //! Provides skeuomorphic buttons in various variants and states
 
-use crate::theme::use_theme;
 use dioxus::prelude::*;
 
 /// Button Variants
@@ -78,21 +77,12 @@ pub struct ButtonProps {
 /// ```
 #[component]
 pub fn Button(props: ButtonProps) -> Element {
-    let theme = use_theme();
     let class = props.class.unwrap_or_default();
 
     // TODO: 可以考虑把静态 CSS 分离出去, 内联也许会对子元素造成覆盖
     let color = match props.variant {
         ButtonVariant::Neuromorphic => {
-            let text_color = if theme.is_dark() {
-                "#d1d5db"
-            } else {
-                "#4b5563"
-            };
-            format!(
-                "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light); color: {};",
-                text_color
-            )
+            "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light); color: var(--nd-color-secondary);".to_string()
         }
         ButtonVariant::Gradient(color1, color2, font_color) => format!(
             "background: linear-gradient(145deg, {}, {}); box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light); color: {};",
