@@ -77,20 +77,29 @@
 }
 
 .nd-accordion-panel {
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease-out;
 }
 
 .nd-accordion-panel-expanded {
-    max-height: 60px !important;
+    grid-template-rows: 1fr;
+}
+
+.nd-accordion-panel > div {
+    overflow: hidden;
 }
 
 .nd-accordion-content {
-    padding: 0 20px 16px 20px;
+    padding: 0 20px;
     font-size: 14px;
     color: inherit;
     opacity: 0.7;
+    transition: padding 0.3s ease-out;
+}
+
+.nd-accordion-panel-expanded .nd-accordion-content {
+    padding: 0 20px 16px 20px;
 }
 
 /* =====================
