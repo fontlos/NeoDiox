@@ -9,16 +9,18 @@ pub mod icon;
 pub mod input;
 pub mod navigation;
 pub mod selector;
-pub mod styles;
+pub mod style;
 pub mod theme;
 
 pub mod prelude {
     // 样式
-    pub use crate::styles::{NORMALIZE, NORMALIZE_S, STYLE, STYLE_S};
+    pub use crate::style::{STYLE, STYLE_STR, RESET, RESET_STR};
     // 主题
     pub use crate::theme::{ThemeVariant, ThemeVars, use_theme, use_toggle_theme};
     // 容器组件
-    pub use crate::container::{Accordion, Badge, Card, NeuFlat, NeuInset, NeuRaised, NeuRaisedSm, NeuSurface, SurfaceType};
+    pub use crate::container::{
+        Accordion, Badge, Card, NeuFlat, NeuInset, NeuRaised, NeuRaisedSm, NeuSurface, SurfaceType,
+    };
     // 按钮组件
     pub use crate::button::{Button, ButtonVariant};
     // 图标组件
@@ -44,5 +46,4 @@ pub mod prelude {
     pub use crate::data::{BarChart, BarData, Column, DonutChart, DonutData, SortDirection, Table};
     // 高级组件
     pub use crate::advanced::{FileInfo, FileUpload, Menu, MenuItem, TreeNode, TreeView};
-
 }

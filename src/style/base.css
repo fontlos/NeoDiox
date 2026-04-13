@@ -1,0 +1,173 @@
+:root {
+    --nd-bg-primary: #e6e9ef;
+    --nd-bg-secondary: #d1d5db;
+    --nd-shadow-dark: #b8bcc2;
+    --nd-shadow-light: #ffffff;
+    --nd-primary: #7c3aed;
+    --nd-primary-dark: #6d28d9;
+    --transition-fast: 150ms;
+    --transition-normal: 300ms;
+}
+
+.nd-dark {
+    --nd-bg-primary: #374151;
+    --nd-bg-secondary: #1f2937;
+    --nd-shadow-dark: #111827;
+    --nd-shadow-light: #4b5563
+}
+
+/* ============================================
+    动画定义
+    ============================================ */
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes skeleton-loading {
+    from {
+        background-position: 200% 0;
+    }
+
+    to {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes grow-up {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes toast-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toast-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-25%);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes context-menu-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+
+/* =====================
+    Icon 图标组件
+===================== */
+
+.nd-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* =====================
+    Button 按钮组件
+===================== */
+
+.nd-btn {
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nd-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.nd-btn:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow:
+        inset 2px 2px 4px var(--nd-shadow-dark),
+        inset -2px -2px 4px var(--nd-shadow-light) !important;
+}
+
+.nd-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

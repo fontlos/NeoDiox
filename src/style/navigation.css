@@ -1,0 +1,129 @@
+/* ============================================
+    Tabs 标签页
+    ============================================ */
+
+.nd-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 0.5rem;
+    background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary));
+    box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);
+    border-radius: 16px;
+}
+
+.nd-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nd-tab-active {
+    background: linear-gradient(145deg, #7c3aed, #6d28d9) !important;
+    color: white !important;
+    box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light) !important;
+}
+
+.nd-tab-icon {
+    font-size: 16px;
+}
+
+.nd-tab-label {
+    white-space: nowrap;
+}
+
+/* ============================================
+    Breadcrumbs 面包屑
+    ============================================ */
+
+.nd-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nd-breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.nd-breadcrumb-separator {
+    opacity: 0.4;
+}
+
+.nd-breadcrumb-link {
+    color: var(--nd-primary);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.nd-breadcrumb-link:hover {
+    opacity: 0.8;
+}
+
+.nd-breadcrumb-current {
+    font-weight: 500;
+    color: inherit;
+}
+
+/* ============================================
+    Stepper 步骤条
+    ============================================ */
+
+.nd-stepper {
+    display: flex;
+    gap: 16px;
+}
+
+.nd-stepper-vertical {
+    flex-direction: column;
+}
+
+.nd-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.nd-step-vertical {
+    flex-direction: row;
+}
+
+.nd-step-indicator {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.nd-step-content {
+    flex: 1;
+}
+
+.nd-step-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nd-step-description {
+    font-size: 12px;
+    opacity: 0.6;
+}

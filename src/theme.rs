@@ -25,6 +25,7 @@ impl ThemeVariant {
     }
 }
 
+/// Use to OVERWRITE the default theme variables
 pub struct ThemeVars {
     /// Background primary color
     pub bg_primary: &'static str,
