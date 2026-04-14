@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-/// DatePicker
+/// DatePicker Props
 #[derive(Props, PartialEq, Clone)]
 pub struct DatePickerProps {
     /// Current selected date (ISO format)
@@ -8,12 +8,9 @@ pub struct DatePickerProps {
     pub value: Option<String>,
     /// Change event
     pub on_change: EventHandler<String>,
-    /// Label text
-    #[props(default)]
-    pub label: Option<String>,
     /// Placeholder text
-    #[props(default = "Select a date".to_string())]
-    pub placeholder: String,
+    #[props(default)]
+    pub placeholder: Option<String>,
     /// Whether to disable
     #[props(default)]
     pub disabled: bool,
@@ -34,53 +31,36 @@ pub struct DatePickerProps {
 ///
 /// ```rust,ignore
 /// rsx! {
-///     DatePicker {
-///         value: selected_date,
-///         on_change: move |val| set_selected_date(Some(val)),
-///         label: Some("Select Date".to_string()),
+///     div {
+///         label { "Select Date" }
+///         DatePicker {
+///             value: selected_date,
+///             on_change: move |val| set_selected_date(Some(val)),
+///         }
 ///     }
 /// }
 /// ```
 #[component]
 pub fn DatePicker(props: DatePickerProps) -> Element {
-    let value = props.value.unwrap_or_default();
+    let value = props.value.clone().unwrap_or_default();
     let class = props.class.unwrap_or_default();
+    let placeholder = props.placeholder.clone().unwrap_or_default();
 
     rsx! {
         div {
             class: "nd-date-picker {class}",
-            style: "display: flex; flex-direction: column; gap: 8px;",
-
-            if let Some(label_text) = props.label {
-                label {
-                    style: "font-size: 14px; font-weight: 500; color: inherit;",
-                    "{label_text}"
-                }
-            }
 
             div {
-                style: "position: relative;",
-
-                // 拟物化背景
-                div {
-                    style: format!(
-                        "position: absolute; inset: 0; border-radius: 12px; z-index: -1; \
-                         background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
-                         box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);"
-                    ),
-                }
+                class: "nd-date-picker-wrapper",
 
                 input {
                     r#type: "date",
                     value,
+                    placeholder,
                     disabled: if props.disabled { "true" } else { "false" },
-                    min: props.min.unwrap_or_default(),
-                    max: props.max.unwrap_or_default(),
-                    style: format!(
-                        "width: 100%; padding: 12px 40px 12px 16px; border-radius: 12px; \
-                         font-size: 14px; color: inherit; background: transparent; \
-                         border: none; outline: none; cursor: pointer;"
-                    ),
+                    min: props.min.clone().unwrap_or_default(),
+                    max: props.max.clone().unwrap_or_default(),
+                    class: "nd-date-picker-input nd-input-bg",
                     oninput: move |evt| {
                         let val = evt.value();
                         if !val.is_empty() {
@@ -91,9 +71,7 @@ pub fn DatePicker(props: DatePickerProps) -> Element {
 
                 // 日历图标
                 span {
-                    style: "position: absolute; right: 12px; top: 50%; \
-                            transform: translateY(-50%); pointer-events: none; \
-                            font-size: 18px; opacity: 0.6;",
+                    class: "nd-date-picker-icon",
                     "📅"
                 }
             }
