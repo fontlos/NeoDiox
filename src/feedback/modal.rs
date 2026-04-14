@@ -1,15 +1,34 @@
 use dioxus::prelude::*;
 
-/// Modal
+/// Modal Size
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum ModalSize {
+    Small,
+    #[default]
+    Medium,
+    Large,
+}
+
+impl ModalSize {
+    pub fn max_width(&self) -> &'static str {
+        match self {
+            Self::Small => "400px",
+            Self::Medium => "500px",
+            Self::Large => "700px",
+        }
+    }
+}
+
+/// Modal Props
 #[derive(Props, PartialEq, Clone)]
 pub struct ModalProps {
-    /// Whether to open
+    /// Whether the modal is open
     pub is_open: bool,
     /// Close event handler
     pub on_close: EventHandler<()>,
     /// Modal title
     pub title: String,
-    /// Modal content
+    /// Modal body content
     pub children: Element,
     /// Modal size
     #[props(default)]
@@ -20,33 +39,15 @@ pub struct ModalProps {
     /// Whether clicking the backdrop closes the modal
     #[props(default = true)]
     pub close_on_backdrop: bool,
+    /// Optional footer content
+    #[props(default)]
+    pub footer: Option<Element>,
     /// Custom class name
     #[props(default)]
     pub class: Option<String>,
 }
 
-/// Modal size
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub enum ModalSize {
-    Small,
-    #[default]
-    Medium,
-    Large,
-    FullScreen,
-}
-
-impl ModalSize {
-    pub fn max_width(&self) -> &'static str {
-        match self {
-            Self::Small => "400px",
-            Self::Medium => "600px",
-            Self::Large => "800px",
-            Self::FullScreen => "100%",
-        }
-    }
-}
-
-/// Modal component
+/// Modal component - neuromorphic dialog with backdrop
 ///
 /// # Example
 ///
@@ -55,74 +56,78 @@ impl ModalSize {
 ///     Modal {
 ///         is_open: is_modal_open,
 ///         on_close: move |_| set_is_modal_open(false),
-///         title: "Modal Title".to_string(),
-///         NeuFlat {
-///             border_radius: 8,
-///             "Modal content goes here"
-///         }
+///         title: "Modal Title",
+///         p { "Modal content goes here" }
+///         footer: rsx! {
+///             Button { variant: ButtonVariant::Neuromorphic, onclick: move |_| set_is_modal_open(false), "Cancel" }
+///             Button { variant: ButtonVariant::PRIMARY, onclick: move |_| { set_is_modal_open(false); }, "Confirm" }
+///         },
 ///     }
 /// }
 /// ```
 #[component]
 pub fn Modal(props: ModalProps) -> Element {
-    let class = props.class.unwrap_or_default();
-
     if !props.is_open {
         return rsx! {};
     }
 
+    let class = props.class.unwrap_or_default();
+
     rsx! {
-        // 背景遮罩
+        // Backdrop
         div {
             class: "nd-modal-backdrop",
+            role: "presentation",
             onclick: move |_| {
                 if props.close_on_backdrop {
                     props.on_close.call(());
                 }
             },
 
-            // 模态框内容
+            // Modal dialog
             div {
                 class: "nd-modal {class}",
-                style: format!(
-                    "width: 100%; max-width: {};",
-                    props.size.max_width()
-                ),
+                role: "dialog",
+                "aria-modal": "true",
+                style: format!("width: 90%; max-width: {};", props.size.max_width()),
                 onclick: move |evt| {
                     evt.stop_propagation();
                 },
 
-                // 拟物化背景
+                // Header
                 div {
-                    class: "nd-modal-bg",
-                }
+                    class: "nd-modal-header",
 
-                // 模态框内部
-                div {
-                    class: "nd-modal-content",
-
-                    // 标题栏
-                    div {
-                        class: "nd-modal-header-wrapper",
-                        h2 {
-                            class: "nd-modal-title",
-                            "{props.title}"
-                        }
-
-                        if props.show_close {
-                            button {
-                                r#type: "button",
-                                class: "nd-modal-close",
-                                onclick: move |_| {
-                                    props.on_close.call(());
-                                },
-                                "✕"
-                            }
-                        }
+                    h2 {
+                        class: "nd-modal-title",
+                        "{props.title}"
                     }
 
-                    // 内容
+                    if props.show_close {
+                        button {
+                            r#type: "button",
+                            class: "nd-modal-close",
+                            "aria-label": "Close modal",
+                            onclick: move |_| {
+                                props.on_close.call(());
+                            },
+                            "✕"
+                        }
+                    }
+                }
+
+                // Body
+                div {
+                    class: "nd-modal-body",
                     {props.children}
+                }
+
+                // Footer (optional)
+                if let Some(footer) = &props.footer {
+                    div {
+                        class: "nd-modal-footer",
+                        {footer.clone()}
+                    }
                 }
             }
         }
