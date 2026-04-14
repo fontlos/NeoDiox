@@ -3,50 +3,44 @@
     ============================================ */
 
 .nd-text-input,
-.nd-textarea,
-.nd-search-input {
-    position: relative;
+.nd-textarea {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
 }
 
+.nd-text-input-wrapper,
+.nd-textarea-wrapper {
+    position: relative;
+}
+
+/* 输入框容器 - 拟物凹陷背景 */
 .nd-input-bg {
     background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary));
     box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);
-}
-
-/* 这个 control 也在用 */
-.nd-label {
-    font-size: 14px;
-    font-weight: 500;
-    color: inherit;
-}
-
-.nd-label-required {
-    color: #ef4444;
-    margin-left: 4px;
-}
-
-.nd-error {
-    font-size: 12px;
-    color: #ef4444;
-    margin: 0;
-}
-
-.nd-help {
-    font-size: 12px;
-    color: inherit;
-    opacity: 0.6;
-    margin: 0;
-}
-
-.nd-input,
-.nd-textarea-element {
-    color: inherit;
-    background: transparent;
+    border: 2px solid transparent;
+    border-radius: 12px;
     transition: all 0.2s ease;
     outline: none;
+}
+
+.nd-input-bg.nd-error-state {
+    border-color: #ef4444 !important;
+    box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light),
+        0 0 0 1px #ef4444 !important;
+}
+
+/* 输入框本体 */
+.nd-input,
+.nd-textarea-element {
+    width: 100%;
+    color: inherit;
+    background: transparent;
+    font-size: 14px;
+    border: none;
+    outline: none;
+    padding: 12px 16px;
+    border-radius: 12px;
 }
 
 .nd-input:focus,
@@ -56,9 +50,18 @@
         0 0 0 3px rgba(124, 58, 237, 0.3) !important;
 }
 
-.nd-input-clear,
-.nd-search-clear {
+/* 错误信息 */
+.nd-error {
+    font-size: 12px;
+    color: #ef4444;
+    margin: 0;
+    margin-top: 4px;
+}
+
+/* 清除按钮 */
+.nd-input-clear {
     position: absolute;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -69,23 +72,34 @@
     opacity: 0.6;
 }
 
-.nd-input-clear:hover,
-.nd-search-clear:hover {
+.nd-input-clear:hover {
     opacity: 1;
 }
 
-.nd-search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    opacity: 0.6;
-    pointer-events: none;
+/* TextArea 滚动条样式 */
+.nd-textarea-element::-webkit-scrollbar {
+    width: 6px;
 }
 
-.nd-search-label {
-    margin-bottom: 8px;
-    display: block;
+.nd-textarea-element::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 3px;
+    margin: 8px 0;
 }
 
+.nd-textarea-element::-webkit-scrollbar-thumb {
+    background: linear-gradient(145deg, var(--nd-shadow-dark), var(--nd-bg-secondary));
+    border-radius: 3px;
+}
+
+.nd-textarea-element::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-shadow-dark));
+}
+
+.nd-textarea-element::-webkit-scrollbar-button {
+    display: none;
+}
+
+.nd-textarea-element::-webkit-scrollbar-corner {
+    background: transparent;
+}

@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-/// TextArea
+/// TextArea Props
 #[derive(Props, PartialEq, Clone)]
 pub struct TextAreaProps {
     /// TextArea Value
@@ -10,15 +10,12 @@ pub struct TextAreaProps {
     /// Placeholder Text
     #[props(default)]
     pub placeholder: Option<String>,
-    /// Label Text
-    #[props(default)]
-    pub label: Option<String>,
-    /// Number of Rows
+    /// Number of Rows (initial height)
     #[props(default = 3)]
     pub rows: u32,
-    /// Is Required
+    /// Maximum Height (e.g. "200px")
     #[props(default)]
-    pub required: bool,
+    pub max_height: Option<String>,
     /// Is Disabled
     #[props(default)]
     pub disabled: bool,
@@ -31,96 +28,64 @@ pub struct TextAreaProps {
     /// Error Message
     #[props(default)]
     pub error: Option<String>,
-    /// Is Resizeable
-    #[props(default = ResizeMode::Vertical)]
-    pub resize: ResizeMode,
     /// Custom class name
     #[props(default)]
     pub class: Option<String>,
 }
 
-/// Resize Mode for TextArea
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ResizeMode {
-    None,
-    Horizontal,
-    Vertical,
-    Both,
-}
-
-impl std::fmt::Display for ResizeMode {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::None => write!(f, "none"),
-            Self::Horizontal => write!(f, "horizontal"),
-            Self::Vertical => write!(f, "vertical"),
-            Self::Both => write!(f, "both"),
-        }
-    }
-}
-
-/// TextArea Component
+/// TextArea Component - 纯textarea元素，无label，由调用者控制标签
 ///
 /// # Example
 ///
 /// ```rust,ignore
 /// rsx! {
-///     TextArea {
-///         value: message,
-///         on_input: move |val| set_message(val),
-///         label: Some("Message".to_string()),
-///         rows: 4,
-///         placeholder: Some("Your message...".to_string()),
+///     div {
+///         label { "Message" }
+///         TextArea {
+///             value: message,
+///             on_input: move |val| set_message(val),
+///             rows: 4,
+///             max_height: "200px".to_string(),
+///             placeholder: "Your message...",
+///         }
 ///     }
 /// }
 /// ```
 #[component]
 pub fn TextArea(props: TextAreaProps) -> Element {
     let placeholder = props.placeholder.unwrap_or_default();
-    let class = props.class.unwrap_or_default();
     let has_error = props.error.is_some();
+    let class = props.class.unwrap_or_default();
+    let max_height = props.max_height.clone().unwrap_or_else(|| "200px".to_string());
 
-    let disabled_style = if props.disabled {
-        "opacity: 0.6; cursor: not-allowed;"
-    } else {
-        ""
+    let textarea_style = {
+        let mut s = String::from("max-height: ");
+        s.push_str(&max_height);
+        s.push(';');
+        if props.disabled { s.push_str(" opacity: 0.6; cursor: not-allowed;"); }
+        Some(s)
     };
-    let resize_style = props.resize.to_string();
 
     rsx! {
         div {
             class: "nd-textarea {class}",
 
-            // 标签
-            if let Some(label_text) = props.label {
-                label {
-                    class: "nd-label",
-                    "{label_text}"
-                    if props.required {
-                        span { class: "nd-label-required", "*" }
-                    }
+            div { class: "nd-textarea-wrapper",
+                textarea {
+                    value: "{props.value}",
+                    placeholder,
+                    resize: "none",
+                    rows: props.rows,
+                    disabled: if props.disabled { "true" } else { "false" },
+                    readonly: if props.read_only { "true" } else { "false" },
+                    maxlength: props.max_length,
+                    "aria-invalid": if has_error { "true" } else { "false" },
+                    class: if has_error { "nd-textarea-element nd-input-bg nd-error-state" } else { "nd-textarea-element nd-input-bg" },
+                    style: textarea_style,
+                    oninput: move |evt| {
+                        props.on_input.call(evt.value().clone());
+                    },
                 }
-            }
-
-            // 文本区域
-            textarea {
-                value: "{props.value}",
-                placeholder,
-                rows: props.rows,
-                disabled: if props.disabled { "true" } else { "false" },
-                readonly: if props.read_only { "true" } else { "false" },
-                required: if props.required { "true" } else { "false" },
-                maxlength: props.max_length,
-                "aria-invalid": if has_error { "true" } else { "false" },
-                class: "nd-textarea-element nd-input-bg",
-                style: format!(
-                    "padding: 12px 16px; border-radius: 12px; font-size: 14px; \
-                     resize: {resize_style}; {}",
-                    disabled_style
-                ),
-                oninput: move |evt| {
-                    props.on_input.call(evt.value().clone());
-                },
             }
 
             // 错误信息

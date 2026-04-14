@@ -26,7 +26,7 @@ pub mod prelude {
     // 图标组件
     pub use crate::icon::Icon;
     // 输入组件
-    pub use crate::input::{InputSize, ResizeMode, SearchInput, TextArea, TextInput};
+    pub use crate::input::{TextArea, TextInput};
     // 选择组件
     pub use crate::selector::{
         Checkbox, DatePicker, Dropdown, DropdownOption, MultiSelect, MultiSelectOption, Radio,
