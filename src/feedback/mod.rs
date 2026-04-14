@@ -1,8 +1,9 @@
 //! Feedback Components
 //!
-//! Provides Alert, Modal, ProgressBar, Skeleton, Spinner, Tip, Toast
+//! Provides Alert, DotsLoading, Modal, ProgressBar, Skeleton, Spinner, Tip, Toast
 
 mod alert;
+mod dots;
 mod modal;
 mod progress;
 mod skeleton;
@@ -11,6 +12,7 @@ mod tip;
 mod toast;
 
 pub use alert::{Alert, AlertType};
+pub use dots::DotsLoading;
 pub use modal::{Modal, ModalSize};
 pub use progress::ProgressBar;
 pub use skeleton::Skeleton;
