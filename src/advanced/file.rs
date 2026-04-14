@@ -43,7 +43,7 @@ pub struct FileUploadProps {
 /// ```rust,ignore
 /// rsx! {
 ///     FileUpload {
-///         files: uploaded_files,
+///         files: uploaded_files.clone(),
 ///         on_add: move |new_files| add_files(new_files),
 ///         on_remove: move |idx| remove_file(idx),
 ///         accept: Some("image/*,.pdf".to_string()),
@@ -62,9 +62,38 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
             // 拖拽区域
             div {
                 class: "nd-file-drop-zone",
-                onclick: move |_| {
-                    // 在实际应用中，这里应该触发文件选择对话框
-                },
+                role: "button",
+                tabindex: "0",
+
+                // 隐藏的文件输入 - 覆盖在整个区域上
+                input {
+                    r#type: "file",
+                    class: "nd-file-input",
+                    multiple: if props.multiple { "true" } else { "false" },
+                    accept: props.accept.clone().unwrap_or_default(),
+                    oninput: move |evt| {
+                        let file_engine = evt.files();
+                        if !file_engine.is_empty() {
+                            let file_infos: Vec<FileInfo> = file_engine
+                                .iter()
+                                .map(|f| FileInfo {
+                                    name: std::path::Path::new(&f.name())
+                                        .file_name()
+                                        .map(|n| n.to_string_lossy().to_string())
+                                        .unwrap_or_else(|| f.name().clone()),
+                                    size: 0,
+                                    file_type: std::path::Path::new(&f.name())
+                                        .extension()
+                                        .map(|e| e.to_string_lossy().to_string())
+                                        .unwrap_or_else(|| "unknown".to_string()),
+                                })
+                                .collect();
+                            if !file_infos.is_empty() {
+                                props.on_add.call(file_infos);
+                            }
+                        }
+                    },
+                }
 
                 div {
                     class: "nd-file-drop-content",
