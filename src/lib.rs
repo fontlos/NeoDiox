@@ -43,7 +43,7 @@ pub mod prelude {
         TipPosition, ToastContainer, ToastMessage, ToastPosition, ToastType,
     };
     // 数据组件
-    pub use crate::data::{BarChart, BarData, Column, DonutChart, DonutData, SortDirection, Table};
+    pub use crate::data::{BarChart, BarData, Column, DonutChart, DonutData, Table, TableCell, TableRow};
     // 高级组件
     pub use crate::advanced::{FileInfo, FileUpload, Menu, MenuItem, TreeNode, TreeView};
 }

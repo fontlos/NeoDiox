@@ -40,6 +40,51 @@
     font-weight: 500;
 }
 
+
+/* ============================================
+    Badge 徽章 (for table status cells)
+    ============================================ */
+
+.nd-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* TODO: 临时, 需要整合到 css 变量或自定义参数 */
+
+.nd-badge-green {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.nd-badge-yellow {
+    color: #854d0e;
+    background: #fef9c3;
+}
+
+.nd-badge-red {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+.nd-dark .nd-badge-green {
+    color: #86efac;
+    background: rgba(22, 163, 74, 0.2);
+}
+
+.nd-dark .nd-badge-yellow {
+    color: #fde047;
+    background: rgba(234, 179, 8, 0.2);
+}
+
+.nd-dark .nd-badge-red {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.2);
+}
+
 /* ============================================
     Accordion 手风琴
     ============================================ */

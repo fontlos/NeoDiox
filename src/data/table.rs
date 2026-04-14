@@ -1,145 +1,93 @@
 use dioxus::prelude::*;
 
-/// DataTable Column
-#[derive(Clone, Debug)]
-pub struct Column<T: Clone + PartialEq> {
+/// Table Column
+#[derive(Clone, Debug, PartialEq)]
+pub struct Column {
     pub header: String,
-    pub render: fn(&T) -> String,
-    pub sortable: bool,
     pub width: Option<String>,
 }
 
-impl<T: Clone + PartialEq> PartialEq for Column<T> {
-    fn eq(&self, other: &Self) -> bool {
-        self.header == other.header && self.sortable == other.sortable && self.width == other.width
-    }
+/// Table Row Cell
+#[derive(Clone, Debug, PartialEq)]
+pub struct TableCell {
+    /// Cell content (HTML string or plain text)
+    pub content: String,
+    /// Optional custom class for this cell
+    pub class: Option<String>,
 }
 
-/// Table
+/// Table Row
+#[derive(Clone, Debug, PartialEq)]
+pub struct TableRow {
+    pub cells: Vec<TableCell>,
+}
+
+/// Table Props
 #[derive(Props, PartialEq, Clone)]
-pub struct TableProps<T: Clone + PartialEq + 'static> {
-    /// Data to display
-    pub data: Vec<T>,
-    /// Table Column
-    pub columns: Vec<Column<T>>,
-    /// Current sort column
-    #[props(default)]
-    pub sort_column: Option<usize>,
-    /// Sort Direction
-    #[props(default)]
-    pub sort_direction: SortDirection,
-    /// Sort Event
-    #[props(default)]
-    pub on_sort: Option<EventHandler<(usize, SortDirection)>>,
-    /// Search Text
-    #[props(default)]
-    pub search_query: Option<String>,
+pub struct TableProps {
+    /// Table Columns
+    pub columns: Vec<Column>,
+    /// Table Rows
+    pub rows: Vec<TableRow>,
     /// Custom Class Name
     #[props(default)]
     pub class: Option<String>,
 }
 
-/// Sort Direction
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub enum SortDirection {
-    #[default]
-    Asc,
-    Desc,
-}
-
-/// Table Component
+/// Table Component - Simple data table with neu-inset container
 ///
 /// # Example
 ///
 /// ```rust,ignore
 /// rsx! {
 ///     Table {
-///         data: users,
 ///         columns: vec![
-///             Column { header: "Name".to_string(), render: |u| u.name.clone(), sortable: true, width: None },
-///             Column { header: "Email".to_string(), render: |u| u.email.clone(), sortable: true, width: None },
+///             Column { header: "Name".to_string(), width: None },
+///             Column { header: "Email".to_string(), width: None },
+///             Column { header: "Status".to_string(), width: None },
+///             Column { header: "Role".to_string(), width: None },
 ///         ],
-///         sort_column: None,
-///         sort_direction: SortDirection::Asc,
-///         on_sort: Some(move |(idx, dir)| handle_sort(idx, dir)),
+///         rows: vec![
+///             TableRow { cells: vec![
+///                 TableCell { content: "John Doe".to_string(), class: None },
+///                 TableCell { content: "john@example.com".to_string(), class: None },
+///                 TableCell { content: "<span class='badge-active'>Active</span>".to_string(), class: None },
+///                 TableCell { content: "Admin".to_string(), class: None },
+///             ]},
+///         ],
 ///     }
 /// }
 /// ```
 #[component]
-pub fn Table<T: Clone + PartialEq + 'static>(props: TableProps<T>) -> Element {
+pub fn Table(props: TableProps) -> Element {
     let class = props.class.unwrap_or_default();
-    let columns = props.columns.clone();
-    let data = props.data.clone();
-    let col_count = columns.len();
+    let col_count = props.columns.len();
 
     rsx! {
         div {
             class: "nd-table {class}",
 
-            // 表格容器
+            // neu-inset 容器
             div {
-                style: format!(
-                    "overflow-x: auto; border-radius: 12px; \
-                     background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
-                     box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);"
-                ),
+                class: "nd-table-container",
 
                 table {
                     class: "nd-table-table",
+                    role: "table",
 
                     // 表头
                     thead {
                         tr {
-                            for (col_idx, column) in columns.iter().enumerate() {
+                            for column in &props.columns {
                                 th {
                                     scope: "col",
-                                    style: format!(
-                                        "padding: 16px; text-align: left; font-weight: 500; \
-                                         color: inherit; border-bottom: 1px solid rgba(128, 128, 128, 0.2); \
-                                         {}",
-                                        if column.sortable { "cursor: pointer; user-select: none;" } else { "" }
-                                    ),
-                                    onclick: {
-                                        let column = column.clone();
-                                        let on_sort = props.on_sort.clone();
-                                        let sort_column = props.sort_column;
-                                        let sort_direction = props.sort_direction;
-                                        move |_| {
-                                            if column.sortable {
-                                                if let Some(handler) = on_sort {
-                                                    let new_direction = if sort_column == Some(col_idx) {
-                                                        match sort_direction {
-                                                            SortDirection::Asc => SortDirection::Desc,
-                                                            SortDirection::Desc => SortDirection::Asc,
-                                                        }
-                                                    } else {
-                                                        SortDirection::Asc
-                                                    };
-                                                    handler.call((col_idx, new_direction));
-                                                }
-                                            }
-                                        }
+                                    class: "nd-table-header",
+                                    style: if let Some(width) = &column.width {
+                                        format!("width: {width};")
+                                    } else {
+                                        "".to_string()
                                     },
-
-                                    div {
-                                        style: "display: flex; align-items: center; gap: 8px;",
-                                        "{column.header}"
-
-                                        // 排序图标
-                                        if column.sortable {
-                                            span {
-                                                class: "nd-table-sort-icon",
-                                                if props.sort_column == Some(col_idx) {
-                                                    match props.sort_direction {
-                                                        SortDirection::Asc => "↑",
-                                                        SortDirection::Desc => "↓",
-                                                    }
-                                                } else {
-                                                    "↕"
-                                                }
-                                            }
-                                        }
-                                    }
+                                    "{column.header}"
                                 }
                             }
                         }
@@ -147,21 +95,20 @@ pub fn Table<T: Clone + PartialEq + 'static>(props: TableProps<T>) -> Element {
 
                     // 表体
                     tbody {
-                        for row in &data {
+                        for row in &props.rows {
                             tr {
                                 class: "nd-table-row",
-
-                                for column in &columns {
+                                for cell in &row.cells {
                                     td {
                                         class: "nd-table-cell",
-                                        "{(column.render)(row)}"
+                                        dangerous_inner_html: "{cell.content}",
                                     }
                                 }
                             }
                         }
 
                         // 空状态
-                        if data.is_empty() {
+                        if props.rows.is_empty() {
                             tr {
                                 td {
                                     class: "nd-table-empty",

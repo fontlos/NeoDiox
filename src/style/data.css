@@ -74,6 +74,18 @@
     transition: background 0.15s ease;
 }
 
+.nd-table-row:last-child {
+    border-bottom: none;
+}
+
+.nd-table-row:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.nd-dark .nd-table-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
 .nd-table-cell {
     padding: 16px;
     color: inherit;
