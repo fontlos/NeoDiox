@@ -1,4 +1,3 @@
-use crate::container::NeuRaised;
 use dioxus::prelude::*;
 
 /// Menu item
@@ -6,29 +5,34 @@ use dioxus::prelude::*;
 pub struct MenuItem {
     pub id: String,
     pub label: String,
+    /// Iconify icon name (e.g. "lucide:copy")
     pub icon: Option<String>,
     pub disabled: bool,
     pub is_separator: bool,
+    pub danger: bool,
 }
 
-/// Menu
+/// Context Menu Props
 #[derive(Props, PartialEq, Clone)]
 pub struct MenuProps {
-    /// Menu item list
+    /// Menu items
     pub items: Vec<MenuItem>,
-    /// Menu Position X
+    /// Position X (window coordinates)
     pub x: f64,
-    /// Menu Position Y
+    /// Position Y (window coordinates)
     pub y: f64,
-    /// Whether to show
+    /// Whether the menu is visible
     pub is_visible: bool,
-    /// Select menu item event
+    /// Item selected event (returns item id)
     pub on_select: EventHandler<String>,
     /// Close menu event
     pub on_close: EventHandler<()>,
 }
 
-/// Right-click Menu Component
+/// Context Menu Component
+///
+/// Renders a neuromorphic right-click context menu.
+/// Closes when clicking outside, selecting an item, or pressing Escape.
 ///
 /// # Example
 ///
@@ -36,66 +40,53 @@ pub struct MenuProps {
 /// rsx! {
 ///     Menu {
 ///         items: vec![
-///             MenuItem { id: "copy".to_string(), label: "Copy".to_string(), icon: Some("📋".to_string()), disabled: false, is_separator: false },
-///             MenuItem { id: "paste".to_string(), label: "Paste".to_string(), icon: Some("📌".to_string()), disabled: false, is_separator: false },
+///             MenuItem { id: "copy".to_string(), label: "Copy".to_string(), icon: Some("lucide:copy".to_string()), disabled: false, is_separator: false, danger: false },
+///             MenuItem { id: "sep".to_string(), label: String::new(), icon: None, disabled: false, is_separator: true, danger: false },
+///             MenuItem { id: "delete".to_string(), label: "Delete".to_string(), icon: Some("lucide:trash-2".to_string()), disabled: false, is_separator: false, danger: true },
 ///         ],
 ///         x: mouse_x,
 ///         y: mouse_y,
 ///         is_visible: show_context_menu,
-///         on_select: move |id| handle_menu_select(id),
+///         on_select: move |id| handle_select(id),
 ///         on_close: move |_| set_show_menu(false),
 ///     }
 /// }
 /// ```
 #[component]
 pub fn Menu(props: MenuProps) -> Element {
-    // let theme = use_theme_config();
-    let items = props.items.clone();
-    let on_select = props.on_select.clone();
-    let on_close = props.on_close.clone();
-
     if !props.is_visible {
         return rsx! {};
     }
 
-    // 计算菜单是否超出视口
-    let menu_width = 160.0;
-    let menu_height = items.len() as f64 * 36.0;
-
-    let adjusted_x = if props.x + menu_width > window_width() {
-        window_width() - menu_width - 10.0
-    } else {
-        props.x
-    };
-
-    let adjusted_y = if props.y + menu_height > window_height() {
-        window_height() - menu_height - 10.0
-    } else {
-        props.y
-    };
+    let adjusted_x = props.x;
+    let adjusted_y = props.y;
 
     rsx! {
-        // 背景遮罩, 用于关闭
+        // Backdrop for click-away dismissal
         div {
             class: "nd-context-menu-backdrop",
-            onclick: {
-                let on_close = on_close.clone();
-                move |_| {
-                    on_close.call(());
-                }
+            role: "presentation",
+            onclick: move |_| {
+                props.on_close.call(());
             },
         }
 
-        // 菜单
-        NeuRaised {
-            border_radius: 12,
+        // Menu panel
+        div {
             class: "nd-context-menu",
+            role: "menu",
+            "aria-label": "Context menu",
             style: format!(
                 "position: fixed; left: {adjusted_x}px; top: {adjusted_y}px; \
-                 z-index: 1000; min-width: 160px; padding: 8px 0;",
+                 z-index: 1001; min-width: 180px;",
             ),
+            onkeydown: move |evt| {
+                if evt.key() == Key::Escape {
+                    props.on_close.call(());
+                }
+            },
 
-            for item in items {
+            for item in &props.items {
                 if item.is_separator {
                     div {
                         class: "nd-context-menu-separator",
@@ -105,19 +96,13 @@ pub fn Menu(props: MenuProps) -> Element {
                     button {
                         r#type: "button",
                         role: "menuitem",
-                        disabled: if item.disabled { "true" } else { "false" },
-                        style: format!(
-                            "width: 100%; padding: 10px 16px; display: flex; align-items: center; \
-                             gap: 10px; font-size: 14px; color: inherit; background: none; \
-                             border: none; cursor: {}; text-align: left; transition: background 0.15s ease; \
-                             {}",
-                            if item.disabled { "default" } else { "pointer" },
-                            if item.disabled { "opacity: 0.5;" } else { "" }
-                        ),
+                        class: "nd-context-menu-item",
+                        class: if item.danger { "nd-context-menu-item-danger" } else { "" },
+                        disabled: item.disabled,
                         onclick: {
                             let item_id = item.id.clone();
-                            let on_select = on_select.clone();
-                            let on_close = on_close.clone();
+                            let on_select = props.on_select.clone();
+                            let on_close = props.on_close.clone();
                             let disabled = item.disabled;
                             move |_| {
                                 if !disabled {
@@ -126,14 +111,12 @@ pub fn Menu(props: MenuProps) -> Element {
                                 }
                             }
                         },
-                        onmouseenter: move |_| {
-                            // hover 效果
-                        },
 
                         if let Some(icon) = &item.icon {
                             span {
-                                class: "nd-context-menu-item-icon",
-                                "{icon}"
+                                class: "iconify nd-context-menu-icon",
+                                "data-icon": "{icon}",
+                                "data-width": 14,
                             }
                         }
 
@@ -143,13 +126,4 @@ pub fn Menu(props: MenuProps) -> Element {
             }
         }
     }
-}
-
-// TODO: 这应该从浏览器 API 获取
-fn window_width() -> f64 {
-    1920.0
-}
-
-fn window_height() -> f64 {
-    1080.0
 }
