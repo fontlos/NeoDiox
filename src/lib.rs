@@ -14,7 +14,7 @@ pub mod theme;
 
 pub mod prelude {
     // 样式
-    pub use crate::style::{STYLE, STYLE_STR, RESET, RESET_STR};
+    pub use crate::style::{RESET, RESET_STR, STYLE, STYLE_STR};
     // 主题
     pub use crate::theme::{ThemeVariant, ThemeVars, use_theme, use_toggle_theme};
     // 容器组件
@@ -34,8 +34,7 @@ pub mod prelude {
     };
     // 导航组件
     pub use crate::navigation::{
-        BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, TabOption,
-        Tabs,
+        BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, Tab, Tabs,
     };
     // 反馈组件
     pub use crate::feedback::{
@@ -43,7 +42,11 @@ pub mod prelude {
         TipPosition, ToastContainer, ToastMessage, ToastPosition, ToastType,
     };
     // 数据组件
-    pub use crate::data::{BarChart, BarData, Column, DonutChart, DonutData, Table, TableCell, TableRow};
+    pub use crate::data::{
+        BarChart, BarData, Column, DonutChart, DonutData, Table, TableCell, TableRow,
+    };
     // 高级组件
-    pub use crate::advanced::{FileInfo, FileUpload, Menu, MenuItem, TreeNode, TreeNodeKind, TreeView};
+    pub use crate::advanced::{
+        FileInfo, FileUpload, Menu, MenuItem, TreeNode, TreeNodeKind, TreeView,
+    };
 }

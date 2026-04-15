@@ -111,6 +111,7 @@
     background: transparent;
     cursor: pointer;
     transition: all 0.2s ease;
+    color: var(--nd-text-soft);
 }
 
 .nd-tab-active {

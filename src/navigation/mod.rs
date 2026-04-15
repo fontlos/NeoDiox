@@ -8,4 +8,4 @@ mod tabs;
 
 pub use breadcrumb::{BreadcrumbItem, Breadcrumbs};
 pub use step::{StepItem, StepStatus, Stepper};
-pub use tabs::{TabOption, Tabs};
+pub use tabs::{Tab, Tabs};
