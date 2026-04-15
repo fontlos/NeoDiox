@@ -46,7 +46,10 @@ pub struct MultiSelectProps {
 pub fn MultiSelect(props: MultiSelectProps) -> Element {
     let is_open = use_signal(|| false);
     let class = props.class.unwrap_or_default();
-    let placeholder = props.placeholder.clone().unwrap_or_else(|| "Select...".to_string());
+    let placeholder = props
+        .placeholder
+        .clone()
+        .unwrap_or_else(|| "Select...".to_string());
 
     rsx! {
         div {

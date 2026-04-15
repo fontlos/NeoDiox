@@ -33,12 +33,10 @@ pub struct BadgeProps {
 pub fn Badge(props: BadgeProps) -> Element {
     // 复用自 button
     let (mut class, color) = match props.variant {
-        ButtonVariant::Neuromorphic => {
-            ("nd-btn-neuromorphic ".to_string(), "".to_string())
-        }
+        ButtonVariant::Neuromorphic => ("nd-btn-neuromorphic ".to_string(), "".to_string()),
         ButtonVariant::Gradient(c1, c2, f) => (
             "nd-btn-gradient ".to_string(),
-            format!("background: linear-gradient(145deg, {c1}, {c2}); color: {f};")
+            format!("background: linear-gradient(145deg, {c1}, {c2}); color: {f};"),
         ),
     };
 

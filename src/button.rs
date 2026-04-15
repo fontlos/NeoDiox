@@ -84,7 +84,7 @@ pub fn Button(props: ButtonProps) -> Element {
         }
         ButtonVariant::Gradient(c1, c2, f) => (
             "nd-btn-gradient ".to_string(),
-            format!("background: linear-gradient(145deg, {c1}, {c2}); color: {f};")
+            format!("background: linear-gradient(145deg, {c1}, {c2}); color: {f};"),
         ),
     };
 

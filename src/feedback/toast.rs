@@ -76,9 +76,13 @@ impl ToastPosition {
             Self::TopLeft => format!("top: {}px; left: 16px; right: auto;", top_offset),
             Self::BottomRight => "bottom: 16px; right: 16px; left: auto; top: auto;".to_string(),
             Self::BottomLeft => "bottom: 16px; left: 16px; right: auto; top: auto;".to_string(),
-            Self::TopCenter => format!("top: {}px; left: 50%; transform: translateX(-50%); right: auto;", top_offset),
+            Self::TopCenter => format!(
+                "top: {}px; left: 50%; transform: translateX(-50%); right: auto;",
+                top_offset
+            ),
             Self::BottomCenter => {
-                "bottom: 16px; left: 50%; transform: translateX(-50%); right: auto; top: auto;".to_string()
+                "bottom: 16px; left: 50%; transform: translateX(-50%); right: auto; top: auto;"
+                    .to_string()
             }
         }
     }

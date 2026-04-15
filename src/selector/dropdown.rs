@@ -52,7 +52,10 @@ pub fn Dropdown(props: DropdownProps) -> Element {
     let mut is_open = use_signal(|| false);
     let mut input_value = use_signal(String::new);
     let class = props.class.unwrap_or_default();
-    let placeholder = props.placeholder.clone().unwrap_or_else(|| "Select...".to_string());
+    let placeholder = props
+        .placeholder
+        .clone()
+        .unwrap_or_else(|| "Select...".to_string());
 
     // 同步外部value到input_value
     let sync_value = props.value.clone();

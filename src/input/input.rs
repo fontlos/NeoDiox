@@ -70,10 +70,19 @@ pub fn TextInput(props: TextInputProps) -> Element {
 
     let input_style = {
         let mut s = String::new();
-        if !width.is_empty() { s.push_str(&format!("width: {width}; ")); }
-        if !padding.is_empty() { s.push_str(&format!("padding: {padding}; padding-right: {clear_padding_right}; ")); }
-        else if props.clearable { s.push_str(&format!("padding-right: {clear_padding_right}; ")); }
-        if props.disabled { s.push_str("opacity: 0.6; cursor: not-allowed; "); }
+        if !width.is_empty() {
+            s.push_str(&format!("width: {width}; "));
+        }
+        if !padding.is_empty() {
+            s.push_str(&format!(
+                "padding: {padding}; padding-right: {clear_padding_right}; "
+            ));
+        } else if props.clearable {
+            s.push_str(&format!("padding-right: {clear_padding_right}; "));
+        }
+        if props.disabled {
+            s.push_str("opacity: 0.6; cursor: not-allowed; ");
+        }
         if s.is_empty() { None } else { Some(s) }
     };
 

@@ -86,7 +86,10 @@ pub fn TreeView(props: TreeViewProps) -> Element {
 #[component]
 fn TreeNodeItem(node: TreeNode) -> Element {
     match node.kind {
-        TreeNodeKind::Folder { is_expanded, children } => {
+        TreeNodeKind::Folder {
+            is_expanded,
+            children,
+        } => {
             let mut expanded = use_signal(|| is_expanded);
 
             rsx! {

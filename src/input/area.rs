@@ -56,13 +56,18 @@ pub fn TextArea(props: TextAreaProps) -> Element {
     let placeholder = props.placeholder.unwrap_or_default();
     let has_error = props.error.is_some();
     let class = props.class.unwrap_or_default();
-    let max_height = props.max_height.clone().unwrap_or_else(|| "200px".to_string());
+    let max_height = props
+        .max_height
+        .clone()
+        .unwrap_or_else(|| "200px".to_string());
 
     let textarea_style = {
         let mut s = String::from("max-height: ");
         s.push_str(&max_height);
         s.push(';');
-        if props.disabled { s.push_str(" opacity: 0.6; cursor: not-allowed;"); }
+        if props.disabled {
+            s.push_str(" opacity: 0.6; cursor: not-allowed;");
+        }
         Some(s)
     };
 

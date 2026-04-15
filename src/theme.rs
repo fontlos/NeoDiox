@@ -81,7 +81,7 @@ impl Default for ThemeVars {
 impl ThemeVars {
     pub fn to_css(&self) -> String {
         format!(
-":root{{
+            ":root{{
     --nd-text:{};
     --nd-text-soft:{};
     --nd-bg-primary:{};
