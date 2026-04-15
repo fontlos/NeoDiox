@@ -3,37 +3,10 @@ use dioxus::prelude::*;
 /// Step Status
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum StepStatus {
-    #[default]
-    Pending,
-    Active,
     Completed,
+    #[default]
     Current,
-}
-
-impl StepStatus {
-    fn style(&self) -> String {
-        match self {
-            Self::Completed | Self::Current => format!(
-                "background: linear-gradient(145deg, #7c3aed, #6d28d9); \
-                 color: white; box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);",
-            ),
-            Self::Active => format!(
-                "background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary)); \
-                 box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);",
-            ),
-            Self::Pending => format!(
-                "background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary)); \
-                 box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);",
-            ),
-        }
-    }
-
-    fn icon(&self) -> Option<&'static str> {
-        match self {
-            Self::Completed | Self::Current => Some("✓"),
-            _ => None,
-        }
-    }
+    Pending,
 }
 
 /// Step Item
@@ -41,76 +14,102 @@ impl StepStatus {
 pub struct StepItem {
     pub label: String,
     pub status: StepStatus,
-    pub icon: Option<String>,
 }
 
-/// Stepper Direction
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub enum StepperDirection {
-    #[default]
-    Horizontal,
-    Vertical,
-}
-
-impl StepperDirection {
-    fn css_class(&self) -> &'static str {
-        match self {
-            Self::Horizontal => "nd-stepper",
-            Self::Vertical => "nd-stepper nd-stepper-vertical",
-        }
-    }
-}
-
-/// Stepper
+/// Stepper Props
 #[derive(Props, PartialEq, Clone)]
 pub struct StepperProps {
     /// Steps
     pub steps: Vec<StepItem>,
     /// Currently active step index
     #[props(default)]
-    pub current_step: Option<usize>,
-    /// Direction
-    #[props(default)]
-    pub direction: StepperDirection,
+    pub current_step: usize,
     /// Custom class name
     #[props(default)]
     pub class: Option<String>,
 }
 
-/// Stepper Component
+/// Stepper Component - horizontal progress stepper with connectors
+///
+/// # Example
+///
+/// ```rust,ignore
+/// rsx! {
+///     Stepper {
+///         steps: vec![
+///             StepItem { label: "Account".to_string(), status: StepStatus::Completed },
+///             StepItem { label: "Details".to_string(), status: StepStatus::Current },
+///             StepItem { label: "Confirm".to_string(), status: StepStatus::Pending },
+///         ],
+///         current_step: 1,
+///     }
+/// }
+/// ```
 #[component]
 pub fn Stepper(props: StepperProps) -> Element {
     let class = props.class.unwrap_or_default();
-    let stepper_class = props.direction.css_class();
+    let total = props.steps.len();
 
     rsx! {
         div {
-            class: "{stepper_class} {class}",
+            class: "nd-stepper {class}",
             role: "navigation",
+            "aria-label": "Progress steps",
+
             for (index, step) in props.steps.iter().enumerate() {
-                div {
-                    class: if props.direction == StepperDirection::Vertical {
-                        "nd-step nd-step-vertical"
-                    } else {
-                        "nd-step"
-                    },
+                {
+                    let status_label = match step.status {
+                        StepStatus::Completed => "completed",
+                        StepStatus::Current => "current",
+                        StepStatus::Pending => "pending",
+                    };
+                    let aria_label = format!("Step {}, {}", index + 1, status_label);
+                    let is_completed = step.status == StepStatus::Completed;
+                    let is_pending = step.status == StepStatus::Pending;
+                    let step_num = index + 1;
+                    let label = step.label.clone();
 
-                    // 步骤指示器
-                    div {
-                        class: "nd-step-indicator",
-                        style: step.status.style(),
-                        if let Some(icon) = step.icon.as_ref() {
-                            "{icon}"
-                        } else if let Some(icon) = step.status.icon() {
-                            "{icon}"
-                        } else {
-                            "{index + 1}"
+                    rsx! {
+                        // Step item
+                        div {
+                            class: "nd-step-item",
+                            role: "listitem",
+
+                            // Step circle
+                            div {
+                                class: if is_pending {
+                                    "nd-step-circle nd-step-circle-pending"
+                                } else {
+                                    "nd-step-circle nd-step-circle-active"
+                                },
+                                "aria-label": aria_label,
+
+                                if is_completed {
+                                    span { class: "nd-step-check", "✓" }
+                                } else {
+                                    span { class: "nd-step-number", "{step_num}" }
+                                }
+                            }
+
+                            // Step label
+                            span {
+                                class: "nd-step-label",
+                                class: if is_pending { "nd-step-label-pending" } else { "" },
+                                "{label}"
+                            }
                         }
-                    }
 
-                    // 步骤内容
-                    div { class: "nd-step-content",
-                        p { class: "nd-step-title", "{step.label}" }
+                        // Connector (between steps)
+                        if index < total - 1 {
+                            div {
+                                class: if is_completed || step.status == StepStatus::Current {
+                                    "nd-step-connector nd-step-connector-active"
+                                } else {
+                                    "nd-step-connector nd-step-connector-pending"
+                                },
+                                "aria-hidden": "true",
+                            }
+                        }
                     }
                 }
             }

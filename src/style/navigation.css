@@ -1,4 +1,90 @@
 /* ============================================
+    Stepper 步进器
+    ============================================ */
+
+.nd-stepper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.nd-step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.nd-step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nd-step-circle-active {
+    background: linear-gradient(145deg, #7c3aed, #6d28d9);
+    color: white;
+    box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);
+}
+
+.nd-step-circle-pending {
+    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
+    color: inherit;
+    box-shadow: 3px 3px 6px var(--nd-shadow-dark), -3px -3px 6px var(--nd-shadow-light);
+    opacity: 0.6;
+}
+
+.nd-step-check {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.nd-step-number {
+    color: inherit;
+}
+
+.nd-step-circle-pending .nd-step-number {
+    opacity: 0.6;
+}
+
+.nd-step-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: inherit;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.nd-step-label-pending {
+    opacity: 0.6;
+}
+
+.nd-step-connector {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    margin: 0 16px;
+    margin-bottom: 28px;
+    transition: all 0.3s ease;
+}
+
+.nd-step-connector-active {
+    background: linear-gradient(90deg, #7c3aed, #6d28d9);
+}
+
+.nd-step-connector-pending {
+    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
+    box-shadow: inset 2px 2px 4px var(--nd-shadow-dark), inset -2px -2px 4px var(--nd-shadow-light);
+}
+
+/* ============================================
     Tabs 标签页
     ============================================ */
 

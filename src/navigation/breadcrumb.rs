@@ -13,8 +13,8 @@ pub struct BreadcrumbItem {
 pub struct BreadcrumbsProps {
     /// Breadcrumb items
     pub items: Vec<BreadcrumbItem>,
-    /// Separator character (default: "/")
-    #[props(default = "/".to_string())]
+    /// Separator character
+    #[props(default = ">".to_string())]
     pub separator: String,
     /// Custom class name
     #[props(default)]

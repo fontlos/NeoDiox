@@ -48,6 +48,46 @@
 }
 
 /* ============================================
+    Feature Cards 特性卡片
+    ============================================ */
+
+.nd-feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
+    box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.nd-feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 12px var(--nd-shadow-dark), -6px -6px 12px var(--nd-shadow-light);
+}
+
+.nd-feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 4px var(--nd-shadow-dark), -2px -2px 4px var(--nd-shadow-light);
+    color: white;
+}
+
+.nd-feature-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: inherit;
+    margin: 0;
+}
+
+/* ============================================
     TreeView 树形视图
     ============================================ */
 

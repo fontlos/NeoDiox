@@ -34,7 +34,7 @@ pub mod prelude {
     };
     // 导航组件
     pub use crate::navigation::{
-        BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, StepperDirection, TabOption,
+        BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, TabOption,
         Tabs,
     };
     // 反馈组件
