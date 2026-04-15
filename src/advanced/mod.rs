@@ -8,4 +8,4 @@ mod tree;
 
 pub use file::{FileInfo, FileUpload};
 pub use menu::{Menu, MenuItem};
-pub use tree::{TreeNode, TreeView};
+pub use tree::{TreeNode, TreeNodeKind, TreeView};

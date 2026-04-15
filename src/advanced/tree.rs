@@ -1,35 +1,43 @@
 use dioxus::prelude::*;
 
-// ==================== TreeView 树形视图 ====================
+/// Tree node type
+#[derive(Debug, Clone, PartialEq)]
+pub enum TreeNodeKind {
+    /// Folder node (expandable)
+    Folder {
+        /// Whether the folder is expanded
+        is_expanded: bool,
+        /// Child nodes
+        children: Vec<TreeNode>,
+    },
+    /// File/leaf node (not expandable)
+    File,
+}
 
 /// Tree node
 #[derive(Clone, Debug, PartialEq)]
 pub struct TreeNode {
     pub id: String,
     pub label: String,
+    /// Iconify icon name for the item (e.g. "lucide:folder-open")
     pub icon: Option<String>,
-    pub children: Option<Vec<TreeNode>>,
-    pub is_leaf: bool,
+    /// Node type
+    pub kind: TreeNodeKind,
 }
 
-/// Tree View
+/// Tree View Props
 #[derive(Props, PartialEq, Clone)]
 pub struct TreeViewProps {
-    /// Tree Node List
+    /// Root tree nodes
     pub nodes: Vec<TreeNode>,
-    /// Expanded Node IDs
-    #[props(default)]
-    pub expanded_nodes: Vec<String>,
-    /// Expand/Collapse Event
-    pub on_toggle: EventHandler<String>,
-    /// Node Selection Event
-    pub on_select: EventHandler<String>,
-    /// Custom Class Name
+    /// Custom class name
     #[props(default)]
     pub class: Option<String>,
 }
 
 /// Tree View Component
+///
+/// A neuromorphic file-tree navigation with expandable folders.
 ///
 /// # Example
 ///
@@ -40,16 +48,20 @@ pub struct TreeViewProps {
 ///             TreeNode {
 ///                 id: "src".to_string(),
 ///                 label: "src".to_string(),
-///                 icon: Some("📁".to_string()),
-///                 children: Some(vec![
-///                     TreeNode { id: "lib.rs".to_string(), label: "lib.rs".to_string(), icon: Some("📄".to_string()), children: None, is_leaf: true },
-///                 ]),
-///                 is_leaf: false,
+///                 icon: Some("lucide:folder-open".to_string()),
+///                 kind: TreeNodeKind::Folder {
+///                     is_expanded: true,
+///                     children: vec![
+///                         TreeNode {
+///                             id: "lib.rs".to_string(),
+///                             label: "lib.rs".to_string(),
+///                             icon: Some("lucide:file-code".to_string()),
+///                             kind: TreeNodeKind::File,
+///                         },
+///                     ],
+///                 },
 ///             },
 ///         ],
-///         expanded_nodes: expanded_nodes,
-///         on_toggle: move |id| toggle_node(id),
-///         on_select: move |id| select_node(id),
 ///     }
 /// }
 /// ```
@@ -60,122 +72,92 @@ pub fn TreeView(props: TreeViewProps) -> Element {
     rsx! {
         nav {
             class: "nd-tree-view {class}",
-            "aria-label": "Tree navigation",
             role: "tree",
+            "aria-label": "File tree navigation",
 
             for node in &props.nodes {
-                TreeNodeItem {
-                    node: node.clone(),
-                    expanded_nodes: props.expanded_nodes.clone(),
-                    on_toggle: props.on_toggle.clone(),
-                    on_select: props.on_select.clone(),
-                    depth: 0,
-                }
+                TreeNodeItem { node: node.clone() }
             }
         }
     }
 }
 
-/// Tree Node Item
+/// Internal tree node item component with self-managed expand state
 #[component]
-fn TreeNodeItem(
-    node: TreeNode,
-    expanded_nodes: Vec<String>,
-    on_toggle: EventHandler<String>,
-    on_select: EventHandler<String>,
-    depth: usize,
-) -> Element {
-    let is_expanded = expanded_nodes.contains(&node.id);
-    let padding_left = depth * 20;
+fn TreeNodeItem(node: TreeNode) -> Element {
+    match node.kind {
+        TreeNodeKind::Folder { is_expanded, children } => {
+            let mut expanded = use_signal(|| is_expanded);
 
-    if node.is_leaf {
-        return rsx! {
-            div {
-                role: "treeitem",
-                class: "nd-tree-leaf",
-                style: format!("padding-left: {padding_left}px;"),
+            rsx! {
+                li {
+                    role: "treeitem",
+                    "aria-expanded": if *expanded.read() { "true" } else { "false" },
+                    class: "nd-tree-item",
 
-                div {
-                    class: "nd-tree-leaf-content",
-                    onclick: move |_| {
-                        on_select.call(node.id.clone());
-                    },
+                    button {
+                        r#type: "button",
+                        class: "nd-tree-toggle",
+                        onclick: move |_| {
+                            let is_exp = *expanded.peek();
+                            *expanded.write() = !is_exp;
+                        },
 
-                    // 占位符 (对齐展开/收起箭头)
-                    span {
-                        class: "nd-tree-leaf-placeholder",
-                    }
-
-                    if let Some(icon) = &node.icon {
+                        // Chevron
                         span {
-                            class: "nd-tree-leaf-icon",
-                            "{icon}"
+                            class: "iconify nd-tree-chevron",
+                            "data-icon": "lucide:chevron-right",
+                            "data-width": 14,
+                            class: if *expanded.read() { "nd-tree-chevron-expanded" } else { "" },
                         }
-                    }
 
-                    "{node.label}"
-                }
-            }
-        };
-    }
-
-    rsx! {
-        div {
-            role: "treeitem",
-            class: "nd-tree-item",
-            "aria-expanded": if is_expanded { "true" } else { "false" },
-            style: format!("padding-left: {padding_left}px;"),
-
-            // 展开/收起按钮
-            button {
-                r#type: "button",
-                class: "nd-tree-item-button",
-                onclick: move |_| {
-                    on_toggle.call(node.id.clone());
-                },
-
-                // 展开箭头
-                span {
-                    class: "nd-tree-toggle-icon",
-                    style: format!("transform: {};", if is_expanded { "rotate(90deg)" } else { "rotate(0deg)" }),
-                    "▶"
-                }
-
-                if let Some(icon) = &node.icon {
-                    span {
-                        class: "nd-tree-leaf-icon",
-                        "{icon}"
-                    }
-                } else if is_expanded {
-                    span {
-                        class: "nd-tree-leaf-icon",
-                        "📂"
-                    }
-                } else {
-                    span {
-                        class: "nd-tree-leaf-icon",
-                        "📁"
-                    }
-                }
-
-                "{node.label}"
-            }
-
-            // 子节点
-            if is_expanded {
-                if let Some(children) = &node.children {
-                    div {
-                        role: "group",
-                        class: "nd-tree-children",
-                        for child in children {
-                            TreeNodeItem {
-                                node: child.clone(),
-                                expanded_nodes: expanded_nodes.clone(),
-                                on_toggle: on_toggle.clone(),
-                                on_select: on_select.clone(),
-                                depth: depth + 1,
+                        // Folder icon
+                        if let Some(ref icon) = node.icon {
+                            span {
+                                class: "iconify nd-tree-icon",
+                                "data-icon": "{icon}",
+                                "data-width": 18,
                             }
                         }
+
+                        span { "{node.label}" }
+                    }
+
+                    // Children
+                    if *expanded.read() && !children.is_empty() {
+                        ul {
+                            role: "group",
+                            class: "nd-tree-children",
+                            for child in children {
+                                TreeNodeItem { node: child.clone() }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        TreeNodeKind::File => {
+            rsx! {
+                li {
+                    role: "treeitem",
+                    class: "nd-tree-leaf",
+
+                    div {
+                        class: "nd-tree-leaf-content",
+
+                        // Spacer (aligns with chevron)
+                        span { class: "nd-tree-leaf-spacer" }
+
+                        // File icon
+                        if let Some(ref icon) = node.icon {
+                            span {
+                                class: "iconify nd-tree-icon",
+                                "data-icon": "{icon}",
+                                "data-width": 18,
+                            }
+                        }
+
+                        span { "{node.label}" }
                     }
                 }
             }
