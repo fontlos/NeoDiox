@@ -99,6 +99,7 @@ pub struct TabsProps {
     /// Inline style
     #[props(default)]
     pub style: Option<String>,
+
     /// Children Tab components
     pub children: Element,
 }
