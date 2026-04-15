@@ -117,9 +117,13 @@ impl ThemeVars {
     }
 }
 
-pub fn use_theme() -> ThemeVariant {
-    let theme = use_context::<Signal<ThemeVariant>>();
-    theme.read().clone()
+pub fn use_init_theme(theme: ThemeVariant) {
+    let theme = use_signal(|| theme);
+    use_context_provider(|| theme);
+}
+
+pub fn use_theme() -> Signal<ThemeVariant> {
+    use_context::<Signal<ThemeVariant>>()
 }
 
 pub fn use_toggle_theme() -> impl FnMut() {

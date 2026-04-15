@@ -16,7 +16,7 @@ pub mod prelude {
     // 样式
     pub use crate::style::{RESET, RESET_STR, STYLE, STYLE_STR};
     // 主题
-    pub use crate::theme::{ThemeVariant, ThemeVars, use_theme, use_toggle_theme};
+    pub use crate::theme::{ThemeVariant, ThemeVars, use_init_theme, use_theme, use_toggle_theme};
     // 容器组件
     pub use crate::container::{
         Accordion, Badge, Card, NeuFlat, NeuInset, NeuRaised, NeuRaisedSm, NeuSurface, SurfaceType,
