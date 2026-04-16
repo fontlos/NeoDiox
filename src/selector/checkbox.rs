@@ -24,8 +24,6 @@ pub struct CheckboxProps {
 #[component]
 pub fn Checkbox(props: CheckboxProps) -> Element {
     let class = props.class.unwrap_or_default();
-    let disabled = props.disabled;
-    let checked = props.checked;
 
     rsx! {
         div {
@@ -38,11 +36,11 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             }
             input {
                 r#type: "checkbox",
-                checked,
-                disabled,
+                checked: props.checked,
+                disabled: props.disabled,
                 class: "nd-checkbox-input",
                 onchange: move |_| {
-                    props.onchange.call(!checked);
+                    props.onchange.call(!props.checked);
                 },
             }
         }
