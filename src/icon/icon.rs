@@ -1,9 +1,3 @@
-//! Icon Component
-//!
-//! Provides flexible icon support via:
-//! - Class variant: Iconify, Font Awesome, or any CSS-based icon library
-//! - Element variant: Any Element (SVG, img, etc.)
-
 use dioxus::prelude::*;
 
 /// Icon
