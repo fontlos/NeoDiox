@@ -16,7 +16,7 @@ pub use checkbox::Checkbox;
 pub use date::DatePicker;
 pub use dropdown::{Dropdown, DropdownOption};
 pub use mutiselect::{MultiSelect, MultiSelectOption};
-pub use radio::{Radio, RadioGroup, RadioOption};
+pub use radio::Radio;
 pub use slider::Slider;
 pub use star::StarRating;
 pub use time::TimePicker;
