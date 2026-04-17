@@ -15,6 +15,9 @@ pub struct CheckboxProps {
     /// Whether it is disabled
     #[props(default)]
     pub disabled: bool,
+    /// ID for label
+    #[props(default)]
+    pub id: Option<String>,
 
     /// Change event
     pub onchange: EventHandler<bool>,
@@ -36,6 +39,7 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
             }
             input {
                 r#type: "checkbox",
+                id: props.id,
                 checked: props.checked,
                 disabled: props.disabled,
                 class: "nd-checkbox-input",
