@@ -13,6 +13,9 @@ pub struct ToggleProps {
     /// Whether it is disabled
     #[props(default)]
     pub disabled: bool,
+    /// ID for label
+    #[props(default)]
+    pub id: Option<String>,
 
     /// Change event
     pub onchange: EventHandler<bool>,
@@ -28,6 +31,7 @@ pub fn Toggle(props: ToggleProps) -> Element {
             class: "nd-toggle {class}",
             input {
                 r#type: "checkbox",
+                id: props.id,
                 checked: props.checked,
                 disabled: props.disabled,
                 class: "nd-toggle-input",
