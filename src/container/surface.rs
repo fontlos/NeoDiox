@@ -54,10 +54,10 @@ pub enum SurfaceType {
 #[component]
 pub fn NeuSurface(props: NeuSurfaceProps) -> Element {
     let surface_class = match props.surface_type {
-        SurfaceType::Raised => "nd-surface-raised",
-        SurfaceType::RaisedSm => "nd-surface-raised-sm",
-        SurfaceType::Inset => "nd-surface-inset",
-        SurfaceType::Flat => "nd-surface-flat",
+        SurfaceType::Raised => "nd-surface nd-shadow",
+        SurfaceType::RaisedSm => "nd-surface nd-shadow-sm",
+        SurfaceType::Inset => "nd-surface-inset nd-shadow-inset",
+        SurfaceType::Flat => "nd-surface",
     };
     let class = props.class.unwrap_or_default();
 
@@ -66,7 +66,7 @@ pub fn NeuSurface(props: NeuSurfaceProps) -> Element {
 
     rsx! {
         div {
-            class: "nd-surface {surface_class} {class}",
+            class: "{surface_class} {class}",
             style: "border-radius:{border_radius}px;{style}",
             {props.children}
         }

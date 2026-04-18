@@ -80,10 +80,10 @@ pub fn Button(props: ButtonProps) -> Element {
     let (mut class, color) = match props.variant {
         ButtonVariant::Neuromorphic => {
             // 预留空格
-            ("nd-btn-neuromorphic ".to_string(), "".to_string())
+            ("nd-surface nd-shadow nd-text-soft ".to_string(), "".to_string())
         }
         ButtonVariant::Gradient(c1, c2, f) => (
-            "nd-btn-gradient ".to_string(),
+            "nd-shadow-sm ".to_string(),
             format!("background: linear-gradient(145deg, {c1}, {c2}); color: {f};"),
         ),
     };

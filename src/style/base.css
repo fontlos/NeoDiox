@@ -137,6 +137,30 @@
 }
 
 /* =====================
+    拟物效果
+===================== */
+
+.nd-surface {
+    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
+}
+
+.nd-surface-inset {
+    background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary));
+}
+
+.nd-shadow {
+    box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);
+}
+
+.nd-shadow-sm {
+    box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);
+}
+
+.nd-shadow-inset {
+    box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);
+}
+
+/* =====================
     响应主题的文本颜色
 ===================== */
 
@@ -168,19 +192,6 @@
     font-weight: 500;
     cursor: pointer;
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-/* badge 复用这个样式 */
-.nd-btn-neuromorphic {
-    /* 默认拟物风格 */
-    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
-    box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);
-    color: var(--nd-text-soft);
-}
-
-.nd-btn-gradient {
-    /* 渐变风格, 颜色由 props 传入 */
-    box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);
 }
 
 .nd-btn:hover:not(:disabled) {

@@ -1,32 +1,4 @@
 /* =====================
-    Surface 表面组件
-===================== */
-
-.nd-surface {
-    border: none;
-    outline: none;
-}
-
-.nd-surface-raised {
-    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
-    box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);
-}
-
-.nd-surface-raised-sm {
-    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
-    box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light);
-}
-
-.nd-surface-inset {
-    background: linear-gradient(145deg, var(--nd-bg-secondary), var(--nd-bg-primary));
-    box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);
-}
-
-.nd-surface-flat {
-    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
-}
-
-/* =====================
     Badge 徽章
 ===================== */
 
