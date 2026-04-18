@@ -8,4 +8,4 @@ mod icon;
 mod preset;
 
 pub use icon::Icon;
-pub use preset::Checked;
+pub use preset::{Checked, Close, Error, Info, Warning};

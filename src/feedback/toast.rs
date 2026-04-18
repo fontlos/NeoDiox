@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+use crate::icon;
+
 /// Toast Type
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum ToastType {
@@ -20,12 +22,12 @@ impl ToastType {
         }
     }
 
-    pub fn icon(&self) -> &'static str {
+    pub fn icon(&self) -> Element {
         match self {
-            Self::Success => "✓",
-            Self::Error => "✕",
-            Self::Warning => "⚠",
-            Self::Info => "ℹ",
+            Self::Success => rsx! { icon::Checked{ } },
+            Self::Error => rsx! { icon::Error{ } },
+            Self::Warning => rsx! { icon::Warning{ } },
+            Self::Info => rsx! { icon::Info{ } },
         }
     }
 }
@@ -178,10 +180,10 @@ fn ToastItem(props: ToastItemProps) -> Element {
                 color_start, color_end
             ),
 
-            // Icon
-            span {
-                class: "nd-alert-icon",
-                "{props.toast.toast_type.icon()}"
+            icon::Icon {
+                size: 24,
+                color: "white",
+                { props.toast.toast_type.icon() }
             }
 
             // Content
@@ -201,7 +203,12 @@ fn ToastItem(props: ToastItemProps) -> Element {
                 r#type: "button",
                 class: "nd-toast-close",
                 onclick: move |_| props.on_dismiss.call(props.toast.id.clone()),
-                "✕"
+
+                icon::Icon {
+                    size: 24,
+                    color: "white",
+                    icon::Close { }
+                }
             }
         }
     }
