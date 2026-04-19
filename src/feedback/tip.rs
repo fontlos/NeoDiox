@@ -13,19 +13,21 @@ pub enum TipPosition {
 /// Tip
 #[derive(Props, PartialEq, Clone)]
 pub struct TipProps {
-    /// Tip Content
-    pub content: String,
-    /// Trigger Element
-    pub children: Element,
-    /// Tip Position
-    #[props(default)]
-    pub position: TipPosition,
     /// Custom Class Name
     #[props(default)]
     pub class: Option<String>,
+
+    /// Tip Content
+    pub content: String,
+    /// Tip Position
+    #[props(default)]
+    pub position: TipPosition,
+
+    /// Trigger Element
+    pub children: Element,
 }
 
-/// Tip Component - 使用 CSS hover 显示
+/// Tip Component
 ///
 /// # Example
 ///
@@ -34,35 +36,32 @@ pub struct TipProps {
 ///     Tip {
 ///         content: "Home".to_string(),
 ///         position: TipPosition::Top,
-///         Button {
-///             onclick: move |_| {},
-///             "🏠"
-///         }
+///         Badge { "Hover me" }
 ///     }
 /// }
 /// ```
 #[component]
 pub fn Tip(props: TipProps) -> Element {
     let position_class = match props.position {
-        TipPosition::Top => "nd-tooltip-top",
-        TipPosition::Bottom => "nd-tooltip-bottom",
-        TipPosition::Left => "nd-tooltip-left",
-        TipPosition::Right => "nd-tooltip-right",
+        TipPosition::Top => "nd-tip-top",
+        TipPosition::Bottom => "nd-tip-bottom",
+        TipPosition::Left => "nd-tip-left",
+        TipPosition::Right => "nd-tip-right",
     };
 
     let class = props.class.unwrap_or_default();
 
     rsx! {
         div {
-            class: "nd-tooltip-container {class}",
+            class: "nd-tip-container {class}",
 
             // 触发元素
             {props.children}
 
-            // 提示内容 - CSS hover 控制显示
+            // 提示内容
             div {
-                role: "tooltip",
-                class: "nd-tooltip {position_class}",
+                role: "tip",
+                class: "nd-tip {position_class}",
                 "{props.content}"
             }
         }

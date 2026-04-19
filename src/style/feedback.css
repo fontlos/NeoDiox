@@ -296,53 +296,17 @@
 }
 
 /* ============================================
-    Tooltip 提示
+    Tip 提示
     ============================================ */
 
-.nd-tooltip-container {
+.nd-tip-container {
     position: relative;
     display: inline-block;
 }
 
-.nd-tooltip {
+.nd-tip {
     position: absolute;
     z-index: 100;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 500;
-    color: white;
-    background: #374151;
-    z-index: 100;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: all var(--transition-fast);
-}
-
-.nd-tooltip-container:hover .nd-tooltip,
-.nd-tooltip-container:focus-within .nd-tooltip {
-    opacity: 1;
-    visibility: visible;
-}
-
-.nd-tooltip-arrow {
-    position: absolute;
-    border: 6px solid transparent;
-}
-
-/* ============================================
-    Tooltip 提示框
-    ============================================ */
-
-.nd-tooltip-container {
-    position: relative;
-    display: inline-block;
-}
-
-.nd-tooltip {
-    position: absolute;
     padding: 6px 12px;
     border-radius: 8px;
     font-size: 12px;
@@ -354,39 +318,60 @@
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-fast);
-    z-index: 100;
 }
 
-.nd-tooltip-container:hover .nd-tooltip,
-.nd-tooltip-container:focus-within .nd-tooltip {
+.nd-tip-container:hover .nd-tip,
+.nd-tip-container:focus-within .nd-tip {
     opacity: 1;
     visibility: visible;
 }
 
-.nd-tooltip-top {
+/* 位置 */
+.nd-tip-top {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
     margin-bottom: 8px;
 }
 
-.nd-tooltip-bottom {
+.nd-tip-bottom {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
     margin-top: 8px;
 }
 
-.nd-tooltip-left {
+.nd-tip-left {
     right: 100%;
     top: 50%;
     transform: translateY(-50%);
     margin-right: 8px;
 }
 
-.nd-tooltip-right {
+.nd-tip-right {
     left: 100%;
     top: 50%;
     transform: translateY(-50%);
     margin-left: 8px;
+}
+
+/* 箭头样式 */
+.nd-tip-top::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1f2937;
+}
+
+.nd-tip-bottom::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: #1f2937;
 }
