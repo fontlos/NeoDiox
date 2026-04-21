@@ -82,7 +82,7 @@ pub fn Dropdown(props: DropdownProps) -> Element {
                     value: "{input_value}",
                     placeholder: "{placeholder}",
                     readonly: if !props.searchable { "true" } else { "false" },
-                    class: "nd-dropdown-input nd-input-bg",
+                    class: "nd-dropdown-input nd-surface-inset nd-shadow-inset",
                     "aria-expanded": if *is_open.read() { "true" } else { "false" },
                     "aria-haspopup": "listbox",
                     autocomplete: "off",

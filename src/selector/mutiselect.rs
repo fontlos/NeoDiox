@@ -58,7 +58,7 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
 
             // 容器/触发器 - neu-inset背景
             div {
-                class: "nd-multiselect-container nd-input-bg",
+                class: "nd-multiselect-container nd-surface-inset nd-shadow-inset",
                 onclick: {
                     let mut is_open = is_open.clone();
                     move |_| {
