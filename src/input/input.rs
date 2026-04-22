@@ -25,6 +25,9 @@ pub struct TextInputProps {
     /// Max Length
     #[props(default)]
     pub maxlength: Option<u32>,
+    /// Name Attribute
+    #[props(default)]
+    pub name: Option<String>,
     /// Placeholder Text
     #[props(default)]
     pub placeholder: Option<String>,
@@ -70,6 +73,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
             disabled: props.disabled,
             id: props.id,
             maxlength: props.maxlength,
+            name: props.name,
             placeholder: props.placeholder,
             readonly: props.readonly,
             r#type: props.r#type,
