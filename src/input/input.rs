@@ -16,6 +16,9 @@ pub struct TextInputProps {
     /// Is Disabled
     #[props(default)]
     pub disabled: bool,
+    /// Is Error State
+    #[props(default)]
+    pub error: bool,
     /// ID for label
     #[props(default)]
     pub id: Option<String>,
@@ -36,10 +39,6 @@ pub struct TextInputProps {
 
     /// Input Event
     pub oninput: EventHandler<String>,
-
-    /// Additional attributes. (e.g., `data-error=true`)
-    #[props(extends = GlobalAttributes)]
-    pub attrs: Vec<Attribute>,
 }
 
 /// TextInput Component
@@ -51,10 +50,10 @@ pub struct TextInputProps {
 ///     div {
 ///         label { "Full Name" }
 ///         TextInput {
+///             error: name_error.is_some(),
+///             placeholder: "Fontlos",
 ///             value: name,
 ///             oninput: move |val| set_name(val),
-///             placeholder: "Fontlos",
-///             "data-error": name_error.is_some(),
 ///         }
 ///     }
 /// }
@@ -75,10 +74,10 @@ pub fn TextInput(props: TextInputProps) -> Element {
             readonly: props.readonly,
             r#type: props.r#type,
             value: props.value,
+            "data-error": props.error,
             oninput: move |evt| {
                 props.oninput.call(evt.value().clone());
-            },
-            ..props.attrs
+            }
         }
     }
 }
