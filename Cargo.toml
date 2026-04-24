@@ -9,4 +9,4 @@ keywords = ["dioxus", "ui", "components", "neumorphism"]
 categories = ["gui"]
 
 [dependencies]
-dioxus = "0.7.5"
+dioxus = "0.7"
