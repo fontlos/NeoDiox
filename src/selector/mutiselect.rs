@@ -25,7 +25,7 @@ pub struct MultiSelectProps {
     pub class: Option<String>,
 }
 
-/// MultiSelect Component - 使用neu-inset容器 + neu-raised下拉菜单
+/// MultiSelect Component
 ///
 /// # Example
 ///
@@ -44,30 +44,20 @@ pub struct MultiSelectProps {
 /// ```
 #[component]
 pub fn MultiSelect(props: MultiSelectProps) -> Element {
-    let is_open = use_signal(|| false);
+    let mut is_open = use_signal(|| false);
     let class = props.class.unwrap_or_default();
-    let placeholder = props
-        .placeholder
-        .clone()
-        .unwrap_or_else(|| "Select...".to_string());
 
     rsx! {
         div {
             class: "nd-multiselect {class}",
             style: "position: relative;",
 
-            // 容器/触发器 - neu-inset背景
+            // 容器/触发器
             div {
-                class: "nd-multiselect-container nd-surface-inset nd-shadow-inset",
-                onclick: {
-                    let mut is_open = is_open.clone();
-                    move |_| {
-                        let current = *is_open.read();
-                        *is_open.write() = !current;
-                    }
+                class: "nd-surface-inset nd-shadow-inset nd-multiselect-container",
+                onclick: move |_| {
+                    is_open.set(!is_open());
                 },
-                role: "listbox",
-                "aria-multiselectable": "true",
 
                 // 已选标签
                 for value in &props.values {
@@ -102,7 +92,7 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                 if props.values.is_empty() {
                     span {
                         class: "nd-multiselect-placeholder",
-                        "{placeholder}"
+                        { props.placeholder }
                     }
                 }
             }
@@ -112,17 +102,11 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                 r#type: "button",
                 class: "nd-multiselect-arrow",
                 class: if *is_open.read() { "nd-multiselect-arrow-open" } else { "" },
-                "aria-expanded": if *is_open.read() { "true" } else { "false" },
-                "aria-haspopup": "listbox",
                 onmousedown: move |evt| {
                     evt.prevent_default();
                 },
-                onclick: {
-                    let mut is_open = is_open.clone();
-                    move |_| {
-                        let current = *is_open.read();
-                        *is_open.write() = !current;
-                    }
+                onclick: move |_|{
+                    is_open.set(!is_open());
                 },
                 "▼"
             }
@@ -131,8 +115,6 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
             if *is_open.read() {
                 {
                     let options = props.options.clone();
-                    let values = props.values.clone();
-                    let on_change = props.on_change.clone();
 
                     rsx! {
                         div {
@@ -141,31 +123,26 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
 
                             for option in options {
                                 {
-                                    let is_selected = values.contains(&option.value);
-                                    let option_label = option.label.clone();
-                                    let option_value = option.value.clone();
-                                    let option_disabled = option.disabled;
-                                    let values = values.clone();
-                                    let on_change = on_change.clone();
+                                    let is_selected = props.values.contains(&option.value);
+                                    let values = props.values.clone();
                                     rsx! {
                                         button {
                                             r#type: "button",
                                             role: "option",
                                             class: "nd-multiselect-item",
                                             class: if is_selected { "nd-multiselect-item-selected" } else { "" },
-                                            "aria-selected": if is_selected { "true" } else { "false" },
-                                            disabled: if option_disabled { "true" } else { "false" },
+                                            disabled: option.disabled,
                                             onmousedown: move |evt| {
                                                 evt.prevent_default();
                                             },
                                             onclick: move |_| {
                                                 let mut new_values = values.clone();
-                                                if new_values.contains(&option_value) {
-                                                    new_values.retain(|val| val != &option_value);
+                                                if new_values.contains(&option.value) {
+                                                    new_values.retain(|val| val != &option.value);
                                                 } else {
-                                                    new_values.push(option_value.clone());
+                                                    new_values.push(option.value.clone());
                                                 }
-                                                on_change.call(new_values);
+                                                props.on_change.call(new_values);
                                             },
 
                                             span {
@@ -179,7 +156,7 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                                                 }
                                             }
 
-                                            "{option_label}"
+                                            { option.label }
                                         }
                                     }
                                 }
