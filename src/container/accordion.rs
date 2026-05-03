@@ -1,6 +1,7 @@
-use crate::container::NeuFlat;
-
 use dioxus::prelude::*;
+
+use crate::container::NeuFlat;
+use crate::icon;
 
 // TODO: 基于 grid 和 padding 的动画, 也许需要更改
 /// Accordion
@@ -56,7 +57,10 @@ pub fn Accordion(props: AccordionProps) -> Element {
                     span {
                         class: "nd-accordion-icon",
                         class: if expanded() { "nd-accordion-icon-expanded" } else { "" },
-                        "▼"
+                        icon::Icon {
+                            size: 16,
+                            icon::Arrow {}
+                        }
                     }
                 }
 
