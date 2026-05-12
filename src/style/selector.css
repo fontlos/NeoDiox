@@ -118,13 +118,12 @@
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 12px;
     opacity: 0.6;
     pointer-events: none;
     transition: transform 0.2s ease;
 }
 
-.nd-dropdown-arrow.open {
+.nd-dropdown-arrow.nd-dropdown-arrow-open {
     transform: translateY(-50%) rotate(180deg);
 }
 
