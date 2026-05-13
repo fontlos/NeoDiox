@@ -34,8 +34,8 @@ pub struct DropdownProps<T: Display + PartialEq + Clone + 'static> {
 /// rsx! {
 ///     Dropdown {
 ///         options: vec![
-///             DropdownOption { id: "us".to_string(), value: "United States".to_string(), disabled: false },
-///             DropdownOption { id: "uk".to_string(), value: "United Kingdom".to_string(), disabled: false },
+///             "USA".to_string(),
+///             "Canada".to_string(),
 ///         ],
 ///         value: country,
 ///         onchange: move |val| set_country(val),
@@ -49,7 +49,7 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
     let class = props.class.unwrap_or_default();
 
     let mut is_open = use_signal(|| false);
-    let mut input_value = use_signal(|| {
+    let mut input = use_signal(|| {
         props.value.as_ref().map(|v| v.to_string()).unwrap_or_default()
     });
 
@@ -61,19 +61,13 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
             div { class: "nd-dropdown-input-wrapper",
                 input {
                     class: "nd-dropdown-input nd-surface-inset nd-shadow-inset",
-                    value: "{input_value}",
+                    value: "{input}",
                     placeholder: props.placeholder,
                     readonly: !props.searchable,
                     autocomplete: "off",
-                    onclick: move |_| {
-                        is_open.set(true);
-                    },
-                    // onblur: move |_| {
-                    //     is_open.set(false);
-                    // },
-                    oninput: move |evt| {
-                        *input_value.write() = evt.value().clone();
-                    },
+                    onclick: move |_| is_open.set(true),
+                    onblur: move |_| is_open.set(false),
+                    oninput: move |evt| input.set(evt.value()),
                     onkeydown: move |evt| {
                         if evt.key() == Key::Escape {
                             is_open.set(false);
@@ -92,7 +86,7 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
             // 下拉列表
             if is_open() {
                 {
-                    let search = input_value.read().clone();
+                    let search = input.read().clone();
                     let filtered: Vec<_> = props.options
                         .iter()
                         .filter(|o| {
@@ -107,26 +101,31 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
                     rsx! {
                         div {
                             class: "nd-dropdown-menu",
+                            onmousedown: |e| {
+                                // 阻止冒泡, 防止选项点击还没触发就触发了 blur 导致菜单关闭
+                                e.prevent_default();
+                                e.stop_propagation();
+                            },
 
                             for option in filtered {
-                        button {
-                            class: if Some(&option) == props.value.as_ref()
-                                { "nd-dropdown-item selected" }
-                                else { "nd-dropdown-item" },
-                            onclick: {
-                                let option = option.clone();
-                                let onchange = props.onchange.clone();
-                                let mut is_open = is_open.clone();
-                                let mut input_value = input_value.clone();
-                                move |_| {
-                                    input_value.set(option.to_string());  // 直接覆盖
-                                    onchange.call(option.clone());
-                                    is_open.set(false);
+                                button {
+                                    class: if Some(&option) == props.value.as_ref()
+                                        { "nd-dropdown-item selected" }
+                                        else { "nd-dropdown-item" },
+                                    onclick: {
+                                        let option = option.clone();
+                                        let onchange = props.onchange.clone();
+                                        let mut is_open = is_open.clone();
+                                        let mut input_value = input.clone();
+                                        move |_| {
+                                            input_value.set(option.to_string());  // 直接覆盖
+                                            onchange.call(option.clone());
+                                            is_open.set(false);
+                                        }
+                                    },
+                                    "{option}"
                                 }
-                            },
-                            "{option}"
-                        }
-                    }
+                            }
                         }
                     }
                 }
