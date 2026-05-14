@@ -102,6 +102,7 @@
     border-radius: 12px;
     font-size: 14px;
     cursor: text;
+    outline: none;
 }
 
 .nd-dropdown-input[readonly] {
