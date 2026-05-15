@@ -60,7 +60,7 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
 
             div { class: "nd-dropdown-input-wrapper",
                 input {
-                    class: "nd-dropdown-input nd-surface-inset nd-shadow-inset",
+                    class: "nd-dropdown-input nd-surface-inset nd-shadow-inset nd-text",
                     value: "{input}",
                     placeholder: props.placeholder,
                     readonly: !props.searchable,
