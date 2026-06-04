@@ -1,32 +1,26 @@
 use dioxus::prelude::*;
 
-use crate::icon;
+use std::fmt::Display;
 
-/// MultiSelect Option
-#[derive(Clone, Debug, PartialEq)]
-pub struct MultiSelectOption {
-    pub value: String,
-    pub label: String,
-    pub disabled: bool,
-}
+use crate::icon;
 
 /// MultiSelect Props
 #[derive(Props, PartialEq, Clone)]
-pub struct MultiSelectProps {
+pub struct MultiSelectProps<T: Display + PartialEq + Clone + 'static> {
     /// Custom class name
     #[props(default)]
     pub class: Option<String>,
 
     /// MultiSelect Options
-    pub options: Vec<MultiSelectOption>,
+    pub options: Vec<T>,
     /// Placeholder text
     #[props(default)]
     pub placeholder: Option<String>,
     /// Current selected values
-    pub values: Vec<String>,
+    pub values: Vec<T>,
 
     /// Change event
-    pub onchange: EventHandler<Vec<String>>,
+    pub onchange: EventHandler<Vec<T>>,
 }
 
 /// MultiSelect Component
@@ -37,8 +31,8 @@ pub struct MultiSelectProps {
 /// rsx! {
 ///     MultiSelect {
 ///         options: vec![
-///             MultiSelectOption { value: "js".to_string(), label: "JavaScript".to_string(), disabled: false },
-///             MultiSelectOption { value: "ts".to_string(), label: "TypeScript".to_string(), disabled: false },
+///             "JavaScript",
+///             "TypeScript",
 ///         ],
 ///         placeholder: "Select skills...".to_string(),
 ///         values: selected_skills.clone(),
@@ -47,7 +41,7 @@ pub struct MultiSelectProps {
 /// }
 /// ```
 #[component]
-pub fn MultiSelect(props: MultiSelectProps) -> Element {
+pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(props: MultiSelectProps<T>) -> Element {
     let class = props.class.unwrap_or_default();
 
     let mut is_open = use_signal(|| false);
@@ -64,22 +58,22 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
                         rsx! {
                             button {
                                 class: "nd-multiselect-item",
-                                "data-selected": props.values.contains(&option.value),
+                                "data-selected": props.values.contains(&option),
 
                                 onmousedown: move |evt| {
                                     evt.prevent_default();
                                 },
                                 onclick: move |_| {
                                     let mut new_values = values.clone();
-                                    if new_values.contains(&option.value) {
-                                        new_values.retain(|val| val != &option.value);
+                                    if new_values.contains(&option) {
+                                        new_values.retain(|val| val != &option);
                                     } else {
-                                        new_values.push(option.value.clone());
+                                        new_values.push(option.clone());
                                     }
                                     props.onchange.call(new_values);
                                 },
 
-                                { option.label }
+                                "{option}"
                             }
                         }
                     }
@@ -104,10 +98,10 @@ pub fn MultiSelect(props: MultiSelectProps) -> Element {
 
                 // 已选标签
                 for value in &props.values {
-                    if let Some(option) = props.options.iter().find(|o| &o.value == value) {
+                    if let Some(option) = props.options.iter().find(|o| o == &value) {
                         span {
                             class: "nd-multiselect-tag",
-                            "{option.label}"
+                            "{option}"
                             button {
                                 class: "nd-multiselect-tag-remove",
                                 onmousedown: move |evt| {
