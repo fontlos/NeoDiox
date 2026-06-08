@@ -3,10 +3,13 @@ use dioxus::prelude::*;
 /// Slider
 #[derive(Props, PartialEq, Clone)]
 pub struct SliderProps {
-    /// Value
-    pub value: i32,
-    /// Change event
-    pub on_change: EventHandler<i32>,
+    /// Custom class name
+    #[props(default)]
+    pub class: Option<String>,
+
+    /// Whether to disable
+    #[props(default)]
+    pub disabled: bool,
     /// Minimum value
     #[props(default = 0)]
     pub min: i32,
@@ -16,18 +19,11 @@ pub struct SliderProps {
     /// Step size
     #[props(default = 1)]
     pub step: i32,
-    /// Label text
-    #[props(default)]
-    pub label: Option<String>,
-    /// Whether to show the value
-    #[props(default = true)]
-    pub show_value: bool,
-    /// Whether to disable
-    #[props(default)]
-    pub disabled: bool,
-    /// Custom class name
-    #[props(default)]
-    pub class: Option<String>,
+    /// Value
+    pub value: i32,
+
+    /// Change event
+    pub onchange: EventHandler<i32>,
 }
 
 /// Slider Component
@@ -38,10 +34,7 @@ pub struct SliderProps {
 /// rsx! {
 ///     Slider {
 ///         value: volume,
-///         on_change: move |val| set_volume(val),
-///         label: Some("Volume".to_string()),
-///         min: 0,
-///         max: 100,
+///         onchange: move |val| set_volume(val),
 ///     }
 /// }
 /// ```
@@ -59,67 +52,41 @@ pub fn Slider(props: SliderProps) -> Element {
     rsx! {
         div {
             class: "nd-slider {class}",
-            style: "display: flex; flex-direction: column; gap: 12px;",
 
-            // 标签和值
-            if props.label.is_some() || props.show_value {
-                div {
-                    style: "display: flex; justify-content: space-between; align-items: center;",
-                    if let Some(label_text) = props.label {
-                        span {
-                            style: "font-size: 14px; font-weight: 500; color: inherit;",
-                            "{label_text}"
-                        }
-                    }
-                    if props.show_value {
-                        span {
-                            style: "font-size: 14px; font-weight: 600; color: #7c3aed;",
-                            "{props.value}"
-                        }
-                    }
-                }
+            // 轨道背景
+            div {
+                class: "nd-slider-track nd-surface-inset nd-shadow-inset",
             }
 
-            // 滑块容器
+            // 进度条
             div {
-                style: "position: relative; height: 12px; border-radius: 6px;",
+                class: "nd-slider-progress",
+                style: "width: {percentage}%;",
+            }
 
-                // 轨道背景
-                div {
-                    class: "nd-slider-track",
-                }
+            // 滑块
+            div {
+                class: "nd-slider-thumb nd-surface nd-shadow-sm",
+                style: "left: {percentage}%;",
+            }
 
-                // 进度条
-                div {
-                    class: "nd-slider-progress",
-                    style: "width: {percentage}%;",
-                }
-
-                // 实际输入（隐藏但可交互）
-                input {
-                    r#type: "range",
-                    value: props.value,
-                    min: props.min,
-                    max: props.max,
-                    step: props.step,
-                    disabled: if props.disabled { "true" } else { "false" },
-                    "aria-valuemin": props.min,
-                    "aria-valuemax": props.max,
-                    "aria-valuenow": props.value,
-                    style: "position: absolute; inset: 0; width: 100%; \
-                            height: 100%; opacity: 0; cursor: pointer; z-index: 4;",
-                    oninput: move |evt| {
-                        if let Ok(val) = evt.value().parse::<i32>() {
-                            props.on_change.call(val);
-                        }
-                    },
-                }
-
-                // 自定义滑块thumb - 添加 z-index: 3 确保在最上方
-                div {
-                    class: "nd-slider-thumb",
-                    style: "left: {percentage}%;",
-                }
+            // 实际输入
+            input {
+                class: "nd-slider-input",
+                r#type: "range",
+                value: props.value,
+                min: props.min,
+                max: props.max,
+                step: props.step,
+                disabled: props.disabled,
+                "aria-valuemin": props.min,
+                "aria-valuemax": props.max,
+                "aria-valuenow": props.value,
+                oninput: move |evt| {
+                    if let Ok(val) = evt.value().parse::<i32>() {
+                        props.onchange.call(val);
+                    }
+                },
             }
         }
     }
