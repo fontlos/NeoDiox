@@ -378,28 +378,26 @@
 
 .nd-star-rating {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.nd-star-rating-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nd-star-rating-stars {
-    display: flex;
     gap: 4px;
 }
 
-.nd-star {
+.nd-star-rating-button {
     cursor: pointer;
-    transition: transform 0.15s ease;
+    padding: 4px;
 }
 
-.nd-star:hover:not(:disabled) {
-    transform: scale(1.15);
+.nd-star-rating:disabled .nd-star-rating-button {
+    cursor: disabled;
+}
+
+.nd-star-rating-star {
+    font-size: 28px;
+    color: #d1d5db;
+    transition: color 0.15s ease;
+}
+
+.nd-star-rating-star:not(:disabled)[data-activated="true"] {
+    color: #f59e0b;
 }
 
 /* ============================================
