@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+use crate::icon;
+
 /// StarRating
 #[derive(Props, PartialEq, Clone)]
 pub struct StarRatingProps {
@@ -57,10 +59,11 @@ pub fn StarRating(props: StarRatingProps) -> Element {
                     onmouseenter: move |_| hover_value.set(i),
                     onmouseleave: move |_| hover_value.set(0),
 
-                    span {
+                    icon::Icon {
                         class: "nd-star-rating-star",
+                        size: 28,
                         "data-activated": i <= display_value,
-                        "★"
+                        icon::Star { }
                     }
                 }
             }

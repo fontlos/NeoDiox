@@ -383,7 +383,6 @@
 
 .nd-star-rating-button {
     cursor: pointer;
-    padding: 4px;
 }
 
 .nd-star-rating:disabled .nd-star-rating-button {
@@ -391,7 +390,6 @@
 }
 
 .nd-star-rating-star {
-    font-size: 28px;
     color: #d1d5db;
     transition: color 0.15s ease;
 }
