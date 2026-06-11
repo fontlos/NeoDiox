@@ -51,11 +51,16 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
 
     let mut is_open = use_signal(|| false);
     let mut input = use_signal(|| {
-        props.value.as_ref().map(|v| v.to_string()).unwrap_or_default()
+        props
+            .value
+            .as_ref()
+            .map(|v| v.to_string())
+            .unwrap_or_default()
     });
 
     let search = input().to_lowercase();
-    let filtered: Vec<_> = props.options
+    let filtered: Vec<_> = props
+        .options
         .iter()
         .filter(|o| {
             if props.searchable && !search.is_empty() {

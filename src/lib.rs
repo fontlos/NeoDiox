@@ -29,8 +29,7 @@ pub mod prelude {
     pub use crate::input::{TextArea, TextInput};
     // 选择组件
     pub use crate::selector::{
-        Checkbox, DatePicker, Dropdown, MultiSelect, Radio,
-        Slider, StarRating, TimePicker, Toggle,
+        Checkbox, DatePicker, Dropdown, MultiSelect, Radio, Slider, StarRating, TimePicker, Toggle,
     };
     // 导航组件
     pub use crate::navigation::{

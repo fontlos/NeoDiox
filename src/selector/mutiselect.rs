@@ -41,7 +41,9 @@ pub struct MultiSelectProps<T: Display + PartialEq + Clone + 'static> {
 /// }
 /// ```
 #[component]
-pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(props: MultiSelectProps<T>) -> Element {
+pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(
+    props: MultiSelectProps<T>,
+) -> Element {
     let class = props.class.unwrap_or_default();
 
     let mut is_open = use_signal(|| false);
