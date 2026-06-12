@@ -1,6 +1,6 @@
-/* ============================================
+/* =====================
     Progress Bar
-    ============================================ */
+===================== */
 
 .nd-progress-bar {
     display: flex;
@@ -10,9 +10,8 @@
 
 .nd-progress-bar-track {
     border-radius: 6px;
+    height: 12px;
     overflow: hidden;
-    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
-    box-shadow: inset 3px 3px 6px var(--nd-shadow-dark), inset -3px -3px 6px var(--nd-shadow-light);
 }
 
 .nd-progress-bar-fill {
@@ -165,38 +164,6 @@
     z-index: -1;
     background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
     box-shadow: 8px 8px 16px var(--nd-shadow-dark), -8px -8px 16px var(--nd-shadow-light);
-}
-
-/* ============================================
-    Skeleton 骨架屏
-    ============================================ */
-
-.nd-skeleton {
-    border-radius: 12px;
-    background: linear-gradient(90deg,
-            var(--nd-bg-secondary) 25%,
-            var(--nd-bg-primary) 50%,
-            var(--nd-bg-secondary) 75%);
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s ease-in-out infinite;
-}
-
-/* 进度条进度填充上的闪光动画 */
-.shimmer {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-}
-
-.shimmer::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.4),
-            transparent);
-    animation: shimmer 1.5s infinite;
 }
 
 /* ============================================
