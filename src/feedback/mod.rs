@@ -12,7 +12,7 @@ mod tip;
 mod toast;
 
 pub use alert::{Alert, AlertType};
-pub use dots::DotsLoading;
+pub use dots::Dots;
 pub use modal::{Modal, ModalSize};
 pub use progress::ProgressBar;
 pub use skeleton::Skeleton;
