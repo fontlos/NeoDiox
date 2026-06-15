@@ -23,6 +23,30 @@
     transition: width 0.3s ease;
 }
 
+/* =====================
+    Skeleton 骨架屏
+===================== */
+
+@keyframes nd-skeleton {
+    from {
+        background-position: 200% 0;
+    }
+
+    to {
+        background-position: -200% 0;
+    }
+}
+
+.nd-skeleton {
+    border-radius: 12px;
+    background: linear-gradient(90deg,
+            var(--nd-bg-secondary) 25%,
+            var(--nd-bg-primary) 50%,
+            var(--nd-bg-secondary) 75%);
+    background-size: 200% 100%;
+    animation: nd-skeleton 1.5s ease-in-out infinite;
+}
+
 /* ============================================
     Toast 提示
     ============================================ */
@@ -187,9 +211,9 @@
     animation: nd-spin 0.8s linear infinite;
 }
 
-/* ============================================
+/* =====================
     Dots 加载动画
-    ============================================ */
+===================== */
 
 .nd-dots {
     display: flex;

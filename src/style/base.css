@@ -181,7 +181,7 @@
 }
 
 /* =====================
-    Skeleton 骨架屏
+    闪光动画
 ===================== */
 
 @keyframes nd-shimmer {
@@ -194,27 +194,6 @@
     }
 }
 
-@keyframes nd-skeleton-loading {
-    from {
-        background-position: 200% 0;
-    }
-
-    to {
-        background-position: -200% 0;
-    }
-}
-
-.nd-skeleton {
-    border-radius: 12px;
-    background: linear-gradient(90deg,
-            var(--nd-bg-secondary) 25%,
-            var(--nd-bg-primary) 50%,
-            var(--nd-bg-secondary) 75%);
-    background-size: 200% 100%;
-    animation: nd-skeleton-loading 1.5s ease-in-out infinite;
-}
-
-/* 进度条进度填充上的闪光动画 */
 .nd-shimmer {
     position: absolute;
     inset: 0;
