@@ -40,7 +40,6 @@ pub struct ToastMessage {
     pub title: String,
     pub message: String,
     /// Whether the toast is in its exit animation phase.
-    /// Set this to `true` before removing the toast to play the exit animation.
     pub is_exiting: bool,
 }
 
@@ -54,7 +53,7 @@ pub struct ToastContainerProps {
     /// Toast position on the screen
     #[props(default)]
     pub position: ToastPosition,
-    /// Top offset in pixels (default: 80px to clear the theme toggle button)
+    /// Top offset in pixels
     #[props(default = 80)]
     pub top_offset: u32,
 }
@@ -65,10 +64,6 @@ pub enum ToastPosition {
     #[default]
     TopRight,
     TopLeft,
-    BottomRight,
-    BottomLeft,
-    TopCenter,
-    BottomCenter,
 }
 
 impl ToastPosition {
@@ -76,30 +71,11 @@ impl ToastPosition {
         match self {
             Self::TopRight => format!("top: {}px; right: 16px; left: auto;", top_offset),
             Self::TopLeft => format!("top: {}px; left: 16px; right: auto;", top_offset),
-            Self::BottomRight => "bottom: 16px; right: 16px; left: auto; top: auto;".to_string(),
-            Self::BottomLeft => "bottom: 16px; left: 16px; right: auto; top: auto;".to_string(),
-            Self::TopCenter => format!(
-                "top: {}px; left: 50%; transform: translateX(-50%); right: auto;",
-                top_offset
-            ),
-            Self::BottomCenter => {
-                "bottom: 16px; left: 50%; transform: translateX(-50%); right: auto; top: auto;"
-                    .to_string()
-            }
         }
     }
 }
 
-/// Toast Container component - purely presentational.
-///
-/// The caller manages all timing:
-/// - Auto-dismiss: spawn a timer, then call `on_dismiss(id)`
-/// - Close button: click calls `on_dismiss(id)`
-///
-/// `on_dismiss` should:
-/// 1. Find the toast and set `is_exiting = true` (triggers exit animation)
-/// 2. Wait 300ms for animation to complete
-/// 3. Remove the toast from the list
+/// Toast Container component
 ///
 /// # Example
 ///
@@ -133,10 +109,7 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
     rsx! {
         div {
             class: "nd-toast-container",
-            style: format!(
-                "position: fixed; z-index: 9999; max-width: 400px; \
-                 pointer-events: none; {position_style}",
-            ),
+            style: "{position_style}",
             for toast in &props.toasts {
                 div {
                     key: "{toast.id}",
@@ -157,28 +130,17 @@ struct ToastItemProps {
     pub on_dismiss: EventHandler<String>,
 }
 
-/// Toast Item component - purely presentational.
-/// Animation is driven entirely by `toast.is_exiting` prop.
+/// Toast Item component
 #[component]
 fn ToastItem(props: ToastItemProps) -> Element {
     let (color_start, color_end) = props.toast.toast_type.gradient();
-    let animation = if props.toast.is_exiting {
-        "toast-out 0.3s ease-in forwards"
-    } else {
-        "toast-in 0.3s ease-out"
-    };
 
     rsx! {
         div {
             class: "nd-toast",
+            class: if props.toast.is_exiting { "nd-toast-exit" } else { "" },
             role: "alert",
-            style: format!(
-                "background: linear-gradient(145deg, {}, {}); \
-                 box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2); \
-                 pointer-events: auto; \
-                 animation: {animation};",
-                color_start, color_end
-            ),
+            background: "linear-gradient(145deg, {color_start}, {color_end})",
 
             icon::Icon {
                 size: 24,
@@ -187,7 +149,8 @@ fn ToastItem(props: ToastItemProps) -> Element {
             }
 
             // Content
-            div { class: "nd-toast-content",
+            div {
+                class: "nd-toast-content",
                 p {
                     class: "nd-toast-title",
                     "{props.toast.title}"
