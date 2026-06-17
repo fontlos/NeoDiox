@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+use crate::icon;
+
 /// Alert Type
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum AlertType {
@@ -19,11 +21,24 @@ impl AlertType {
             Self::Info => ("#dbeafe", "#1e40af", "#bfdbfe", "#1d4ed8"),
         }
     }
+
+    pub fn icon(&self) -> Element {
+        match self {
+            Self::Success => rsx! { icon::Checked{ } },
+            Self::Error => rsx! { icon::Error{ } },
+            Self::Warning => rsx! { icon::Warning{ } },
+            Self::Info => rsx! { icon::Info{ } },
+        }
+    }
 }
 
 /// Alert
 #[derive(Props, PartialEq, Clone)]
 pub struct AlertProps {
+    /// Custom class name
+    #[props(default)]
+    pub class: Option<String>,
+
     /// Alert type
     #[props(default)]
     pub alert_type: AlertType,
@@ -37,12 +52,6 @@ pub struct AlertProps {
     /// Dismiss event
     #[props(default)]
     pub on_dismiss: Option<EventHandler<()>>,
-    /// Custom class name
-    #[props(default)]
-    pub class: Option<String>,
-    /// Custom icon
-    #[props(default)]
-    pub icon: Option<String>,
 }
 
 /// Alert component
@@ -62,14 +71,8 @@ pub struct AlertProps {
 /// ```
 #[component]
 pub fn Alert(props: AlertProps) -> Element {
-    let (bg_color, text_color, border_color, icon_color) = props.alert_type.style();
-    let icon = props.icon.unwrap_or_else(|| match props.alert_type {
-        AlertType::Success => "✓".to_string(),
-        AlertType::Error => "✕".to_string(),
-        AlertType::Warning => "⚠".to_string(),
-        AlertType::Info => "ℹ".to_string(),
-    });
     let class = props.class.unwrap_or_default();
+    let (bg_color, text_color, border_color, icon_color) = props.alert_type.style();
 
     rsx! {
         div {
@@ -82,20 +85,23 @@ pub fn Alert(props: AlertProps) -> Element {
             // 图标
             span {
                 class: "nd-alert-icon",
-                style: format!("color: {icon_color};"),
-                "{icon}"
+                icon::Icon {
+                    size: 24,
+                    color: "{icon_color}",
+                    { props.alert_type.icon() }
+                }
             }
 
             // 内容
             div { class: "nd-alert-content",
                 p {
                     class: "nd-alert-title",
-                    style: format!("color: {text_color};"),
+                    color: "{text_color}",
                     "{props.title}"
                 }
                 p {
                     class: "nd-alert-message",
-                    style: format!("color: {icon_color};"),
+                    color: "{icon_color}",
                     "{props.message}"
                 }
             }
@@ -110,7 +116,11 @@ pub fn Alert(props: AlertProps) -> Element {
                             handler.call(());
                         }
                     },
-                    "✕"
+                    icon::Icon {
+                        size: 20,
+                        color: "{icon_color}",
+                        icon::Close { }
+                    }
                 }
             }
         }
