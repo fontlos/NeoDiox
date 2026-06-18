@@ -37,7 +37,7 @@ pub mod prelude {
     };
     // 反馈组件
     pub use crate::feedback::{
-        Alert, AlertType, Dots, Modal, ModalSize, ProgressBar, Skeleton, Spinner, Tip,
+        Alert, AlertType, Dots, Modal, ProgressBar, Skeleton, Spinner, Tip,
         TipPosition, ToastContainer, ToastMessage, ToastPosition, ToastType,
     };
     // 数据组件

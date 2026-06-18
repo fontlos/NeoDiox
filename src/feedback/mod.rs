@@ -13,7 +13,7 @@ mod toast;
 
 pub use alert::{Alert, AlertType};
 pub use dots::Dots;
-pub use modal::{Modal, ModalSize};
+pub use modal::Modal;
 pub use progress::ProgressBar;
 pub use skeleton::Skeleton;
 pub use spinner::Spinner;
