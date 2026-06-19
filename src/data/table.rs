@@ -67,54 +67,49 @@ pub fn Table(props: TableProps) -> Element {
         div {
             class: "nd-table {class}",
 
-            // neu-inset 容器
-            div {
-                class: "nd-table-container",
+            table {
+                class: "nd-table-table",
+                role: "table",
 
-                table {
-                    class: "nd-table-table",
-                    role: "table",
+                // 表头
+                thead {
+                    tr {
+                        for column in &props.columns {
+                            th {
+                                scope: "col",
+                                class: "nd-table-header",
+                                style: if let Some(width) = &column.width {
+                                    format!("width: {width};")
+                                } else {
+                                    "".to_string()
+                                },
+                                "{column.header}"
+                            }
+                        }
+                    }
+                }
 
-                    // 表头
-                    thead {
+                // 表体
+                tbody {
+                    for row in &props.rows {
                         tr {
-                            for column in &props.columns {
-                                th {
-                                    scope: "col",
-                                    class: "nd-table-header",
-                                    style: if let Some(width) = &column.width {
-                                        format!("width: {width};")
-                                    } else {
-                                        "".to_string()
-                                    },
-                                    "{column.header}"
+                            class: "nd-table-row",
+                            for cell in &row.cells {
+                                td {
+                                    class: "nd-table-cell",
+                                    dangerous_inner_html: "{cell.content}",
                                 }
                             }
                         }
                     }
 
-                    // 表体
-                    tbody {
-                        for row in &props.rows {
-                            tr {
-                                class: "nd-table-row",
-                                for cell in &row.cells {
-                                    td {
-                                        class: "nd-table-cell",
-                                        dangerous_inner_html: "{cell.content}",
-                                    }
-                                }
-                            }
-                        }
-
-                        // 空状态
-                        if props.rows.is_empty() {
-                            tr {
-                                td {
-                                    class: "nd-table-empty",
-                                    colspan: col_count,
-                                    "No data available"
-                                }
+                    // 空状态
+                    if props.rows.is_empty() {
+                        tr {
+                            td {
+                                class: "nd-table-empty",
+                                colspan: col_count,
+                                "No data available"
                             }
                         }
                     }

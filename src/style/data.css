@@ -3,14 +3,16 @@
     ============================================ */
 
 .nd-table {
-    width: 100%;
     overflow-x: auto;
     border-radius: 12px;
+    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
+    box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);
 }
 
 .nd-table table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 14px;
 }
 
 .nd-table th,
@@ -21,37 +23,6 @@
 }
 
 .nd-table th {
-    font-weight: 600;
-    border-bottom: 2px solid rgba(128, 128, 128, 0.2);
-}
-
-.nd-table td {
-    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
-}
-
-.nd-table-sortable {
-    cursor: pointer;
-    user-select: none;
-}
-
-.nd-table-sortable:hover {
-    color: var(--nd-primary);
-}
-
-.nd-table-container {
-    overflow-x: auto;
-    border-radius: 12px;
-    background: linear-gradient(145deg, var(--nd-bg-primary), var(--nd-bg-secondary));
-    box-shadow: inset 4px 4px 8px var(--nd-shadow-dark), inset -4px -4px 8px var(--nd-shadow-light);
-}
-
-.nd-table-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-.nd-table-header {
     padding: 16px;
     text-align: left;
     font-weight: 500;
@@ -59,14 +30,8 @@
     border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 
-.nd-table-sortable {
-    cursor: pointer;
-    user-select: none;
-}
-
-.nd-table-sort-icon {
-    font-size: 12px;
-    opacity: 0.6;
+.nd-table td {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
 }
 
 .nd-table-row {
