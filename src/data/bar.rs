@@ -11,20 +11,15 @@ pub struct BarData {
 /// Bar Chart
 #[derive(Props, PartialEq, Clone)]
 pub struct BarChartProps {
-    /// Chart Data
-    pub data: Vec<BarData>,
-    /// Chart Title
-    #[props(default)]
-    pub title: Option<String>,
-    /// Chart Height
-    #[props(default = 200)]
-    pub height: u32,
-    /// Whether to display animation
-    #[props(default = true)]
-    pub animated: bool,
     /// Custom Class Name
     #[props(default)]
     pub class: Option<String>,
+
+    /// Chart Data
+    pub data: Vec<BarData>,
+    /// Chart Height
+    #[props(default = 200)]
+    pub height: u32,
 }
 
 /// Bar Chart Component
@@ -39,13 +34,11 @@ pub struct BarChartProps {
 ///             BarData { label: "Tue".to_string(), value: 80.0, color: None },
 ///             BarData { label: "Wed".to_string(), value: 45.0, color: None },
 ///         ],
-///         title: Some("Weekly Activity".to_string()),
 ///     }
 /// }
 /// ```
 #[component]
 pub fn BarChart(props: BarChartProps) -> Element {
-    // let theme = use_theme_config();
     let class = props.class.unwrap_or_default();
 
     // 计算最大值
@@ -63,56 +56,39 @@ pub fn BarChart(props: BarChartProps) -> Element {
     rsx! {
         div {
             class: "nd-bar-chart {class}",
+            height: "{props.height}px",
 
-            if let Some(title) = props.title {
-                h3 {
-                    class: "nd-bar-chart-title",
-                    "{title}"
-                }
-            }
+            for (index, item) in props.data.iter().enumerate() {
+                div {
+                    class: "nd-bar-item",
+                    height: format!("{}%", (item.value / max_value * 100.0).round()),
 
-            // 图表容器
-            div {
-                role: "img",
-                style: format!(
-                    "display: flex; align-items: flex-end; justify-content: space-between; \
-                     height: {}px; width: 100%; gap: 16px; padding: 0 16px;",
-                    props.height
-                ),
-
-                for (index, item) in props.data.iter().enumerate() {
+                    // 柱体 - 使用 CSS 类
                     div {
-                        class: "nd-bar-item",
+                        class: "nd-bar-rectangle",
+                        style: {
+                            let mut styles = vec![];
 
-                        // 柱体
-                        div {
-                            style: {
-                                let base = format!(
-                                    "width: 100%; border-radius: 8px 8px 0 0; \
-                                     background: linear-gradient(180deg, {}, {}); \
-                                     height: {}%; \
-                                     transition: height 0.8s ease;",
-                                    item.color.as_ref().map(|c| c.0.clone()).unwrap_or_else(|| "#a855f7".to_string()),
-                                    item.color.as_ref().map(|c| c.1.clone()).unwrap_or_else(|| "#7c3aed".to_string()),
-                                    (item.value / max_value * 100.0).round()
-                                );
-                                if props.animated {
-                                    format!(
-                                        "{} animation: grow-up 0.8s ease-out {}ms both;",
-                                        base,
-                                        index * 100
-                                    )
-                                } else {
-                                    base
-                                }
-                            },
-                        }
+                            if let Some((start, end)) = &item.color {
+                                styles.push(format!(
+                                    "background: linear-gradient(180deg, {}, {})",
+                                    start, end
+                                ));
+                            }
 
-                        // 标签
-                        span {
-                            class: "nd-bar-label",
-                            "{item.label}"
+                            styles.push(format!(
+                                "animation-delay: {}ms",
+                                index * 100
+                            ));
+
+                            styles.join("; ")
                         }
+                    }
+
+                    // 标签
+                    span {
+                        class: "nd-bar-label",
+                        "{item.label}"
                     }
                 }
             }

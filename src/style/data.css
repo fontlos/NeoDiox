@@ -67,42 +67,29 @@
     BarChart 柱状图
     ============================================ */
 
+@keyframes nd-bar-grow-up {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
 .nd-bar-chart {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    height: 200px;
-    padding: 16px;
-}
-
-.nd-bar {
-    flex: 1;
-    border-radius: 6px 6px 0 0;
-    background: linear-gradient(180deg, #7c3aed, #a855f7);
-    transform-origin: bottom;
-    animation: grow-up 0.3s ease-out;
-}
-
-.nd-bar-chart-empty {
-    text-align: center;
-    padding: 32px;
-    opacity: 0.6;
-}
-
-.nd-bar-chart-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: inherit;
-    margin: 0 0 16px 0;
-}
-
-.nd-bar-chart-content {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     width: 100%;
     gap: 16px;
     padding: 0 16px;
+}
+
+.nd-bar-chart-empty {
+    text-align: center;
+    padding: 32px;
+    opacity: 0.6;
 }
 
 .nd-bar-item {
@@ -113,9 +100,13 @@
 }
 
 .nd-bar-rectangle {
+    flex: 1;
     width: 100%;
-    border-radius: 8px 8px 0 0;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(180deg, #7c3aed, #a855f7);
+    transform-origin: bottom;
     transition: height 0.8s ease;
+    animation: nd-bar-grow-up 0.3s ease-out;
 }
 
 .nd-bar-label {
