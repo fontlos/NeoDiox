@@ -4,6 +4,7 @@
 
 mod alert;
 mod dots;
+mod menu;
 mod modal;
 mod progress;
 mod skeleton;
@@ -13,6 +14,7 @@ mod toast;
 
 pub use alert::{Alert, AlertType};
 pub use dots::Dots;
+pub use menu::{Menu, MenuItem};
 pub use modal::Modal;
 pub use progress::ProgressBar;
 pub use skeleton::Skeleton;

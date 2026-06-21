@@ -5,6 +5,7 @@
 mod checkbox;
 mod date;
 mod dropdown;
+mod file;
 mod mutiselect;
 mod radio;
 mod slider;
@@ -15,6 +16,7 @@ mod toggle;
 pub use checkbox::Checkbox;
 pub use date::DatePicker;
 pub use dropdown::Dropdown;
+pub use file::{FileInfo, FileUpload};
 pub use mutiselect::MultiSelect;
 pub use radio::Radio;
 pub use slider::Slider;

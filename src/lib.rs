@@ -1,6 +1,5 @@
 //! Neuromorphic UI component library for Dioxus.
 
-pub mod advanced;
 pub mod button;
 pub mod container;
 pub mod data;
@@ -29,23 +28,21 @@ pub mod prelude {
     pub use crate::input::{TextArea, TextInput};
     // 选择组件
     pub use crate::selector::{
-        Checkbox, DatePicker, Dropdown, MultiSelect, Radio, Slider, StarRating, TimePicker, Toggle,
+        Checkbox, DatePicker, Dropdown, FileInfo, FileUpload, MultiSelect, Radio, Slider,
+        StarRating, TimePicker, Toggle,
     };
     // 导航组件
     pub use crate::navigation::{
-        BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, Tab, Tabs,
+        BreadcrumbItem, Breadcrumbs, StepItem, StepStatus, Stepper, Tab, Tabs, TreeNode,
+        TreeNodeKind, TreeView,
     };
     // 反馈组件
     pub use crate::feedback::{
-        Alert, AlertType, Dots, Modal, ProgressBar, Skeleton, Spinner, Tip,
+        Alert, AlertType, Dots, Menu, MenuItem, Modal, ProgressBar, Skeleton, Spinner, Tip,
         TipPosition, ToastContainer, ToastMessage, ToastPosition, ToastType,
     };
     // 数据组件
     pub use crate::data::{
         BarChart, BarData, Column, DonutChart, DonutData, Table, TableCell, TableRow,
-    };
-    // 高级组件
-    pub use crate::advanced::{
-        FileInfo, FileUpload, Menu, MenuItem, TreeNode, TreeNodeKind, TreeView,
     };
 }
