@@ -10,6 +10,8 @@ mod mutiselect;
 mod radio;
 mod slider;
 mod star;
+mod textarea;
+mod textinput;
 mod time;
 mod toggle;
 
@@ -21,5 +23,7 @@ pub use mutiselect::MultiSelect;
 pub use radio::Radio;
 pub use slider::Slider;
 pub use star::StarRating;
+pub use textarea::TextArea;
+pub use textinput::TextInput;
 pub use time::TimePicker;
 pub use toggle::Toggle;

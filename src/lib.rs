@@ -4,10 +4,9 @@ pub mod button;
 pub mod container;
 pub mod data;
 pub mod feedback;
+pub mod form;
 pub mod icon;
-pub mod input;
 pub mod navigation;
-pub mod selector;
 pub mod style;
 pub mod theme;
 
@@ -24,12 +23,10 @@ pub mod prelude {
     pub use crate::button::{Button, ButtonVariant};
     // 图标组件
     pub use crate::icon::Icon;
-    // 输入组件
-    pub use crate::input::{TextArea, TextInput};
-    // 选择组件
-    pub use crate::selector::{
+    // 表单组件
+    pub use crate::form::{
         Checkbox, DatePicker, Dropdown, FileInfo, FileUpload, MultiSelect, Radio, Slider,
-        StarRating, TimePicker, Toggle,
+        StarRating, TimePicker, Toggle,TextArea, TextInput
     };
     // 导航组件
     pub use crate::navigation::{
