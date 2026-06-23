@@ -11,12 +11,10 @@ fn main() {
     let files = vec![
         "base.css",
         "container.css",
-        "input.css",
-        "selector.css",
-        "navigation.css",
-        "feedback.css",
         "data.css",
-        "advanced.css",
+        "feedback.css",
+        "form.css",
+        "navigation.css"
     ];
 
     for file in files {

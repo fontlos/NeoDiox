@@ -154,3 +154,94 @@
     color: white !important;
     box-shadow: 4px 4px 8px var(--nd-shadow-dark), -4px -4px 8px var(--nd-shadow-light) !important;
 }
+
+/* ============================================
+    TreeView 树形视图
+    ============================================ */
+
+.nd-tree-view {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nd-tree-item {
+    list-style: none;
+}
+
+.nd-tree-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+}
+
+.nd-tree-toggle:hover {
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.nd-dark .nd-tree-toggle:hover {
+    background: rgba(124, 58, 237, 0.3);
+}
+
+.nd-tree-chevron {
+    color: rgba(128, 128, 128, 0.5);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.nd-tree-chevron-expanded {
+    transform: rotate(90deg);
+}
+
+.nd-tree-icon {
+    flex-shrink: 0;
+    color: inherit;
+}
+
+.nd-tree-children {
+    margin: 0;
+    padding-left: 24px;
+    margin-top: 4px;
+    list-style: none;
+}
+
+.nd-tree-leaf {
+    list-style: none;
+}
+
+.nd-tree-leaf-content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.nd-tree-leaf-content:hover {
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.nd-dark .nd-tree-leaf-content:hover {
+    background: rgba(124, 58, 237, 0.3);
+}
+
+.nd-tree-leaf-spacer {
+    width: 14px;
+    flex-shrink: 0;
+}

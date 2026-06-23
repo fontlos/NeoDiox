@@ -16,12 +16,10 @@ pub const RESET: Asset = asset!("./normalize.css");
 pub const STYLE_STR: &'static str = include_strs!(
     "base.css",
     "container.css",
-    "input.css",
-    "selector.css",
-    "navigation.css",
-    "feedback.css",
     "data.css",
-    "advanced.css"
+    "feedback.css",
+    "form.css",
+    "navigation.css"
 );
 /// Normalize CSS as String.
 pub const RESET_STR: &'static str = include_str!("normalize.css");
