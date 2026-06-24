@@ -38,16 +38,11 @@ pub fn ProgressBar(props: ProgressBarProps) -> Element {
             "aria-valuemax": 100,
 
             // 进度条轨道
-            div {
-                class: "nd-progress-bar-track nd-surface-inset nd-shadow-inset",
+            div { class: "nd-progress-bar-track nd-surface-inset nd-shadow-inset",
                 // 进度填充
-                div {
-                    class: "nd-progress-bar-fill",
-                    style: "width: {value}%;",
+                div { class: "nd-progress-bar-fill", style: "width: {value}%;",
                     // Shimmer 效果
-                    div {
-                        class: "nd-shimmer",
-                    }
+                    div { class: "nd-shimmer" }
                 }
             }
         }

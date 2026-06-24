@@ -41,11 +41,9 @@ pub fn TimePicker(props: TimePickerProps) -> Element {
     let placeholder = props.placeholder.clone().unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-time-picker {class}",
+        div { class: "nd-time-picker {class}",
 
-            div {
-                class: "nd-time-picker-wrapper",
+            div { class: "nd-time-picker-wrapper",
 
                 input {
                     r#type: "time",
@@ -62,10 +60,7 @@ pub fn TimePicker(props: TimePickerProps) -> Element {
                 }
 
                 // 时钟图标
-                span {
-                    class: "nd-time-picker-icon",
-                    "🕐"
-                }
+                span { class: "nd-time-picker-icon", "🕐" }
             }
         }
     }

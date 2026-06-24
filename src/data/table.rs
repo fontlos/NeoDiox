@@ -64,12 +64,9 @@ pub fn Table(props: TableProps) -> Element {
     let col_count = props.columns.len();
 
     rsx! {
-        div {
-            class: "nd-table {class}",
+        div { class: "nd-table {class}",
 
-            table {
-                class: "nd-table-table",
-                role: "table",
+            table { class: "nd-table-table", role: "table",
 
                 // 表头
                 thead {
@@ -78,11 +75,7 @@ pub fn Table(props: TableProps) -> Element {
                             th {
                                 scope: "col",
                                 class: "nd-table-header",
-                                style: if let Some(width) = &column.width {
-                                    format!("width: {width};")
-                                } else {
-                                    "".to_string()
-                                },
+                                style: if let Some(width) = &column.width { format!("width: {width};") } else { "".to_string() },
                                 "{column.header}"
                             }
                         }
@@ -92,8 +85,7 @@ pub fn Table(props: TableProps) -> Element {
                 // 表体
                 tbody {
                     for row in &props.rows {
-                        tr {
-                            class: "nd-table-row",
+                        tr { class: "nd-table-row",
                             for cell in &row.cells {
                                 td {
                                     class: "nd-table-cell",
@@ -106,11 +98,7 @@ pub fn Table(props: TableProps) -> Element {
                     // 空状态
                     if props.rows.is_empty() {
                         tr {
-                            td {
-                                class: "nd-table-empty",
-                                colspan: col_count,
-                                "No data available"
-                            }
+                            td { class: "nd-table-empty", colspan: col_count, "No data available" }
                         }
                     }
                 }

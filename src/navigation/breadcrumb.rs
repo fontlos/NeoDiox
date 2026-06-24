@@ -41,23 +41,19 @@ pub fn Breadcrumbs(props: BreadcrumbsProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     rsx! {
-        nav {
-            class: "nd-breadcrumbs {class}",
-            "aria-label": "Breadcrumbs",
+        nav { class: "nd-breadcrumbs {class}", "aria-label": "Breadcrumbs",
             for (index, item) in props.items.iter().enumerate() {
                 div { class: "nd-breadcrumb-item",
                     if item.is_current {
                         span { class: "nd-breadcrumb-current", "{item.label}" }
                     } else if let Some(href) = &item.href {
-                        a {
-                            class: "nd-breadcrumb-link",
-                            href: "{href}",
-                            "{item.label}"
-                        }
+                        a { class: "nd-breadcrumb-link", href: "{href}", "{item.label}" }
                         span { class: "nd-breadcrumb-separator", "{props.separator}" }
                     } else {
                         span { "{item.label}" }
-                        if index < props.items.len() - 1 || !props.items.iter().skip(index + 1).any(|i| i.is_current) {
+                        if index < props.items.len() - 1
+                            || !props.items.iter().skip(index + 1).any(|i| i.is_current)
+                        {
                             span { class: "nd-breadcrumb-separator", "{props.separator}" }
                         }
                     }

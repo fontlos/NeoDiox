@@ -47,9 +47,7 @@ pub fn StarRating(props: StarRatingProps) -> Element {
     };
 
     rsx! {
-        div {
-            class: "nd-star-rating {class}",
-            role: "radiogroup",
+        div { class: "nd-star-rating {class}", role: "radiogroup",
             for i in 1..=props.max_stars {
                 button {
                     class: "nd-star-rating-button",
@@ -63,7 +61,7 @@ pub fn StarRating(props: StarRatingProps) -> Element {
                         class: "nd-star-rating-star",
                         size: 28,
                         "data-activated": i <= display_value,
-                        icon::Star { }
+                        icon::Star {}
                     }
                 }
             }

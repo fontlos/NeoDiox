@@ -52,18 +52,13 @@ pub fn Tip(props: TipProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-tip-container {class}",
+        div { class: "nd-tip-container {class}",
 
             // 触发元素
             {props.children}
 
             // 提示内容
-            div {
-                role: "tip",
-                class: "nd-tip {position_class}",
-                "{props.content}"
-            }
+            div { role: "tip", class: "nd-tip {position_class}", "{props.content}" }
         }
     }
 }

@@ -37,12 +37,9 @@ pub fn Accordion(props: AccordionProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-accordion {class}",
+        div { class: "nd-accordion {class}",
 
-            NeuFlat {
-                border_radius: 12,
-                style: "overflow: hidden;",
+            NeuFlat { border_radius: 12, style: "overflow: hidden;",
 
                 button {
                     r#type: "button",
@@ -50,17 +47,11 @@ pub fn Accordion(props: AccordionProps) -> Element {
                     onclick: move |_| {
                         expanded.set(!expanded());
                     },
-                    span {
-                        class: "nd-accordion-title",
-                        "{props.title}"
-                    }
+                    span { class: "nd-accordion-title", "{props.title}" }
                     span {
                         class: "nd-accordion-icon",
                         class: if expanded() { "nd-accordion-icon-expanded" } else { "" },
-                        icon::Icon {
-                            size: 16,
-                            icon::Arrow {}
-                        }
+                        icon::Icon { size: 16, icon::Arrow {} }
                     }
                 }
 
@@ -69,10 +60,7 @@ pub fn Accordion(props: AccordionProps) -> Element {
                     class: "nd-accordion-panel",
                     class: if expanded() { "nd-accordion-panel-expanded" } else { "" },
 
-                    div {
-                        class: "nd-accordion-content",
-                        "{props.content}"
-                    }
+                    div { class: "nd-accordion-content", "{props.content}" }
                 }
             }
         }

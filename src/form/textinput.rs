@@ -81,7 +81,7 @@ pub fn TextInput(props: TextInputProps) -> Element {
             "data-error": props.error,
             oninput: move |evt| {
                 props.oninput.call(evt.value().clone());
-            }
+            },
         }
     }
 }

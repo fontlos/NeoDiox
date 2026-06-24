@@ -56,14 +56,10 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-file-upload {class}",
+        div { class: "nd-file-upload {class}",
 
             // 拖拽区域
-            div {
-                class: "nd-file-drop-zone",
-                role: "button",
-                tabindex: "0",
+            div { class: "nd-file-drop-zone", role: "button", tabindex: "0",
 
                 // 隐藏的文件输入 - 覆盖在整个区域上
                 input {
@@ -95,54 +91,32 @@ pub fn FileUpload(props: FileUploadProps) -> Element {
                     },
                 }
 
-                div {
-                    class: "nd-file-drop-content",
+                div { class: "nd-file-drop-content",
 
                     // 上传图标
-                    div {
-                        class: "nd-file-upload-icon",
-                        span {
-                            "📤"
-                        }
+                    div { class: "nd-file-upload-icon",
+                        span { "📤" }
                     }
 
-                    p {
-                        class: "nd-file-upload-title",
-                        "{props.drop_text}"
-                    }
+                    p { class: "nd-file-upload-title", "{props.drop_text}" }
 
-                    p {
-                        class: "nd-file-upload-help",
-                        "PNG, JPG, PDF up to 10MB"
-                    }
+                    p { class: "nd-file-upload-help", "PNG, JPG, PDF up to 10MB" }
                 }
             }
 
             // 文件列表
             if !props.files.is_empty() {
-                div {
-                    class: "nd-file-list",
+                div { class: "nd-file-list",
                     for (index, file) in props.files.iter().enumerate() {
-                        div {
-                            class: "nd-file-item",
+                        div { class: "nd-file-item",
 
                             // 文件图标
-                            span {
-                                class: "nd-file-item-icon",
-                                "📄"
-                            }
+                            span { class: "nd-file-item-icon", "📄" }
 
                             // 文件信息
-                            div {
-                                class: "nd-file-item-content",
-                                p {
-                                    class: "nd-file-item-name",
-                                    "{file.name}"
-                                }
-                                p {
-                                    class: "nd-file-item-size",
-                                    "{format_file_size(file.size)}"
-                                }
+                            div { class: "nd-file-item-content",
+                                p { class: "nd-file-item-name", "{file.name}" }
+                                p { class: "nd-file-item-size", "{format_file_size(file.size)}" }
                             }
 
                             // 移除按钮

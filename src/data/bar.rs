@@ -46,17 +46,12 @@ pub fn BarChart(props: BarChartProps) -> Element {
 
     if max_value == 0.0 {
         return rsx! {
-            div {
-                class: "nd-bar-chart-empty",
-                "No data available"
-            }
+            div { class: "nd-bar-chart-empty", "No data available" }
         };
     }
 
     rsx! {
-        div {
-            class: "nd-bar-chart {class}",
-            height: "{props.height}px",
+        div { class: "nd-bar-chart {class}", height: "{props.height}px",
 
             for (index, item) in props.data.iter().enumerate() {
                 div {
@@ -70,26 +65,18 @@ pub fn BarChart(props: BarChartProps) -> Element {
                             let mut styles = vec![];
 
                             if let Some((start, end)) = &item.color {
-                                styles.push(format!(
-                                    "background: linear-gradient(180deg, {}, {})",
-                                    start, end
-                                ));
+                                styles
+                                    .push(
+                                        format!("background: linear-gradient(180deg, {}, {})", start, end),
+                                    );
                             }
-
-                            styles.push(format!(
-                                "animation-delay: {}ms",
-                                index * 100
-                            ));
-
+                            styles.push(format!("animation-delay: {}ms", index * 100));
                             styles.join("; ")
-                        }
+                        },
                     }
 
                     // 标签
-                    span {
-                        class: "nd-bar-label",
-                        "{item.label}"
-                    }
+                    span { class: "nd-bar-label", "{item.label}" }
                 }
             }
         }

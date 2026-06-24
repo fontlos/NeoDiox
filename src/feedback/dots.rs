@@ -28,9 +28,7 @@ pub fn Dots(props: DotsProps) -> Element {
             "aria-label": "Loading",
 
             for _ in 0..3 {
-                div {
-                    class: "nd-dots-dot",
-                }
+                div { class: "nd-dots-dot" }
             }
         }
     }

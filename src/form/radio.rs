@@ -30,8 +30,7 @@ pub fn Radio(props: RadioProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-radio {class}",
+        div { class: "nd-radio {class}",
             input {
                 r#type: "radio",
                 id: props.id,

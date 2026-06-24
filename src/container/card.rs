@@ -33,11 +33,7 @@ pub fn Card(props: CardProps) -> Element {
         NeuFlat {
             border_radius: 16,
             class: "nd-card {class}",
-            style: if props.hoverable {
-                "transition: all 0.3s ease;"
-            } else {
-                ""
-            },
+            style: if props.hoverable { "transition: all 0.3s ease;" } else { "" },
             {props.children}
         }
     }

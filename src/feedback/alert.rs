@@ -24,10 +24,18 @@ impl AlertType {
 
     pub fn icon(&self) -> Element {
         match self {
-            Self::Success => rsx! { icon::Checked{ } },
-            Self::Error => rsx! { icon::Error{ } },
-            Self::Warning => rsx! { icon::Warning{ } },
-            Self::Info => rsx! { icon::Info{ } },
+            Self::Success => rsx! {
+                icon::Checked {}
+            },
+            Self::Error => rsx! {
+                icon::Error {}
+            },
+            Self::Warning => rsx! {
+                icon::Warning {}
+            },
+            Self::Info => rsx! {
+                icon::Info {}
+            },
         }
     }
 }
@@ -78,32 +86,17 @@ pub fn Alert(props: AlertProps) -> Element {
         div {
             role: "alert",
             class: "nd-alert {class}",
-            style: format!(
-                "background: {bg_color}; border-left: 4px solid {border_color};",
-            ),
+            style: format!("background: {bg_color}; border-left: 4px solid {border_color};"),
 
             // 图标
-            span {
-                class: "nd-alert-icon",
-                icon::Icon {
-                    size: 24,
-                    color: "{icon_color}",
-                    { props.alert_type.icon() }
-                }
+            span { class: "nd-alert-icon",
+                icon::Icon { size: 24, color: "{icon_color}", {props.alert_type.icon()} }
             }
 
             // 内容
             div { class: "nd-alert-content",
-                p {
-                    class: "nd-alert-title",
-                    color: "{text_color}",
-                    "{props.title}"
-                }
-                p {
-                    class: "nd-alert-message",
-                    color: "{icon_color}",
-                    "{props.message}"
-                }
+                p { class: "nd-alert-title", color: "{text_color}", "{props.title}" }
+                p { class: "nd-alert-message", color: "{icon_color}", "{props.message}" }
             }
 
             // 关闭按钮
@@ -116,11 +109,7 @@ pub fn Alert(props: AlertProps) -> Element {
                             handler.call(());
                         }
                     },
-                    icon::Icon {
-                        size: 20,
-                        color: "{icon_color}",
-                        icon::Close { }
-                    }
+                    icon::Icon { size: 20, color: "{icon_color}", icon::Close {} }
                 }
             }
         }

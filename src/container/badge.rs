@@ -48,10 +48,6 @@ pub fn Badge(props: BadgeProps) -> Element {
     }
 
     rsx! {
-        span {
-            class: "nd-badge {class}",
-            style: color,
-            {props.children}
-        }
+        span { class: "nd-badge {class}", style: color, {props.children} }
     }
 }

@@ -26,7 +26,7 @@ pub mod prelude {
     // 表单组件
     pub use crate::form::{
         Checkbox, DatePicker, Dropdown, FileInfo, FileUpload, MultiSelect, Radio, Slider,
-        StarRating, TimePicker, Toggle,TextArea, TextInput
+        StarRating, TextArea, TextInput, TimePicker, Toggle,
     };
     // 导航组件
     pub use crate::navigation::{

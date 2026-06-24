@@ -47,11 +47,9 @@ pub fn DatePicker(props: DatePickerProps) -> Element {
     let placeholder = props.placeholder.clone().unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-date-picker {class}",
+        div { class: "nd-date-picker {class}",
 
-            div {
-                class: "nd-date-picker-wrapper",
+            div { class: "nd-date-picker-wrapper",
 
                 input {
                     r#type: "date",
@@ -70,10 +68,7 @@ pub fn DatePicker(props: DatePickerProps) -> Element {
                 }
 
                 // 日历图标
-                span {
-                    class: "nd-date-picker-icon",
-                    "📅"
-                }
+                span { class: "nd-date-picker-icon", "📅" }
             }
         }
     }

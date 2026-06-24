@@ -50,10 +50,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
 
     if total == 0.0 {
         return rsx! {
-            div {
-                class: "nd-donut-chart-empty",
-                "No data available"
-            }
+            div { class: "nd-donut-chart-empty", "No data available" }
         };
     }
 
@@ -76,14 +73,10 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
         .collect();
 
     rsx! {
-        div {
-            class: "nd-donut-chart nd-donut-chart-content {class}",
+        div { class: "nd-donut-chart nd-donut-chart-content {class}",
 
             if let Some(title) = props.title {
-                h3 {
-                    class: "nd-donut-chart-title",
-                    "{title}"
-                }
+                h3 { class: "nd-donut-chart-title", "{title}" }
             }
 
             // 环形图
@@ -91,11 +84,8 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                 role: "img",
                 style: format!("width: {}px; height: {}px; position: relative;", props.size, props.size),
 
-                div {
-                    style: "width: 100%; height: 100%; transform: rotate(-90deg);",
-                    svg {
-                        view_box: "0 0 100 100",
-                        class: "nd-donut-chart-svg",
+                div { style: "width: 100%; height: 100%; transform: rotate(-90deg);",
+                    svg { view_box: "0 0 100 100", class: "nd-donut-chart-svg",
 
                         // 背景圆环
                         circle {
@@ -116,7 +106,11 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                                 r: 40,
                                 fill: "none",
                                 stroke: {
-                                    let gid = format!("gradient-{}-{}", item.color.0.replace('#', ""), item.color.1.replace('#', ""));
+                                    let gid = format!(
+                                        "gradient-{}-{}",
+                                        item.color.0.replace('#', ""),
+                                        item.color.1.replace('#', ""),
+                                    );
                                     format!("url(#{gid})")
                                 },
                                 "stroke-width": 12,
@@ -131,7 +125,11 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                             for (item, _, _, _, _) in &segments {
                                 linearGradient {
                                     id: {
-                                        format!("gradient-{}-{}", item.color.0.replace('#', ""), item.color.1.replace('#', ""))
+                                        format!(
+                                            "gradient-{}-{}",
+                                            item.color.0.replace('#', ""),
+                                            item.color.1.replace('#', ""),
+                                        )
                                     },
                                     x1: "0%",
                                     y1: "0%",
@@ -152,10 +150,8 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                 }
 
                 // 中心文本
-                div {
-                    style: "position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;",
-                    span {
-                        class: "nd-donut-chart-center-text",
+                div { style: "position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;",
+                    span { class: "nd-donut-chart-center-text",
                         if let Some(center_text) = props.center_text {
                             "{center_text}"
                         } else {
@@ -166,24 +162,22 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
             }
 
             // 图例
-            div {
-                class: "nd-donut-chart-legend",
+            div { class: "nd-donut-chart-legend",
                 for (item, _, _, _, percentage) in &segments {
-                    div {
-                        class: "nd-donut-chart-legend-item",
+                    div { class: "nd-donut-chart-legend-item",
 
                         // 颜色指示
                         div {
                             style: format!(
                                 "width: 12px; height: 12px; border-radius: 6px; \
-                                 background: linear-gradient(145deg, {}, {});",
-                                item.color.0, item.color.1
+                                                         background: linear-gradient(145deg, {}, {});",
+                                item.color.0,
+                                item.color.1,
                             ),
                         }
 
                         // 标签
-                        span {
-                            class: "nd-donut-chart-legend-label",
+                        span { class: "nd-donut-chart-legend-label",
                             "{item.label} {(percentage * 100.0).round()}%"
                         }
                     }

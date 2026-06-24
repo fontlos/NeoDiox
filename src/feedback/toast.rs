@@ -24,10 +24,18 @@ impl ToastType {
 
     pub fn icon(&self) -> Element {
         match self {
-            Self::Success => rsx! { icon::Checked{ } },
-            Self::Error => rsx! { icon::Error{ } },
-            Self::Warning => rsx! { icon::Warning{ } },
-            Self::Info => rsx! { icon::Info{ } },
+            Self::Success => rsx! {
+                icon::Checked {}
+            },
+            Self::Error => rsx! {
+                icon::Error {}
+            },
+            Self::Warning => rsx! {
+                icon::Warning {}
+            },
+            Self::Info => rsx! {
+                icon::Info {}
+            },
         }
     }
 }
@@ -107,12 +115,9 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
     let position_style = props.position.style(props.top_offset);
 
     rsx! {
-        div {
-            class: "nd-toast-container",
-            style: "{position_style}",
+        div { class: "nd-toast-container", style: "{position_style}",
             for toast in &props.toasts {
-                div {
-                    key: "{toast.id}",
+                div { key: "{toast.id}",
                     ToastItem {
                         toast: toast.clone(),
                         on_dismiss: props.on_dismiss.clone(),
@@ -142,23 +147,12 @@ fn ToastItem(props: ToastItemProps) -> Element {
             role: "alert",
             background: "linear-gradient(145deg, {color_start}, {color_end})",
 
-            icon::Icon {
-                size: 24,
-                color: "white",
-                { props.toast.toast_type.icon() }
-            }
+            icon::Icon { size: 24, color: "white", {props.toast.toast_type.icon()} }
 
             // Content
-            div {
-                class: "nd-toast-content",
-                p {
-                    class: "nd-toast-title",
-                    "{props.toast.title}"
-                }
-                p {
-                    class: "nd-toast-message",
-                    "{props.toast.message}"
-                }
+            div { class: "nd-toast-content",
+                p { class: "nd-toast-title", "{props.toast.title}" }
+                p { class: "nd-toast-message", "{props.toast.message}" }
             }
 
             // Close button
@@ -167,11 +161,7 @@ fn ToastItem(props: ToastItemProps) -> Element {
                 class: "nd-toast-close",
                 onclick: move |_| props.on_dismiss.call(props.toast.id.clone()),
 
-                icon::Icon {
-                    size: 24,
-                    color: "white",
-                    icon::Close { }
-                }
+                icon::Icon { size: 24, color: "white", icon::Close {} }
             }
         }
     }

@@ -51,8 +51,7 @@ pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(
     let menu = if is_open() {
         let options = props.options.clone();
         rsx! {
-            div {
-                class: "nd-multiselect-menu",
+            div { class: "nd-multiselect-menu",
 
                 for option in options {
                     {
@@ -87,9 +86,7 @@ pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(
     };
 
     rsx! {
-        div {
-            class: "nd-multiselect {class}",
-            "data-open": is_open,
+        div { class: "nd-multiselect {class}", "data-open": is_open,
 
             // 容器/触发器
             div {
@@ -101,8 +98,7 @@ pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(
                 // 已选标签
                 for value in &props.values {
                     if let Some(option) = props.options.iter().find(|o| o == &value) {
-                        span {
-                            class: "nd-multiselect-tag",
+                        span { class: "nd-multiselect-tag",
                             "{option}"
                             button {
                                 class: "nd-multiselect-tag-remove",
@@ -131,10 +127,7 @@ pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(
 
                 // 占位符
                 if props.values.is_empty() {
-                    span {
-                        class: "nd-multiselect-placeholder",
-                        { props.placeholder }
-                    }
+                    span { class: "nd-multiselect-placeholder", {props.placeholder} }
                 }
             }
 
@@ -145,14 +138,11 @@ pub fn MultiSelect<T: Display + PartialEq + Clone + 'static>(
                     evt.prevent_default();
                 },
                 onclick: move |_| is_open.set(!is_open()),
-                icon::Icon {
-                    size: 16,
-                    icon::Arrow {}
-                }
+                icon::Icon { size: 16, icon::Arrow {} }
             }
 
             // 下拉列表
-            { menu }
+            {menu}
 
             // 点击外部关闭
             if is_open() {

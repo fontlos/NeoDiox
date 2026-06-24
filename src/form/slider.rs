@@ -50,19 +50,13 @@ pub fn Slider(props: SliderProps) -> Element {
     };
 
     rsx! {
-        div {
-            class: "nd-slider {class}",
+        div { class: "nd-slider {class}",
 
             // 轨道背景
-            div {
-                class: "nd-slider-track nd-surface-inset nd-shadow-inset",
-            }
+            div { class: "nd-slider-track nd-surface-inset nd-shadow-inset" }
 
             // 进度条
-            div {
-                class: "nd-slider-progress",
-                style: "width: {percentage}%;",
-            }
+            div { class: "nd-slider-progress", style: "width: {percentage}%;" }
 
             // 滑块
             div {

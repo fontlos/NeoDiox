@@ -27,8 +27,7 @@ pub fn Toggle(props: ToggleProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-toggle {class}",
+        div { class: "nd-toggle {class}",
             input {
                 r#type: "checkbox",
                 id: props.id,

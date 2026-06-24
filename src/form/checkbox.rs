@@ -29,14 +29,8 @@ pub fn Checkbox(props: CheckboxProps) -> Element {
     let class = props.class.unwrap_or_default();
 
     rsx! {
-        div {
-            class: "nd-checkbox {class}",
-            icon::Icon {
-                class: "nd-checkbox-icon",
-                size: 12,
-                color: "white",
-                icon::Checked { }
-            }
+        div { class: "nd-checkbox {class}",
+            icon::Icon { class: "nd-checkbox-icon", size: 12, color: "white", icon::Checked {} }
             input {
                 r#type: "checkbox",
                 id: props.id,

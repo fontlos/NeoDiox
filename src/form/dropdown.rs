@@ -86,7 +86,7 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
                         "data-selected": Some(&option) == props.value.as_ref(),
                         onclick: {
                             move |_| {
-                                input.set(option.to_string());  // 直接覆盖
+                                input.set(option.to_string()); // 直接覆盖
                                 props.onchange.call(option.clone());
                                 is_open.set(false);
                             }
@@ -101,9 +101,7 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
     };
 
     rsx! {
-        div {
-            class: "nd-dropdown {class}",
-            "data-open": is_open,
+        div { class: "nd-dropdown {class}", "data-open": is_open,
 
             input {
                 class: "nd-dropdown-input nd-surface-inset nd-shadow-inset nd-text",
@@ -122,14 +120,10 @@ pub fn Dropdown<T: Display + PartialEq + Clone + 'static>(props: DropdownProps<T
             }
 
             // 下拉箭头
-            icon::Icon {
-                class: "nd-dropdown-arrow",
-                size: 16,
-                icon::Arrow {}
-            }
+            icon::Icon { class: "nd-dropdown-arrow", size: 16, icon::Arrow {} }
 
             // 下拉列表
-            { menu }
+            {menu}
         }
     }
 }

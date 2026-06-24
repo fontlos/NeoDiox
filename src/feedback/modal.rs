@@ -67,13 +67,9 @@ pub fn Modal(props: ModalProps) -> Element {
                     evt.stop_propagation();
                 },
 
-                div {
-                    class: "nd-modal-header",
+                div { class: "nd-modal-header",
 
-                    h2 {
-                        class: "nd-modal-title",
-                        "{props.title}"
-                    }
+                    h2 { class: "nd-modal-title", "{props.title}" }
                     button {
                         r#type: "button",
                         class: "nd-modal-close",
@@ -81,17 +77,11 @@ pub fn Modal(props: ModalProps) -> Element {
                         onclick: move |_| {
                             props.on_close.call(());
                         },
-                        icon::Icon {
-                            size: 16,
-                            icon::Close { }
-                        }
+                        icon::Icon { size: 16, icon::Close {} }
                     }
                 }
 
-                div {
-                    class: "nd-modal-body",
-                    {props.children}
-                }
+                div { class: "nd-modal-body", {props.children} }
             }
         }
     }

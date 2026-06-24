@@ -128,9 +128,7 @@ fn TreeNodeItem(node: TreeNode) -> Element {
 
                     // Children
                     if *expanded.read() && !children.is_empty() {
-                        ul {
-                            role: "group",
-                            class: "nd-tree-children",
+                        ul { role: "group", class: "nd-tree-children",
                             for child in children {
                                 TreeNodeItem { node: child.clone() }
                             }
@@ -141,12 +139,9 @@ fn TreeNodeItem(node: TreeNode) -> Element {
         }
         TreeNodeKind::File => {
             rsx! {
-                li {
-                    role: "treeitem",
-                    class: "nd-tree-leaf",
+                li { role: "treeitem", class: "nd-tree-leaf",
 
-                    div {
-                        class: "nd-tree-leaf-content",
+                    div { class: "nd-tree-leaf-content",
 
                         // Spacer (aligns with chevron)
                         span { class: "nd-tree-leaf-spacer" }

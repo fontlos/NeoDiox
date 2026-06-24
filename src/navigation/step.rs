@@ -72,8 +72,8 @@ pub fn Stepper(props: StepperProps) -> Element {
                     rsx! {
                         // Step item
                         div {
-                            class: "nd-step-item",
-                            role: "listitem",
+                        class: "nd-step-item",
+                        role: "listitem",
 
                             // Step circle
                             div {

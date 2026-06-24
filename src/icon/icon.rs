@@ -71,11 +71,6 @@ pub fn Icon(props: IconProps) -> Element {
     );
 
     rsx! {
-        span {
-            class: "nd-icon {class}",
-            style,
-            ..props.attrs,
-            {props.children}
-        }
+        span { class: "nd-icon {class}", style, ..props.attrs, {props.children} }
     }
 }
