@@ -3,10 +3,13 @@ name = "neo-diox"
 version = "0.1.0"
 edition = "2024"
 description = "Neumorphism UI component library for Dioxus"
-repository = "https://github.com/fontlos/DioNeoUI"
+repository = "https://github.com/fontlos/NeoDiox"
 license = "MIT"
 keywords = ["dioxus", "ui", "components", "neumorphism"]
 categories = ["gui"]
 
 [dependencies]
 dioxus = "0.7"
+
+[dev-dependencies]
+gloo-timers = { version = "0.4.0", features = ["futures"] }
