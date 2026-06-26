@@ -55,15 +55,16 @@ pub struct ToastMessage {
 #[derive(Props, PartialEq, Clone)]
 pub struct ToastContainerProps {
     /// Toast messages to display
-    pub toasts: Vec<ToastMessage>,
-    /// Dismiss event handler (receives the ID of the dismissed toast)
-    pub on_dismiss: EventHandler<String>,
+    pub toasts: Signal<Vec<ToastMessage>>,
     /// Toast position on the screen
     #[props(default)]
     pub position: ToastPosition,
     /// Top offset in pixels
     #[props(default = 80)]
     pub top_offset: u32,
+
+    /// Dismiss event handler (receives the ID of the dismissed toast)
+    pub on_dismiss: EventHandler<String>,
 }
 
 /// Toast Position
@@ -108,15 +109,11 @@ impl ToastPosition {
 /// ```
 #[component]
 pub fn ToastContainer(props: ToastContainerProps) -> Element {
-    if props.toasts.is_empty() {
-        return rsx! {};
-    }
-
     let position_style = props.position.style(props.top_offset);
 
     rsx! {
         div { class: "nd-toast-container", style: "{position_style}",
-            for toast in &props.toasts {
+        for toast in &*props.toasts.read() {
                 div { key: "{toast.id}",
                     ToastItem {
                         toast: toast.clone(),
@@ -130,18 +127,19 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
 
 /// Toast Item
 #[derive(Props, PartialEq, Clone)]
-struct ToastItemProps {
+pub struct ToastItemProps {
     pub toast: ToastMessage,
     pub on_dismiss: EventHandler<String>,
 }
 
 /// Toast Item component
 #[component]
-fn ToastItem(props: ToastItemProps) -> Element {
+pub fn ToastItem(props: ToastItemProps) -> Element {
     let (color_start, color_end) = props.toast.toast_type.gradient();
 
     rsx! {
         div {
+            // key: "{props.toast.id}",
             class: "nd-toast",
             class: if props.toast.is_exiting { "nd-toast-exit" } else { "" },
             role: "alert",

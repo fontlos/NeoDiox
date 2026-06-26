@@ -66,25 +66,21 @@ fn Header() -> Element {
     }
 }
 
+pub static TOASTS: GlobalSignal<Vec<ToastMessage>> = GlobalSignal::new(|| Vec::<ToastMessage>::new());
+
 #[component]
 fn Main() -> Element {
     let mut active_tab = use_signal(|| "basics".to_string());
-    let toasts = use_signal(Vec::<ToastMessage>::new);
 
-    let dismiss_toast = {
-        let mut toasts = toasts.clone();
-        move |id: String| {
-            let mut toasts_guard = toasts.write();
-            if let Some(toast) = toasts_guard.iter_mut().find(|t| t.id == id) {
-                toast.is_exiting = true;
-            }
-            drop(toasts_guard);
-            let mut toasts = toasts.clone();
-            spawn(async move {
-                gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
-                toasts.write().retain(|t| t.id != id);
-            });
+    let dismiss_toast = move |id: String| {
+        if let Some(toast) = TOASTS.write().iter_mut().find(|t| t.id == id) {
+            toast.is_exiting = true;
         }
+
+        spawn(async move {
+            gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
+            TOASTS.write().retain(|t| t.id != id);
+        });
     };
 
     rsx! {
@@ -125,7 +121,7 @@ fn Main() -> Element {
                     forms::Forms {}
                 },
                 "feedback" => rsx! {
-                    feedback::Feedback { toasts, on_dismiss: dismiss_toast }
+                    feedback::Feedback {}
                 },
                 "data" => rsx! {
                     data::Data {}
@@ -140,6 +136,10 @@ fn Main() -> Element {
         }
 
         // Toast 容器
-        ToastContainer { toasts: toasts(), top_offset: 80, on_dismiss: dismiss_toast }
+        ToastContainer {
+            top_offset: 80,
+            toasts: TOASTS.resolve(),
+            on_dismiss: dismiss_toast,
+        }
     }
 }

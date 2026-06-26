@@ -1,14 +1,16 @@
 use dioxus::prelude::*;
 use neo_diox::prelude::*;
 
+use crate::page::TOASTS;
+
 #[component]
-pub fn Feedback(toasts: Signal<Vec<ToastMessage>>, on_dismiss: Callback<String>) -> Element {
+pub fn Feedback() -> Element {
     rsx! {
         div { class: "page",
 
             ProgressPanel {}
             LoadingPanel {}
-            ToastPanel { toasts, on_dismiss }
+            ToastPanel {}
             ModalPanel {}
             AlertPanel {}
         }
@@ -96,7 +98,7 @@ fn LoadingPanel() -> Element {
 }
 
 #[component]
-fn ToastPanel(toasts: Signal<Vec<ToastMessage>>, on_dismiss: Callback<String>) -> Element {
+fn ToastPanel() -> Element {
     let mut counter = use_signal(|| 0u64);
 
     // Helper to add a toast
@@ -104,12 +106,9 @@ fn ToastPanel(toasts: Signal<Vec<ToastMessage>>, on_dismiss: Callback<String>) -
         move |toast_type: ToastType, title: &str, message: &str, duration_ms: u64| {
             let id = format!("toast-{}", *counter.peek());
             *counter.write() += 1;
-            let id_clone = id.clone();
-            let mut toasts = toasts.clone();
-            let on_dismiss = on_dismiss.clone();
 
-            toasts.write().push(ToastMessage {
-                id,
+            TOASTS.write().push(ToastMessage {
+                id: id.clone(),
                 toast_type,
                 title: title.to_string(),
                 message: message.to_string(),
@@ -118,7 +117,11 @@ fn ToastPanel(toasts: Signal<Vec<ToastMessage>>, on_dismiss: Callback<String>) -
 
             spawn(async move {
                 gloo_timers::future::sleep(std::time::Duration::from_millis(duration_ms)).await;
-                on_dismiss.call(id_clone);
+                if let Some(toast) = TOASTS.write().iter_mut().find(|t| t.id == id) {
+                    toast.is_exiting = true;
+                }
+                gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
+                TOASTS.write().retain(|t| t.id != id);
             });
         }
     };
