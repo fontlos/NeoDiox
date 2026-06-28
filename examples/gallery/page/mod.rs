@@ -66,20 +66,18 @@ fn Header() -> Element {
     }
 }
 
-pub static TOASTS: GlobalSignal<Vec<ToastMessage>> = GlobalSignal::new(|| Vec::<ToastMessage>::new());
+pub static TOASTS: GlobalSignal<ToastManager> = GlobalSignal::new(|| ToastManager::new());
 
 #[component]
 fn Main() -> Element {
     let mut active_tab = use_signal(|| "basics".to_string());
 
-    let dismiss_toast = move |id: String| {
-        if let Some(toast) = TOASTS.write().iter_mut().find(|t| t.id == id) {
-            toast.is_exiting = true;
-        }
+    let dismiss_toast = move |id: u64| {
+        TOASTS.write().mark_exiting(id);
 
         spawn(async move {
             gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
-            TOASTS.write().retain(|t| t.id != id);
+            TOASTS.write().remove(id);
         });
     };
 

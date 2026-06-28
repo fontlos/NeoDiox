@@ -99,16 +99,11 @@ fn LoadingPanel() -> Element {
 
 #[component]
 fn ToastPanel() -> Element {
-    let mut counter = use_signal(|| 0u64);
-
     // Helper to add a toast
-    let mut add_toast = {
-        move |toast_type: ToastType, title: &str, message: &str, duration_ms: u64| {
-            let id = format!("toast-{}", *counter.peek());
-            *counter.write() += 1;
+    let add_toast = move |toast_type: ToastType, title: &str, message: &str, duration_ms: u64| {
 
-            TOASTS.write().push(ToastMessage {
-                id: id.clone(),
+            let id = TOASTS.write().add(Toast {
+                id: 0,
                 toast_type,
                 title: title.to_string(),
                 message: message.to_string(),
@@ -117,14 +112,11 @@ fn ToastPanel() -> Element {
 
             spawn(async move {
                 gloo_timers::future::sleep(std::time::Duration::from_millis(duration_ms)).await;
-                if let Some(toast) = TOASTS.write().iter_mut().find(|t| t.id == id) {
-                    toast.is_exiting = true;
-                }
+                TOASTS.write().mark_exiting(id);
                 gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
-                TOASTS.write().retain(|t| t.id != id);
+                TOASTS.write().remove(id);
             });
-        }
-    };
+        };
 
     rsx! {
         NeuRaised { class: "panel",

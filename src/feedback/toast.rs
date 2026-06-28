@@ -40,33 +40,6 @@ impl ToastType {
     }
 }
 
-/// Toast Message
-#[derive(Clone, Debug, PartialEq)]
-pub struct ToastMessage {
-    pub id: String,
-    pub toast_type: ToastType,
-    pub title: String,
-    pub message: String,
-    /// Whether the toast is in its exit animation phase.
-    pub is_exiting: bool,
-}
-
-/// Toast Container
-#[derive(Props, PartialEq, Clone)]
-pub struct ToastContainerProps {
-    /// Toast messages to display
-    pub toasts: Signal<Vec<ToastMessage>>,
-    /// Toast position on the screen
-    #[props(default)]
-    pub position: ToastPosition,
-    /// Top offset in pixels
-    #[props(default = 80)]
-    pub top_offset: u32,
-
-    /// Dismiss event handler (receives the ID of the dismissed toast)
-    pub on_dismiss: EventHandler<String>,
-}
-
 /// Toast Position
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum ToastPosition {
@@ -82,6 +55,74 @@ impl ToastPosition {
             Self::TopLeft => format!("top: {}px; left: 16px; right: auto;", top_offset),
         }
     }
+}
+
+#[derive(Clone, Debug)]
+pub struct Toast {
+    pub id: u64,
+    pub toast_type: ToastType,
+    pub title: String,
+    pub message: String,
+    /// Whether the toast is in its exit animation phase.
+    pub is_exiting: bool,
+}
+
+impl PartialEq for Toast {
+    fn eq(&self, other: &Self) -> bool {
+        // TODO: 为了显示退出动画时 Diff, 也需要比较退出状态是否改变
+        self.id == other.id && self.is_exiting == other.is_exiting
+    }
+}
+
+pub struct ToastManager {
+    pub next_id: u64,
+    pub list: Vec<Toast>,
+}
+
+impl ToastManager {
+    pub fn new() -> Self {
+        Self {
+            list: Vec::new(),
+            next_id: 0,
+        }
+    }
+
+    /// 添加 Toast 并返回其 ID
+    pub fn add(&mut self, toast: Toast) -> u64 {
+        let id = self.next_id;
+        self.next_id += 1;
+
+        // 确保传入的 toast 使用我们生成的 ID
+        let mut new_toast = toast;
+        new_toast.id = id;
+
+        self.list.push(new_toast);
+        id
+    }
+
+    /// 标记为退出状态
+    pub fn mark_exiting(&mut self, id: u64) {
+        if let Some(t) = self.list.iter_mut().find(|t| t.id == id) {
+            t.is_exiting = true;
+        }
+    }
+
+    /// 从列表中移除
+    pub fn remove(&mut self, id: u64) {
+        self.list.retain(|t| t.id != id);
+    }
+}
+
+#[derive(Props, PartialEq, Clone)]
+pub struct ToastContainerProps {
+    /// Top offset in pixels
+    #[props(default = 80)]
+    pub top_offset: u32,
+    #[props(default)]
+    pub position: ToastPosition,
+    pub toasts: Signal<ToastManager>,
+
+    pub on_dismiss: EventHandler<u64>,
 }
 
 /// Toast Container component
@@ -113,7 +154,7 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
 
     rsx! {
         div { class: "nd-toast-container", style: "{position_style}",
-        for toast in &*props.toasts.read() {
+        for toast in &*props.toasts.read().list {
                 div { key: "{toast.id}",
                     ToastItem {
                         toast: toast.clone(),
@@ -128,8 +169,8 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
 /// Toast Item
 #[derive(Props, PartialEq, Clone)]
 pub struct ToastItemProps {
-    pub toast: ToastMessage,
-    pub on_dismiss: EventHandler<String>,
+    pub toast: Toast,
+    pub on_dismiss: EventHandler<u64>,
 }
 
 /// Toast Item component
@@ -139,7 +180,6 @@ pub fn ToastItem(props: ToastItemProps) -> Element {
 
     rsx! {
         div {
-            // key: "{props.toast.id}",
             class: "nd-toast",
             class: if props.toast.is_exiting { "nd-toast-exit" } else { "" },
             role: "alert",
