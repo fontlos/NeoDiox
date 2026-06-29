@@ -78,7 +78,7 @@ pub fn Menu(props: MenuProps) -> Element {
             "aria-label": "Context menu",
             style: format!(
                 "position: fixed; left: {adjusted_x}px; top: {adjusted_y}px; \
-                         z-index: 1001; min-width: 180px;",
+                                 z-index: 1001; min-width: 180px;",
             ),
             onkeydown: move |evt| {
                 if evt.key() == Key::Escape {

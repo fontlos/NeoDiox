@@ -174,13 +174,13 @@ fn DropdownPanel() -> Element {
                     }
                     MultiSelect {
                         options: vec![
-                                                    "JavaScript",
-                                                    "TypeScript",
-                                                    "React",
-                                                    "Vue.js",
-                                                    "Node.js",
-                                                    "Python",
-                                                ],
+                                                                            "JavaScript",
+                                                                            "TypeScript",
+                                                                            "React",
+                                                                            "Vue.js",
+                                                                            "Node.js",
+                                                                            "Python",
+                                                                        ],
                         values: skills(),
                         onchange: move |vals| *skills.write() = vals,
                         placeholder: "Click to select...".to_string(),

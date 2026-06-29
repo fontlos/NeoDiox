@@ -14,7 +14,7 @@ fn main() {
         "data.css",
         "feedback.css",
         "form.css",
-        "navigation.css"
+        "navigation.css",
     ];
 
     for file in files {

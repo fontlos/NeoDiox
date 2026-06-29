@@ -101,22 +101,21 @@ fn LoadingPanel() -> Element {
 fn ToastPanel() -> Element {
     // Helper to add a toast
     let add_toast = move |toast_type: ToastType, title: &str, message: &str, duration_ms: u64| {
+        let id = TOASTS.write().add(Toast {
+            id: 0,
+            toast_type,
+            title: title.to_string(),
+            message: message.to_string(),
+            is_exiting: false,
+        });
 
-            let id = TOASTS.write().add(Toast {
-                id: 0,
-                toast_type,
-                title: title.to_string(),
-                message: message.to_string(),
-                is_exiting: false,
-            });
-
-            spawn(async move {
-                gloo_timers::future::sleep(std::time::Duration::from_millis(duration_ms)).await;
-                TOASTS.write().mark_exiting(id);
-                gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
-                TOASTS.write().remove(id);
-            });
-        };
+        spawn(async move {
+            gloo_timers::future::sleep(std::time::Duration::from_millis(duration_ms)).await;
+            TOASTS.write().mark_exiting(id);
+            gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
+            TOASTS.write().remove(id);
+        });
+    };
 
     rsx! {
         NeuRaised { class: "panel",

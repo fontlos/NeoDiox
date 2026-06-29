@@ -20,4 +20,4 @@ pub use progress::ProgressBar;
 pub use skeleton::Skeleton;
 pub use spinner::Spinner;
 pub use tip::{Tip, TipPosition};
-pub use toast::{ToastContainer, ToastManager, Toast, ToastPosition, ToastType};
+pub use toast::{Toast, ToastContainer, ToastManager, ToastPosition, ToastType};

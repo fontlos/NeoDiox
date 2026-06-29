@@ -154,12 +154,12 @@ pub fn ToastContainer(props: ToastContainerProps) -> Element {
 
     rsx! {
         div { class: "nd-toast-container", style: "{position_style}",
-        for toast in &*props.toasts.read().list {
-                div { key: "{toast.id}",
-                    ToastItem {
-                        toast: toast.clone(),
-                        on_dismiss: props.on_dismiss.clone(),
-                    }
+            for toast in &*props.toasts.read().list {
+                ToastItem {
+                    // Key 必须作用在循环紧邻的组件上, 否则 Diff 会出错
+                    key: "{toast.id}",
+                    toast: toast.clone(),
+                    on_dismiss: props.on_dismiss.clone(),
                 }
             }
         }
@@ -181,7 +181,7 @@ pub fn ToastItem(props: ToastItemProps) -> Element {
     rsx! {
         div {
             class: "nd-toast",
-            class: if props.toast.is_exiting { "nd-toast-exit" } else { "" },
+            class: if props.toast.is_exiting { "nd-toast-exit" },
             role: "alert",
             background: "linear-gradient(145deg, {color_start}, {color_end})",
 

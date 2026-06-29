@@ -36,7 +36,7 @@ pub mod prelude {
     // 反馈组件
     pub use crate::feedback::{
         Alert, AlertType, Dots, Menu, MenuItem, Modal, ProgressBar, Skeleton, Spinner, Tip,
-        TipPosition, ToastContainer, ToastManager, Toast, ToastPosition, ToastType,
+        TipPosition, Toast, ToastContainer, ToastManager, ToastPosition, ToastType,
     };
     // 数据组件
     pub use crate::data::{

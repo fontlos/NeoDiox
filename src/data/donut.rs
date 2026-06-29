@@ -170,7 +170,7 @@ pub fn DonutChart(props: DonutChartProps) -> Element {
                         div {
                             style: format!(
                                 "width: 12px; height: 12px; border-radius: 6px; \
-                                                         background: linear-gradient(145deg, {}, {});",
+                                                                                 background: linear-gradient(145deg, {}, {});",
                                 item.color.0,
                                 item.color.1,
                             ),
