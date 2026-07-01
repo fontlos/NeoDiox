@@ -100,17 +100,11 @@ fn LoadingPanel() -> Element {
 #[component]
 fn ToastPanel() -> Element {
     // Helper to add a toast
-    let add_toast = move |toast_type: ToastType, title: &str, message: &str, duration_ms: u64| {
-        let id = TOASTS.write().add(Toast {
-            id: 0,
-            toast_type,
-            title: title.to_string(),
-            message: message.to_string(),
-            is_exiting: false,
-        });
+    let add_toast = move |toast_type: ToastType, title: &str, message: &str| {
+        let id = TOASTS.write().add(Toast::new(toast_type, title, message));
 
         spawn(async move {
-            gloo_timers::future::sleep(std::time::Duration::from_millis(duration_ms)).await;
+            gloo_timers::future::sleep(std::time::Duration::from_millis(10000)).await;
             TOASTS.write().mark_exiting(id);
             gloo_timers::future::sleep(std::time::Duration::from_millis(300)).await;
             TOASTS.write().remove(id);
@@ -135,7 +129,6 @@ fn ToastPanel() -> Element {
                         ToastType::Success,
                         "Success",
                         "Your changes have been saved.",
-                        5000,
                     ),
                     "Success"
                 }
@@ -145,7 +138,6 @@ fn ToastPanel() -> Element {
                         ToastType::Error,
                         "Error",
                         "There was a problem processing your request.",
-                        5000,
                     ),
                     "Error"
                 }
@@ -155,13 +147,12 @@ fn ToastPanel() -> Element {
                         ToastType::Warning,
                         "Warning",
                         "Your session will expire in 5 minutes.",
-                        5000,
                     ),
                     "Warning"
                 }
                 Button {
                     variant: ButtonVariant::INFO,
-                    onclick: move |_| add_toast(ToastType::Info, "Info", "A new version is available.", 5000),
+                    onclick: move |_| add_toast(ToastType::Info, "Info", "A new version is available."),
                     "Info"
                 }
             }

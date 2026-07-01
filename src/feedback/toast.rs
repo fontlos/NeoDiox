@@ -74,6 +74,18 @@ impl PartialEq for Toast {
     }
 }
 
+impl Toast {
+    pub fn new(toast_type: ToastType, title: &str, message: &str) -> Self {
+        Self {
+            id: 0,
+            toast_type,
+            title: title.to_string(),
+            message: message.to_string(),
+            is_exiting: false,
+        }
+    }
+}
+
 pub struct ToastManager {
     pub next_id: u64,
     pub list: Vec<Toast>,
@@ -135,13 +147,11 @@ pub struct ToastContainerProps {
 ///         toasts: toasts(),
 ///         on_dismiss: move |id| {
 ///             // Mark as exiting
-///             if let Some(t) = toasts.write().iter_mut().find(|t| t.id == id) {
-///                 t.is_exiting = true;
-///             }
+///             toasts.write().mark_exiting(id);
 ///             // Wait for animation then remove
 ///             spawn(async move {
 ///                 gloo_timers::future::sleep(Duration::from_millis(300)).await;
-///                 toasts.write().retain(|t| t.id != id);
+///                 toasts.write().remove(id);
 ///             });
 ///         },
 ///         top_offset: 80,
